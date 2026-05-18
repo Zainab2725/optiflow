@@ -4,6 +4,7 @@ import '../models.dart';
 import '../services/firestore_service.dart';
 import '../widgets/fleet_unit_tile.dart';
 import '../widgets/ai_recommendation_card.dart';
+import 'profile_screen.dart';
 
 class FleetScreen extends StatefulWidget {
   const FleetScreen({super.key});
@@ -25,7 +26,14 @@ class _FleetScreenState extends State<FleetScreen> {
         ),
         title: const Text('Karachi Command'),
         actions: [
-          IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              );
+            },
+          ),
         ],
       ),
       body: StreamBuilder<List<FleetUnit>>(

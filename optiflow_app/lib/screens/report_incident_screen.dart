@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../models.dart';
 import '../services/firestore_service.dart';
+import '../services/api_service.dart';
 
 class ReportIncidentScreen extends StatefulWidget {
   const ReportIncidentScreen({super.key});
@@ -11,6 +12,7 @@ class ReportIncidentScreen extends StatefulWidget {
 
 class _ReportIncidentScreenState extends State<ReportIncidentScreen> {
   final _fs = FirestoreService();
+  final _api = ApiService();
   final _nameCtrl = TextEditingController();
   final _msgCtrl = TextEditingController();
   String _zone = 'Gulshan Karachi';
@@ -30,6 +32,17 @@ class _ReportIncidentScreenState extends State<ReportIncidentScreen> {
     }
     setState(() => _loading = true);
     try {
+      // 1. Submit to FastAPI secure backend pipeline to trigger alerting & rules
+      await _api.ingestIncident(
+        reporterName: _nameCtrl.text.trim(),
+        reporterRole: ApiService.currentUser?['role'] ?? 'field_operator',
+        locationZone: _zone,
+        sku: _sku == 'GENERAL' ? null : _sku,
+        message: _msgCtrl.text.trim(),
+        severity: _severity,
+      );
+
+      // 2. Save in Firestore for live UI stream
       await _fs.addIncident(Incident(
         id: '',
         title: 'Field Report: $_zone',

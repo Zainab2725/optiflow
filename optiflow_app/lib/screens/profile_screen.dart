@@ -1,0 +1,418 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../theme.dart';
+import '../services/api_service.dart';
+import 'login_screen.dart';
+import 'setup_screen.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final _api = ApiService();
+  bool _inviting = false;
+  final _inviteNameCtrl = TextEditingController();
+  final _inviteEmailCtrl = TextEditingController();
+  String _inviteRole = 'driver';
+
+  @override
+  void dispose() {
+    _inviteNameCtrl.dispose();
+    _inviteEmailCtrl.dispose();
+    super.dispose();
+  }
+
+  void _showInviteDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDlgState) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          backgroundColor: AppTheme.surface,
+          title: Row(
+            children: [
+              const Icon(Icons.person_add_outlined, color: AppTheme.primary),
+              const SizedBox(width: 8),
+              Text(
+                'Invite Operator',
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 18),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Add a new operator credential to your isolated organization workspace.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 16),
+              
+              _label('OPERATOR FULL NAME'),
+              const SizedBox(height: 6),
+              TextField(
+                controller: _inviteNameCtrl,
+                decoration: const InputDecoration(
+                  hintText: 'e.g. Ahmed Raza',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                ),
+              ),
+              const SizedBox(height: 12),
+              
+              _label('OPERATOR SECURE EMAIL'),
+              const SizedBox(height: 6),
+              TextField(
+                controller: _inviteEmailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hintText: 'driver@optiflow.pk',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                ),
+              ),
+              const SizedBox(height: 12),
+              
+              _label('SYSTEM ROLE'),
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: AppTheme.outlineVar, width: 0.5),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: _inviteRole,
+                    isExpanded: true,
+                    items: const [
+                      DropdownMenuItem(value: 'manager', child: Text('Manager')),
+                      DropdownMenuItem(value: 'driver', child: Text('Driver')),
+                      DropdownMenuItem(value: 'field_operator', child: Text('Field Operator')),
+                    ],
+                    onChanged: (val) {
+                      if (val != null) {
+                        setDlgState(() => _inviteRole = val);
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _inviteNameCtrl.clear();
+                _inviteEmailCtrl.clear();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: _inviting 
+                ? null 
+                : () async {
+                    final name = _inviteNameCtrl.text.trim();
+                    final email = _inviteEmailCtrl.text.trim();
+                    if (name.isEmpty || email.isEmpty) return;
+
+                    setDlgState(() => _inviting = true);
+                    try {
+                      final res = await _api.inviteUser(name: name, email: email, role: _inviteRole);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(res['message'] ?? 'Operator registered!'),
+                            backgroundColor: AppTheme.success,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString()),
+                            backgroundColor: AppTheme.criticalRed,
+                          ),
+                        );
+                      }
+                    } finally {
+                      setDlgState(() => _inviting = false);
+                      _inviteNameCtrl.clear();
+                      _inviteEmailCtrl.clear();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    }
+                  },
+              child: const Text('Send Invite'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleLogout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } catch (_) {}
+    ApiService.token = null;
+    ApiService.currentUser = null;
+    ApiService.organization = null;
+
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = ApiService.currentUser ?? {
+      'name': 'Zainab Ali',
+      'email': 'admin@optiflow.pk',
+      'role': 'admin',
+    };
+    final org = ApiService.organization ?? {
+      'org_id': 'org-demo',
+      'name': 'Karachi Crisis Response NGO',
+      'type': 'NGO',
+    };
+
+    final roleName = user['role']?.toString().toUpperCase() ?? 'OPERATOR';
+    final roleColor = _getRoleColor(roleName);
+
+    return Scaffold(
+      backgroundColor: AppTheme.background,
+      appBar: AppBar(
+        title: const Text('Command Settings'),
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          // ── USER CARD ──
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppTheme.outlineVar, width: 0.5),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: roleColor.withOpacity(0.1),
+                  child: Icon(Icons.security, color: roleColor, size: 30),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user['name'] ?? 'System Operator',
+                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 18),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        user['email'] ?? 'operator@optiflow.pk',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: roleColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: roleColor.withOpacity(0.3)),
+                        ),
+                        child: Text(
+                          roleName,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: roleColor,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // ── ORGANIZATION INFO CARD ──
+          Text(
+            'ORGANIZATION PIPELINE',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.onSurfaceVar, fontSize: 10),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppTheme.outlineVar, width: 0.5),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _infoRow('Workspace Name', org['name'] ?? 'Karachi Relief Hub'),
+                const Divider(height: 20),
+                _infoRow('Organization ID', org['org_id'] ?? 'org-demo'),
+                const Divider(height: 20),
+                _infoRow('Isolation Scope', 'MULTI-TENANT SECURE CLOUD'),
+                const Divider(height: 20),
+                Text(
+                  'Authorized Operational Sectors:',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 6, runSpacing: 6,
+                  children: ApiService.activeZones.map((zone) => Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary.withOpacity(0.06),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: AppTheme.primary.withOpacity(0.2)),
+                    ),
+                    child: Text(
+                      zone,
+                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppTheme.primary),
+                    ),
+                  )).toList(),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // ── SYSTEM CONFIG CONTROLS ──
+          Text(
+            'LOGISTICS SYSTEMS',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.onSurfaceVar, fontSize: 10),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppTheme.outlineVar, width: 0.5),
+            ),
+            child: Column(
+              children: [
+                _menuTile(
+                  icon: Icons.person_add_outlined,
+                  title: 'Invite Operator Staff',
+                  subtitle: 'Add drivers or managers to this node',
+                  onTap: _showInviteDialog,
+                ),
+                const Divider(height: 1),
+                _menuTile(
+                  icon: Icons.settings_suggest_outlined,
+                  title: 'Reconfigure Workspace Assets',
+                  subtitle: 'Update warehouses, categories, and corridors',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const SetupScreen()),
+                    );
+                  },
+                ),
+                const Divider(height: 1),
+                _menuTile(
+                  icon: Icons.sync_outlined,
+                  title: 'Sync Ground Database Ledger',
+                  subtitle: 'Force sync stocks and incidents with backend',
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Synchronizing logs with Central Karachi Gateway...'),
+                        backgroundColor: AppTheme.primary,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // ── LOGOUT BUTTON ──
+          ElevatedButton.icon(
+            onPressed: _handleLogout,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.criticalRed,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+            icon: const Icon(Icons.power_settings_new),
+            label: const Text('DISCONNECT SECURE NODE'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _label(String text) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        color: AppTheme.onSurfaceVar,
+        fontSize: 9,
+      ),
+    );
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+      ],
+    );
+  }
+
+  Widget _menuTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: AppTheme.primary),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 11)),
+      trailing: const Icon(Icons.chevron_right, size: 18),
+      onTap: onTap,
+    );
+  }
+
+  Color _getRoleColor(String role) {
+    switch (role.toLowerCase()) {
+      case 'admin':
+        return AppTheme.primary;
+      case 'manager':
+        return Colors.teal;
+      case 'driver':
+        return AppTheme.warning;
+      case 'field_operator':
+        return Colors.deepOrange;
+      default:
+        return AppTheme.onSurfaceVar;
+    }
+  }
+}

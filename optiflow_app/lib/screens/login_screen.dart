@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme.dart';
+import '../services/api_service.dart';
 import 'home_screen.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,17 +25,29 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _login() async {
     setState(() { _loading = true; _error = ''; });
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailCtrl.text.trim(),
-        password: _passCtrl.text.trim(),
+      // 1. Authenticate with local/remote FastAPI backend first to sync JWT & role
+      await ApiService().login(
+        _emailCtrl.text.trim(),
+        _passCtrl.text.trim(),
       );
+
+      // 2. Synchronize with Firebase
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailCtrl.text.trim(),
+          password: _passCtrl.text.trim(),
+        );
+      } catch (_) {
+        // Fallback gracefully for pure backend flow if Firebase offline
+      }
+
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
       }
-    } on FirebaseAuthException catch (e) {
-      setState(() => _error = e.message ?? 'Authentication failed');
+    } catch (e) {
+      setState(() => _error = e.toString().replaceAll('Exception: ', ''));
     } finally {
       setState(() => _loading = false);
     }
@@ -248,13 +262,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ]),
                                   const SizedBox(height: 16),
                                   OutlinedButton.icon(
-                                    onPressed: () => setState(() => _showSignup = !_showSignup),
-                                    icon: Icon(_showSignup
-                                        ? Icons.login : Icons.person_add_outlined,
-                                      size: 18),
-                                    label: Text(_showSignup
-                                        ? 'Return to Operator Login'
-                                        : 'Request Credentials'),
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (_) => const SignupScreen()),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.person_add_outlined, size: 18),
+                                    label: const Text('Request Org Credentials'),
                                   ),
                                 ],
                               ),

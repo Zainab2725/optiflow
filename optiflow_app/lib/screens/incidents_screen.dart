@@ -5,6 +5,7 @@ import '../services/firestore_service.dart';
 import '../widgets/incident_tile.dart';
 import '../widgets/resource_matrix.dart';
 import 'report_incident_screen.dart';
+import 'profile_screen.dart';
 
 class IncidentsScreen extends StatefulWidget {
   const IncidentsScreen({super.key});
@@ -27,7 +28,14 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         ),
         title: const Text('Karachi Command'),
         actions: [
-          IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              );
+            },
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

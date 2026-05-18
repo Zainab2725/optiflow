@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../theme.dart';
 import '../services/firestore_service.dart';
 import 'dashboard_screen.dart';
+import 'stock_screen.dart';
 import 'incidents_screen.dart';
 import 'fleet_screen.dart';
 import 'analytics_screen.dart';
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _screens = const [
     DashboardScreen(),
+    StockScreen(),
     IncidentsScreen(),
     FleetScreen(),
     AnalyticsScreen(),
@@ -47,6 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.dashboard_outlined),
               activeIcon: Icon(Icons.dashboard),
               label: 'Dashboard',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.inventory_2_outlined),
+              activeIcon: Icon(Icons.inventory_2),
+              label: 'Stock Ledger',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.warning_amber_outlined),
