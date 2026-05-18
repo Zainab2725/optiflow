@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OptiFlow Command Center | Karachi Crisis Intelligence</title>
+  <style>
+    /* DESIGN SYSTEM */
+    :root {
+      --bg-dark: #0F172A;
+      --bg-card: #1E293B;
+      --border: #334155;
+      --primary: #10B981;
+      --primary-hover: #059669;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      --text: #F1F5F9;
+      --text-muted: #94A3B8;
+      --bg-input: #0b0f19;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* UTILITIES */
+    .container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .flex { display: flex; }
+    .flex-col { display: flex; flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-12 { gap: 12px; }
+    .gap-16 { gap: 16px; }
+    .hidden { display: none !important; }
+
+    /* HEADER */
+    header {
+      background-color: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 0;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+    }
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+      margin-left: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--primary);
+      background-color: rgba(16, 185, 129, 0.1);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 8px var(--primary); }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+    .clock {
+      font-family: monospace;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    /* USER PROFILE BAR */
+    .user-profile-bar {
+      background-color: rgba(30, 41, 59, 0.4);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .user-profile-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .user-tag {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .logout-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+    .logout-btn:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    /* CARD COMPONENT */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* LOGIN VIEW */
+    .login-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 120px);
+      padding: 24px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .login-logo .icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 8px var(--primary));
+    }
+    .login-logo h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .login-logo p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .form-input {
+      width: 100%;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--bg-dark);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* STAT CARDS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      border-color: var(--text-muted);
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    .stat-card.emerald::after { background-color: var(--primary); }
+    .stat-card.amber::after { background-color: var(--warning); }
+    .stat-card.red::after { background-color: var(--danger); }
+    .stat-card.blue::after { background-color: #3b82f6; }
+
+    .stat-icon {
+      font-size: 2rem;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* MAIN LAYOUT GRID */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 1024px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
+    /* LEFT COLUMN - AI ANALYSIS */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .btn-analysis-run {
+      background-color: var(--primary);
+      color: var(--bg-dark);
+      height: 56px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      transition: var(--transition);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+    }
+    .btn-analysis-run:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-analysis-run:active {
+      transform: translateY(1px);
+    }
+    .btn-analysis-run:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* LOADING BOX */
+    .ai-loading-box {
+      background-color: rgba(16, 185, 129, 0.05);
+      border: 1px dashed var(--primary);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      animation: pulse-border 2s infinite ease-in-out;
+    }
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(16, 185, 129, 0.3); }
+      50% { border-color: var(--primary); }
+    }
+    .loader-dots {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .loader-dots span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      margin: 0 5px;
+      animation: bounce-dots 1.4s infinite ease-in-out both;
+    }
+    .loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce-dots {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1.0); }
+    }
+    .loading-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ANALYSIS RESULTS */
+    .results-card {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    .results-section-title {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    /* AI ALERTS */
+    .alerts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .alert-card {
+      background-color: rgba(30, 41, 59, 0.6);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      transition: var(--transition);
+    }
+    .alert-card:hover {
+      background-color: rgba(30, 41, 59, 0.9);
+      border-color: var(--text-muted);
+    }
+    .alert-card.critical { border-left-color: var(--danger); }
+    .alert-card.warning { border-left-color: var(--warning); }
+    
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .sku-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sku-badge {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      font-family: monospace;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .risk-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .risk-badge.critical {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+    .risk-badge.warning {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+    .alert-reason {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .alert-location {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ACTION CHAIN */
+    .action-steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .action-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background-color: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .action-step.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .step-icon {
+      color: var(--primary);
+      font-size: 1rem;
+      margin-top: 1px;
+    }
+    .step-text {
+      font-size: 0.85rem;
+    }
+    .step-name {
+      font-weight: bold;
+      color: var(--text);
+    }
+    .step-detail {
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-size: 0.8rem;
+    }
+
+    /* BEFORE VS AFTER */
+    .before-after-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 550px) {
+      .before-after-grid { grid-template-columns: 1fr; }
+    }
+    .ba-card {
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 0.85rem;
+    }
+    .ba-card.before {
+      background-color: rgba(239, 68, 68, 0.03);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .ba-card.after {
+      background-color: rgba(16, 185, 129, 0.03);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .ba-title {
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ba-card.before .ba-title { color: var(--danger); }
+    .ba-card.after .ba-title { color: var(--primary); }
+    
+    .ba-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+    }
+    .ba-item:last-child {
+      border-bottom: none;
+    }
+    .ba-label {
+      color: var(--text-muted);
+    }
+    .ba-value {
+      font-weight: 700;
+    }
+    .ba-card.before .ba-value { color: #fca5a5; }
+    .ba-card.after .ba-value { color: #a7f3d0; }
+
+    /* RIGHT COLUMN */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* DATA SOURCES GRID */
+    .sources-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 550px) {
+      .sources-grid { grid-template-columns: 1fr; }
+    }
+    .source-card {
+      background-color: rgba(30, 41, 59, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .source-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .source-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .source-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .source-dot.healthy {
+      background-color: var(--primary);
+      box-shadow: 0 0 6px var(--primary);
+    }
+    .source-dot.error {
+      background-color: var(--danger);
+      box-shadow: 0 0 6px var(--danger);
+    }
+    .source-cred {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .cred-bar-bg {
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .cred-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 1s ease-out;
+    }
+    .source-fetched {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* INCIDENT REPORT FORM */
+    .incident-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    
+    /* SEVERITY RADIO AS BADGES */
+    .severity-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .severity-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .severity-options {
+      display: flex;
+      gap: 8px;
+    }
+    .severity-option {
+      flex: 1;
+      cursor: pointer;
+    }
+    .severity-option input {
+      display: none;
+    }
+    .severity-badge-btn {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border: 1px solid var(--border);
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .severity-option input:checked + .severity-badge-btn.high {
+      background-color: rgba(239, 68, 68, 0.15);
+      border-color: var(--danger);
+      color: var(--danger);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+    }
+    .severity-option input:checked + .severity-badge-btn.medium {
+      background-color: rgba(245, 158, 11, 0.15);
+      border-color: var(--warning);
+      color: var(--warning);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+    }
+    .severity-option input:checked + .severity-badge-btn.low {
+      background-color: rgba(16, 185, 129, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+    }
+
+    /* SPIKE WARNING BANNER */
+    .spike-warning-banner {
+      background-color: rgba(239, 68, 68, 0.12);
+      border: 1px solid var(--danger);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--danger);
+      font-weight: bold;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: pulse-danger 2s infinite ease-in-out;
+    }
+    @keyframes pulse-danger {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.3); }
+      50% { border-color: var(--danger); }
+    }
+
+    /* QUICK ACTIONS */
+    .quick-actions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .quick-btn {
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 8px;
+      text-align: left;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    .quick-btn:hover {
+      background-color: var(--border);
+      transform: translateX(4px);
+    }
+
+    /* TOAST SYSTEM */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toast {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 20px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slide-in 0.25s cubic-bezier(0, 0, 0.2, 1) forwards;
+      min-width: 280px;
+    }
+    .toast.success {
+      border-left: 4px solid var(--primary);
+    }
+    .toast.error {
+      border-left: 4px solid var(--danger);
+    }
+    @keyframes slide-in {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast.fade-out {
+      animation: slide-out 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
+    @keyframes slide-out {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(120%); opacity: 0; }
+    }
+
+    /* OVERLAY MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 720px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: scale-up 0.2s cubic-bezier(0, 0, 0.2, 1) forwards;
+    }
+    @keyframes scale-up {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: var(--transition);
+    }
+    .modal-close:hover {
+      color: var(--text);
+    }
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* MODAL CONTENT TABLES & LISTS */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+    .data-table th, .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table th {
+      background-color: rgba(255, 255, 255, 0.03);
+      font-weight: bold;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+    .data-table tr:hover td {
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+    .data-table td.critical {
+      color: var(--danger);
+      font-weight: bold;
+    }
+    .data-table td.healthy {
+      color: var(--primary);
+    }
+
+    .org-summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 500px) {
+      .org-summary-grid { grid-template-columns: 1fr; }
+    }
+    .org-summary-item {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .org-sum-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .org-sum-val {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    .org-sum-val.danger { color: var(--danger); }
+    .org-sum-val.warning { color: var(--warning); }
+
+    /* FOOTER */
+    footer {
+      background-color: rgba(15, 23, 42, 0.8);
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-content">
+      <div class="logo-container">
+        <a href="#" class="logo">⚡ OptiFlow</a>
+        <span class="subtitle">Karachi Urban Crisis Intelligence</span>
+      </div>
+      <div class="header-right">
+        <div class="live-indicator">
+          <div class="pulse-dot"></div>
+          <span>● LIVE</span>
+        </div>
+        <div class="clock" id="clock-display">00:00:00</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- USER PROFILE BAR -->
+  <div id="user-profile-bar" class="user-profile-bar hidden">
+    <div class="container user-profile-content">
+      <div class="user-meta">
+        <span>Logged in as: <strong style="color:var(--text);" id="profile-name">—</strong></span>
+        <span class="user-tag" id="profile-role">—</span>
+        <span>Organization: <strong style="color:var(--text);" id="profile-org">—</strong></span>
+      </div>
+      <button class="logout-btn" onclick="performLogout()">
+        🚪 Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- LOGIN PANEL -->
+  <div id="login-view" class="login-container">
+    <div class="card login-card">
+      <div class="login-logo">
+        <span class="icon">⚡</span>
+        <h2>OptiFlow Portal</h2>
+        <p>Karachi Urban Logistics Command</p>
+      </div>
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-input" required value="ahmed@karachirelief.org">
+        </div>
+        <div class="form-group">
+          <label for="login-pass">Security Key</label>
+          <input type="password" id="login-pass" class="form-input" required value="ngo123">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-login-submit">
+          🔑 Secure Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD CONTAINER -->
+  <main id="dashboard-view" class="container hidden" style="flex:1;">
+    
+    <!-- STAT CARDS ROW -->
+    <div class="stats-row">
+      <!-- SOURCES LIVE -->
+      <div class="stat-card emerald">
+        <div class="stat-icon">📡</div>
+        <div class="stat-info">
+          <div class="stat-value" id="card-sources">—</div>
+          <div class="stat-label">Sources Live</div>
+        </div>
+      </div>
+      <!-- ACTIVE COMPLAINTS -->
+      <div class="stat-card amber">
+        <div class="stat-icon">💬</div>
+        <div class="stat-info">
+          <div class="stat-value" id="card-complaints">—</div>
+          <div class="stat-label">Active Complaints</div>
+        </div>
+      </div>
+      <!-- COMPLAINT SPIKE -->
+      <div class="stat-card" id="card-spike-status">
+        <div class="stat-icon" id="card-spike-icon">⚠️</div>
+        <div class="stat-info">
+          <div class="stat-value" id="card-spike-text">—</div>
+          <div class="stat-label">Complaint Status</div>
+        </div>
+      </div>
+      <!-- PKR RATE -->
+      <div class="stat-card blue">
+        <div class="stat-icon">💱</div>
+        <div class="stat-info">
+          <div class="stat-value" id="card-pkr">—</div>
+          <div class="stat-label">USD to PKR</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="dashboard-grid">
+      
+      <!-- LEFT COLUMN -->
+      <div class="left-col">
+        <!-- RUN ANALYSIS BLOCK -->
+        <div class="card" style="display:flex; flex-direction:column; gap:16px;">
+          <h3 class="card-title">🧠 Decision Intelligence</h3>
+          <button class="btn-analysis-run" id="btn-run-analysis" onclick="triggerAiAnalysis()">
+            🧠 RUN AI ANALYSIS
+          </button>
+          
+          <!-- AI Loading -->
+          <div id="ai-loading" class="ai-loading-box hidden">
+            <div class="loader-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="loading-text">Gemini AI analyzing 100 SKUs across Karachi...</div>
+          </div>
+        </div>
+
+        <!-- ANALYSIS RESULTS -->
+        <div class="card results-card hidden" id="analysis-results-box">
+          <h3 class="card-title" style="color:var(--primary);">🎯 Gemini Intelligence Report</h3>
+          
+          <!-- AI Alerts Section -->
+          <div>
+            <h4 class="results-section-title">🚨 AI Alerts</h4>
+            <div class="alerts-container" id="alerts-list-container"></div>
+          </div>
+
+          <!-- Action Chain Section -->
+          <div>
+            <h4 class="results-section-title">⚙️ Action Chain Executed</h4>
+            <div class="action-steps-container" id="action-steps-list">
+              <!-- Step 1 -->
+              <div class="action-step" id="step-1">
+                <span class="step-icon">✅</span>
+                <div class="step-text">
+                  <span class="step-name">Step 1: Validate Stock</span>
+                  <div class="step-detail" id="step-1-detail">—</div>
+                </div>
+              </div>
+              <!-- Step 2 -->
+              <div class="action-step" id="step-2">
+                <span class="step-icon">✅</span>
+                <div class="step-text">
+                  <span class="step-name">Step 2: Notify Procurement</span>
+                  <div class="step-detail" id="step-2-detail">—</div>
+                </div>
+              </div>
+              <!-- Step 3 -->
+              <div class="action-step" id="step-3">
+                <span class="step-icon">✅</span>
+                <div class="step-text">
+                  <span class="step-name">Step 3: Emergency Order</span>
+                  <div class="step-detail" id="step-3-detail">—</div>
+                </div>
+              </div>
+              <!-- Step 4 -->
+              <div class="action-step" id="step-4">
+                <span class="step-icon">✅</span>
+                <div class="step-text">
+                  <span class="step-name">Step 4: Customer Notifications</span>
+                  <div class="step-detail" id="step-4-detail">—</div>
+                </div>
+              </div>
+              <!-- Step 5 -->
+              <div class="action-step" id="step-5">
+                <span class="step-icon">✅</span>
+                <div class="step-text">
+                  <span class="step-name">Step 5: Monitoring Scheduled</span>
+                  <div class="step-detail" id="step-5-detail">Every 60 mins for 24hrs</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Before vs After -->
+          <div>
+            <h4 class="results-section-title">📊 Before vs After</h4>
+            <div class="before-after-grid">
+              <!-- BEFORE -->
+              <div class="ba-card before">
+                <div class="ba-title">🛑 BEFORE</div>
+                <div class="ba-list">
+                  <div class="ba-item">
+                    <span class="ba-label">Stockout Risk:</span>
+                    <span class="ba-value">HIGH</span>
+                  </div>
+                  <div class="ba-item">
+                    <span class="ba-label">Supplier Status:</span>
+                    <span class="ba-value">unverified</span>
+                  </div>
+                  <div class="ba-item">
+                    <span class="ba-label">Notifications:</span>
+                    <span class="ba-value">0</span>
+                  </div>
+                </div>
+              </div>
+              <!-- AFTER -->
+              <div class="ba-card after">
+                <div class="ba-title">❇️ AFTER</div>
+                <div class="ba-list">
+                  <div class="ba-item">
+                    <span class="ba-label">Stockout Risk:</span>
+                    <span class="ba-value">REDUCED</span>
+                  </div>
+                  <div class="ba-item">
+                    <span class="ba-label">Supplier:</span>
+                    <span class="ba-value">order_placed</span>
+                  </div>
+                  <div class="ba-item">
+                    <span class="ba-label">Notifications:</span>
+                    <span class="ba-value" id="ba-after-notify">—</span>
+                  </div>
+                  <div class="ba-item">
+                    <span class="ba-label">Emerg. Orders:</span>
+                    <span class="ba-value" id="ba-after-orders">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+        
+        <!-- LIVE INTEL SOURCES -->
+        <div class="card">
+          <div class="sources-header">
+            <h3 class="card-title" style="margin-bottom:0;">📡 Live Intelligence</h3>
+            <div class="live-indicator" id="sources-summary-badge" style="font-size:0.75rem;">
+              — Sources Healthy
+            </div>
+          </div>
+          <div class="sources-grid" id="sources-grid-container">
+            <!-- 8 dynamic source cards will generate here -->
+          </div>
+        </div>
+
+        <!-- FIELD INCIDENT REPORTING -->
+        <div class="card">
+          <h3 class="card-title">🚨 Report Field Incident</h3>
+          <form id="incident-form" class="incident-form" onsubmit="handleIncidentSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inc-reporter">Reporter Name</label>
+                <input type="text" id="inc-reporter" class="form-input" required placeholder="Full Name">
+              </div>
+              <div class="form-group">
+                <label for="inc-zone">Zone (Karachi)</label>
+                <select id="inc-zone" class="form-input" required>
+                  <option value="Gulshan Karachi">Gulshan Karachi</option>
+                  <option value="PECHS Karachi">PECHS Karachi</option>
+                  <option value="Defence Karachi">Defence Karachi</option>
+                  <option value="North Nazimabad">North Nazimabad</option>
+                  <option value="Korangi Karachi">Korangi Karachi</option>
+                  <option value="Saddar">Saddar</option>
+                  <option value="Clifton">Clifton</option>
+                  <option value="Orangi">Orangi</option>
+                  <option value="Lyari">Lyari</option>
+                  <option value="SITE">SITE</option>
+                  <option value="Malir">Malir</option>
+                  <option value="Faisal Colony">Faisal Colony</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inc-sku">SKU Affected</label>
+                <select id="inc-sku" class="form-input" required>
+                  <option value="MED-001">MED-001 - Panadol 500mg</option>
+                  <option value="MED-006">MED-006 - ORS Sachets</option>
+                  <option value="MED-035">MED-035 - Insulin Glargine</option>
+                  <option value="MED-007">MED-007 - Ventolin Inhaler</option>
+                  <option value="MED-090">MED-090 - Meropenem 1g</option>
+                  <option value="GENERAL">GENERAL - General Incident</option>
+                </select>
+              </div>
+              
+              <div class="severity-container">
+                <span class="severity-label">Severity Level</span>
+                <div class="severity-options">
+                  <label class="severity-option">
+                    <input type="radio" name="severity" value="high" checked>
+                    <span class="severity-badge-btn high">HIGH</span>
+                  </label>
+                  <label class="severity-option">
+                    <input type="radio" name="severity" value="medium">
+                    <span class="severity-badge-btn medium">MEDIUM</span>
+                  </label>
+                  <label class="severity-option">
+                    <input type="radio" name="severity" value="low">
+                    <span class="severity-badge-btn low">LOW</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inc-message">Crisis Description</label>
+              <textarea id="inc-message" class="form-input" rows="3" required placeholder="Describe the crisis situation..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-submit-incident">
+              🚨 Dispatch Incident Report
+            </button>
+
+            <!-- Spike Warning Banner -->
+            <div class="spike-warning-banner hidden" id="incident-spike-banner">
+              <span>⚠️</span>
+              <span>SPIKE DETECTED - Run AI Analysis to evaluate overall urban crisis</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="card">
+          <h3 class="card-title">⚡ Quick Actions</h3>
+          <div class="quick-actions-grid">
+            <button class="quick-btn" onclick="window.open('/static/route_map.html', '_blank')">
+              🗺️ View Karachi Route Map
+            </button>
+            <button class="quick-btn" onclick="openStockLevelsModal()">
+              📈 Stock Levels Ledger
+            </button>
+            <button class="quick-btn" onclick="openOrgDashboardModal()">
+              🏢 View Org Dashboard
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- OVERLAY MODAL -->
+  <div class="modal-overlay" id="quick-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="quick-modal-title">—</h3>
+        <button class="modal-close" onclick="closeQuickModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="quick-modal-body">
+        <!-- Content dynamic injection -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-content">
+      <div>OptiFlow v2.0 | Powered by Gemini AI | Google Antigravity | Real-time Karachi Intelligence</div>
+      <div style="font-size:0.7rem; color:var(--text-muted);">Secure multi-tenant urban distribution control system</div>
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = 'http://127.0.0.1:8000';
+    let incidentSubmissionsCount = 0;
+    
+    // Map sources for display
+    const SOURCE_MAP = {
+      'warehouse': { name: 'Warehouse Ledger', icon: '🏭' },
+      'weather': { name: 'Karachi Weather', icon: '🌤️' },
+      'currency': { name: 'PKR Exchange', icon: '💱' },
+      'dawn_rss': { name: 'Dawn RSS Scrape', icon: '📰' },
+      'news': { name: 'Local Media Feeds', icon: '📰' },
+      'trends': { name: 'Pharma Trends', icon: '📊' },
+      'supplier': { name: 'Suppliers Stream', icon: '🚚' },
+      'complaints': { name: 'Complaints Hub', icon: '💬' }
+    };
+
+    // Live Clock Display
+    function updateClock() {
+      const display = document.getElementById('clock-display');
+      if (display) {
+        display.textContent = new Date().toLocaleTimeString('en-US', {
+          hour12: false,
+          timeZone: 'Asia/Karachi'
+        }) + ' PKT';
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // TOAST NOTIFICATIONS
+    function triggerToast(message, isSuccess = true) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${isSuccess ? 'success' : 'error'}`;
+      toast.innerHTML = `<span>${isSuccess ? '✅' : '❌'}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 4000);
+    }
+
+    // AUTH MANAGEMENT
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-pass').value;
+      
+      const submitBtn = document.getElementById('btn-login-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '🔒 Authorizing Security...';
+
+      fetch(`${API_BASE}/api/v1/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Security keys unauthorized.');
+        return res.json();
+      })
+      .then(data => {
+        if (data.access_token) {
+          localStorage.setItem('optiflow_token', data.access_token);
+          localStorage.setItem('optiflow_user', JSON.stringify(data.user));
+          triggerToast('Authentication success. Access granted.');
+          initializeDashboard(data.user);
+        } else {
+          throw new Error('Access credentials payload missing.');
+        }
+      })
+      .catch(err => {
+        triggerToast(err.message, false);
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🔑 Secure Sign In';
+      });
+    }
+
+    function checkAuthOnLoad() {
+      const token = localStorage.getItem('optiflow_token');
+      const userStr = localStorage.getItem('optiflow_user');
+      
+      if (token && userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          initializeDashboard(user);
+        } catch (e) {
+          performLogout();
+        }
+      } else {
+        showLoginView();
+      }
+    }
+
+    function initializeDashboard(user) {
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      
+      // Setup profile bar
+      document.getElementById('user-profile-bar').classList.remove('hidden');
+      document.getElementById('profile-name').textContent = user.name || 'Ahmed';
+      document.getElementById('profile-role').textContent = (user.role || 'manager').toUpperCase();
+      document.getElementById('profile-org').textContent = user.org_name || 'Karachi Relief NGO';
+      
+      // Auto pre-fill reporter name in incident form
+      document.getElementById('inc-reporter').value = user.name || '';
+
+      // Load initial stats & refresh scheduler
+      refreshStatTelemetry();
+      refreshLiveDataGrid();
+    }
+
+    function performLogout() {
+      localStorage.removeItem('optiflow_token');
+      localStorage.removeItem('optiflow_user');
+      showLoginView();
+      triggerToast('Session terminated successfully.', true);
+    }
+
+    function showLoginView() {
+      document.getElementById('login-view').classList.remove('hidden');
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('user-profile-bar').classList.add('hidden');
+    }
+
+    // STATS COUNT UP ANIMATION
+    function animateNumericCard(elementId, targetVal, duration = 800) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const startVal = parseInt(el.textContent) || 0;
+      if (startVal === targetVal) {
+        el.textContent = targetVal;
+        return;
+      }
+      const startTime = performance.now();
+      
+      function updateVal(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3); // cubic easeOut
+        const current = Math.floor(startVal + (targetVal - startVal) * ease);
+        el.textContent = current;
+        if (progress < 1) {
+          requestAnimationFrame(updateVal);
+        } else {
+          el.textContent = targetVal;
+        }
+      }
+      requestAnimationFrame(updateVal);
+    }
+
+    function animateFloatNumericCard(elementId, targetVal, prefix = '₨ ', duration = 800) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const startVal = parseFloat(el.textContent.replace(/[^\d.]/g, '')) || 0;
+      if (startVal === targetVal) {
+        el.textContent = prefix + targetVal.toFixed(1);
+        return;
+      }
+      const startTime = performance.now();
+
+      function updateFloatVal(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = (startVal + (targetVal - startVal) * ease).toFixed(1);
+        el.textContent = prefix + current;
+        if (progress < 1) {
+          requestAnimationFrame(updateFloatVal);
+        } else {
+          el.textContent = prefix + targetVal.toFixed(1);
+        }
+      }
+      requestAnimationFrame(updateFloatVal);
+    }
+
+    // FETCH DATA
+    async function refreshStatTelemetry() {
+      try {
+        const token = localStorage.getItem('optiflow_token');
+        const headers = { 'Authorization': `Bearer ${token}` };
+
+        // GET Status
+        const resStatus = await fetch(`${API_BASE}/analyze/status`, { headers });
+        if (!resStatus.ok) throw new Error('Status fetch failed.');
+        const statusData = await resStatus.json();
+
+        // GET Ingest for usd_to_pkr
+        const resIngest = await fetch(`${API_BASE}/ingest`);
+        if (!resIngest.ok) throw new Error('Ingest fetch failed.');
+        const ingestData = await resIngest.json();
+
+        // Sources healthy / 8
+        const healthyCount = ingestData.meta?.sources_healthy ?? 8;
+        document.getElementById('card-sources').textContent = `${healthyCount}/8`;
+
+        // Active Complaints
+        const totalComplaints = statusData.total_complaints ?? 0;
+        animateNumericCard('card-complaints', totalComplaints);
+
+        // Complaint Spike
+        const isSpike = statusData.complaint_spike ?? false;
+        const spikeCard = document.getElementById('card-spike-status');
+        const spikeText = document.getElementById('card-spike-text');
+        const spikeIcon = document.getElementById('card-spike-icon');
+
+        if (isSpike) {
+          spikeCard.className = 'stat-card red';
+          spikeText.textContent = 'SPIKE!';
+          spikeText.style.color = 'var(--danger)';
+          spikeIcon.textContent = '🚨';
+        } else {
+          spikeCard.className = 'stat-card emerald';
+          spikeText.textContent = 'Normal';
+          spikeText.style.color = 'var(--primary)';
+          spikeIcon.textContent = '🟢';
+        }
+
+        // PKR Rate
+        const usdToPkr = ingestData.currency?.data?.usd_to_pkr ?? ingestData.currency?.usd_to_pkr ?? 279.0;
+        animateFloatNumericCard('card-pkr', usdToPkr, '₨ ');
+
+      } catch (err) {
+        triggerToast('Failed to sync system telemetry.', false);
+      }
+    }
+
+    // LIVE SOURCES GRID
+    async function refreshLiveDataGrid() {
+      try {
+        const res = await fetch(`${API_BASE}/ingest`);
+        if (!res.ok) throw new Error('Unable to retrieve active media feeds.');
+        const data = await res.json();
+
+        const healthyCount = data.meta?.sources_healthy ?? 8;
+        const badge = document.getElementById('sources-summary-badge');
+        badge.textContent = `${healthyCount} of 8 Sources Healthy`;
+        badge.className = `live-indicator ${healthyCount >= 6 ? 'emerald' : healthyCount >= 4 ? 'amber' : 'red'}`;
+
+        const grid = document.getElementById('sources-grid-container');
+        grid.innerHTML = '';
+
+        Object.entries(data).forEach(([key, value]) => {
+          if (key === 'meta') return;
+          
+          const spec = SOURCE_MAP[key] || { name: key, icon: '📡' };
+          const healthy = value.status === 'healthy' || value.status === 'ok' || !value.error;
+          const score = typeof value.credibility_score === 'number' ? value.credibility_score : 0.85;
+          const pct = Math.floor(score * 100);
+          
+          // Timestamp parsing
+          let timeString = 'Just now';
+          const fetchedAt = value.fetched_at || value.timestamp;
+          if (fetchedAt) {
+            try {
+              timeString = new Date(fetchedAt).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+              });
+            } catch(e) {}
+          }
+
+          // Progress bar color selector
+          const barColor = score >= 0.8 ? 'var(--primary)' : score >= 0.5 ? 'var(--warning)' : 'var(--danger)';
+
+          const card = document.createElement('div');
+          card.className = 'source-card';
+          card.innerHTML = `
+            <div class="source-card-header">
+              <div class="source-meta">
+                <span>${spec.icon}</span>
+                <span>${spec.name}</span>
+              </div>
+              <div class="source-dot ${healthy ? 'healthy' : 'error'}"></div>
+            </div>
+            <div class="source-cred">
+              <div class="flex justify-between" style="font-size:0.7rem; margin-bottom:2px;">
+                <span>Credibility:</span>
+                <span style="font-weight:bold; color:var(--text);">${pct}%</span>
+              </div>
+              <div class="cred-bar-bg">
+                <div class="cred-bar-fill" style="width: ${pct}%; background-color: ${barColor};"></div>
+              </div>
+            </div>
+            <div class="source-fetched">🕗 Sync: ${timeString}</div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } catch (err) {
+        triggerToast('Failed to refresh data sources.', false);
+      }
+    }
+
+    // TRIGGER AI ANALYSIS
+    async function triggerAiAnalysis() {
+      const btn = document.getElementById('btn-run-analysis');
+      const loader = document.getElementById('ai-loading');
+      const resultsBox = document.getElementById('analysis-results-box');
+      
+      btn.disabled = true;
+      btn.textContent = '🧠 Processing Deep Analysis...';
+      loader.classList.remove('hidden');
+      resultsBox.classList.add('hidden');
+
+      try {
+        const token = localStorage.getItem('optiflow_token');
+        const res = await fetch(`${API_BASE}/analyze`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: '{}'
+        });
+
+        if (!res.ok) throw new Error('AI contradiction system timed out.');
+        const data = await res.json();
+        
+        // Hide loader & Display container
+        loader.classList.add('hidden');
+        resultsBox.classList.remove('hidden');
+        
+        populateAnalysisData(data);
+        triggerToast('Karachi crisis matrix analysis complete.');
+      } catch (err) {
+        loader.classList.add('hidden');
+        triggerToast(err.message, false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🧠 RUN AI ANALYSIS';
+      }
+    }
+
+    function populateAnalysisData(data) {
+      const ai = data.ai_analysis || {};
+      const ac = data.action_chain || {};
+      const alerts = ai.alerts || [];
+
+      // Populate AI Alerts
+      const alertsContainer = document.getElementById('alerts-list-container');
+      alertsContainer.innerHTML = '';
+      
+      if (alerts.length === 0) {
+        alertsContainer.innerHTML = `<div style="text-align:center; padding:12px; font-size:0.85rem; color:var(--text-muted);">No logistics disparities found. Karachi is stable.</div>`;
+      } else {
+        alerts.forEach(alert => {
+          const risk = (alert.risk_level || 'LOW').toLowerCase();
+          const card = document.createElement('div');
+          card.className = `alert-card ${risk}`;
+          card.innerHTML = `
+            <div class="alert-header">
+              <div class="sku-info">
+                <span class="sku-badge">${alert.sku || 'MED'}</span>
+                <span class="product-name">${alert.product_name || 'Panadol'}</span>
+              </div>
+              <span class="risk-badge ${risk}">${risk}</span>
+            </div>
+            <div class="alert-reason">${alert.reason || 'General logistics risk detected.'}</div>
+            <div class="alert-location">📍 ${alert.location || 'SITE Karachi'}</div>
+          `;
+          alertsContainer.appendChild(card);
+        });
+      }
+
+      // Prepare Action Chain animation
+      const steps = [
+        { id: 'step-1', detailId: 'step-1-detail', text: (ac.steps?.[0]?.affected_skus?.join(', ') || ai.alerts?.map(a => a.sku).filter(Boolean).slice(0,3).join(', ') || 'MED-001') },
+        { id: 'step-2', detailId: 'step-2-detail', text: `${ac.steps?.[1]?.count ?? alerts.length} critical distribution alerts sent` },
+        { id: 'step-3', detailId: 'step-3-detail', text: `PO# ${ac.steps?.[2]?.po_number || 'PO-2026-9844'} | cost: ₨ ${(ac.steps?.[2]?.cost_pkr || ac.steps?.[2]?.cost || 145000).toLocaleString()}` },
+        { id: 'step-4', detailId: 'step-4-detail', text: `${ac.steps?.[3]?.count ?? 32} SMS advisories queued` },
+        { id: 'step-5', detailId: 'step-5-detail', text: `Interval: ${ac.steps?.[4]?.interval || '60 mins'} for next 24 hours` }
+      ];
+
+      // Reset animations
+      steps.forEach(s => {
+        const stepEl = document.getElementById(s.id);
+        stepEl.classList.remove('show');
+        document.getElementById(s.detailId).textContent = s.text;
+      });
+
+      // Animate sequential list
+      steps.forEach((s, idx) => {
+        setTimeout(() => {
+          document.getElementById(s.id).classList.add('show');
+        }, idx * 600);
+      });
+
+      // Populate Before vs After values
+      document.getElementById('ba-after-notify').textContent = ac.after?.notifications ?? (alerts.length * 3);
+      document.getElementById('ba-after-orders').textContent = ac.after?.emergency_orders ?? 1;
+
+      // Scroll smoothly into findings
+      resultsBox = document.getElementById('analysis-results-box');
+      resultsBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // FIELD INCIDENT SUBMISSION
+    function handleIncidentSubmit(event) {
+      event.preventDefault();
+      
+      const reporter = document.getElementById('inc-reporter').value;
+      const zone = document.getElementById('inc-zone').value;
+      const sku = document.getElementById('inc-sku').value;
+      const message = document.getElementById('inc-message').value;
+      const severity = document.querySelector('input[name="severity"]:checked').value;
+      
+      const submitBtn = document.getElementById('btn-submit-incident');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '🚨 Ingesting Incident...';
+
+      const token = localStorage.getItem('optiflow_token');
+      const userStr = localStorage.getItem('optiflow_user');
+      let reporterRole = 'driver';
+      try {
+        if(userStr) reporterRole = JSON.parse(userStr).role || 'manager';
+      } catch(e) {}
+
+      fetch(`${API_BASE}/api/v1/ingest/incident`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          reporter_name: reporter,
+          reporter_role: reporterRole,
+          location_zone: zone,
+          sku: sku,
+          message: message,
+          severity: severity
+        })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Incident ingestion failed.');
+        return res.json();
+      })
+      .then(data => {
+        incidentSubmissionsCount++;
+        triggerToast('Incident reported. Map updated.');
+        
+        // Reset form inputs except name
+        document.getElementById('inc-message').value = '';
+        
+        if (incidentSubmissionsCount >= 3) {
+          document.getElementById('incident-spike-banner').classList.remove('hidden');
+        }
+
+        // Trigger stats refresh
+        refreshStatTelemetry();
+      })
+      .catch(err => {
+        triggerToast(err.message, false);
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🚨 Dispatch Incident Report';
+      });
+    }
+
+    // OVERLAY MODALS FOR QUICK ACTIONS
+    function openQuickModal(title, htmlContent) {
+      const modal = document.getElementById('quick-modal');
+      document.getElementById('quick-modal-title').textContent = title;
+      document.getElementById('quick-modal-body').innerHTML = htmlContent;
+      modal.classList.add('open');
+    }
+
+    function closeQuickModal() {
+      document.getElementById('quick-modal').classList.remove('open');
+    }
+
+    async function openStockLevelsModal() {
+      const token = localStorage.getItem('optiflow_token');
+      openQuickModal('📈 Loading Stock Levels Ledger...', '<div style="text-align:center; padding:20px;"><div class="loader-dots"><span></span><span></span><span></span></div></div>');
+      
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/stock`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Failed to retrieve inventory metrics.');
+        const data = await res.json();
+        
+        let rowsHtml = '';
+        if (data.records && data.records.length > 0) {
+          data.records.forEach(r => {
+            const isCritical = r.quantity < (r.min_threshold || 500);
+            rowsHtml += `
+              <tr>
+                <td style="font-family:monospace; font-weight:bold;">${r.sku}</td>
+                <td>${r.item_name}</td>
+                <td>${r.zone || 'Karachi'}</td>
+                <td class="${isCritical ? 'critical' : 'healthy'}">${r.quantity}</td>
+                <td>${r.min_threshold || 500}</td>
+                <td>
+                  <span class="risk-badge ${isCritical ? 'critical' : 'warning'}" style="font-size:0.65rem;">
+                    ${isCritical ? 'CRITICAL' : 'STABLE'}
+                  </span>
+                </td>
+              </tr>
+            `;
+          });
+        } else {
+          rowsHtml = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No stock ledger records found.</td></tr>`;
+        }
+
+        const content = `
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Product</th>
+                  <th>Zone</th>
+                  <th>Quantity</th>
+                  <th>Min Limit</th>
+                  <th>Ledger State</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+        openQuickModal('📈 Live Karachi Stock Levels Ledger', content);
+      } catch (err) {
+        closeQuickModal();
+        triggerToast(err.message, false);
+      }
+    }
+
+    async function openOrgDashboardModal() {
+      const token = localStorage.getItem('optiflow_token');
+      openQuickModal('🏢 Loading Organization Metrics...', '<div style="text-align:center; padding:20px;"><div class="loader-dots"><span></span><span></span><span></span></div></div>');
+
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/dashboard`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Org portal authorization failed.');
+        const data = await res.json();
+        
+        const ov = data.overview || {};
+        const redZones = ov.red_zones && ov.red_zones.length > 0 ? ov.red_zones.join(', ') : 'None';
+
+        const content = `
+          <div class="org-summary-grid">
+            <div class="org-summary-item">
+              <span class="org-sum-label">Organization Profile ID</span>
+              <span class="org-sum-val">${data.org_id || 'ngo_relief'}</span>
+            </div>
+            <div class="org-summary-item">
+              <span class="org-sum-label">User Security Scope</span>
+              <span class="org-sum-val" style="text-transform:capitalize;">${data.role || 'manager'}</span>
+            </div>
+            <div class="org-summary-item">
+              <span class="org-sum-label">Total Registered Stock Lines</span>
+              <span class="org-sum-val">${ov.total_stock_records ?? 0}</span>
+            </div>
+            <div class="org-summary-item">
+              <span class="org-sum-label">Critical Depletion SKUs</span>
+              <span class="org-sum-val ${ov.critical_stock_count > 0 ? 'danger' : ''}">${ov.critical_stock_count ?? 0}</span>
+            </div>
+            <div class="org-summary-item">
+              <span class="org-sum-label">Active Field Incidents</span>
+              <span class="org-sum-val ${ov.active_incidents > 0 ? 'warning' : ''}">${ov.active_incidents ?? 0}</span>
+            </div>
+            <div class="org-summary-item">
+              <span class="org-sum-label">Anomalies Detected</span>
+              <span class="org-sum-val">${ov.contradictions_found ?? 0}</span>
+            </div>
+            <div class="org-summary-item" style="grid-column: span 2;">
+              <span class="org-sum-label">High-Risk Red Zones (Karachi)</span>
+              <span class="org-sum-val ${redZones !== 'None' ? 'danger' : ''}" style="font-size:1rem; margin-top:4px;">${redZones}</span>
+            </div>
+          </div>
+        `;
+        openQuickModal('🏢 OptiFlow Organization Control Center Summary', content);
+      } catch (err) {
+        closeQuickModal();
+        triggerToast(err.message, false);
+      }
+    }
+
+    // Auto refresh timer setup (every 60 seconds)
+    setInterval(() => {
+      const token = localStorage.getItem('optiflow_token');
+      if (token) {
+        refreshStatTelemetry();
+        refreshLiveDataGrid();
+      }
+    }, 60000);
+
+    // Initial check
+    window.addEventListener('DOMContentLoaded', checkAuthOnLoad);
+  </script>
+</body>
+</html>

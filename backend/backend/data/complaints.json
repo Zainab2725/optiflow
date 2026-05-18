@@ -1,0 +1,211 @@
+[
+  {
+    "customer_name": "Ahmed Khan",
+    "sku": "PKR-001",
+    "product_name": "Panadol Extra 500mg",
+    "message": "Panadol out of stock at Gulshan branch",
+    "severity": "high",
+    "location": "Gulshan Karachi",
+    "id": "019c9c46",
+    "timestamp": "2026-05-15T07:30:58.232392",
+    "status": "open"
+  },
+  {
+    "customer_name": "Sara Malik",
+    "sku": "PKR-001",
+    "product_name": "Panadol Extra 500mg",
+    "message": "No Panadol in PECHS area",
+    "severity": "high",
+    "location": "PECHS Karachi",
+    "id": "d1a2f62c",
+    "timestamp": "2026-05-15T07:30:58.559247",
+    "status": "open"
+  },
+  {
+    "customer_name": "Bilal Ahmed",
+    "sku": "PKR-001",
+    "product_name": "Panadol Extra 500mg",
+    "message": "Panadol shortage North Nazimabad",
+    "severity": "high",
+    "location": "North Nazimabad Karachi",
+    "id": "a40c5eba",
+    "timestamp": "2026-05-15T07:30:58.619226",
+    "status": "open"
+  },
+  {
+    "customer_name": "Fatima Khan",
+    "sku": "PKR-003",
+    "product_name": "ORS Sachets",
+    "message": "ORS unavailable at Defence pharmacy",
+    "severity": "medium",
+    "location": "Defence Karachi",
+    "id": "ee846548",
+    "timestamp": "2026-05-15T07:30:58.670489",
+    "status": "open"
+  },
+  {
+    "customer_name": "Ahmed Khan",
+    "sku": "PKR-001",
+    "product_name": "Panadol Extra 500mg",
+    "message": "Panadol out of stock at Gulshan branch",
+    "severity": "high",
+    "location": "Gulshan Karachi",
+    "id": "fab2c76b",
+    "timestamp": "2026-05-16T17:21:09.389792",
+    "status": "open"
+  },
+  {
+    "customer_name": "Sara Malik",
+    "sku": "PKR-001",
+    "product_name": "Panadol Extra 500mg",
+    "message": "No Panadol in PECHS area",
+    "severity": "high",
+    "location": "PECHS Karachi",
+    "id": "826f07a3",
+    "timestamp": "2026-05-16T17:21:09.454791",
+    "status": "open"
+  },
+  {
+    "customer_name": "Bilal Ahmed",
+    "sku": "PKR-001",
+    "product_name": "Panadol Extra 500mg",
+    "message": "Panadol shortage North Nazimabad",
+    "severity": "high",
+    "location": "North Nazimabad Karachi",
+    "id": "ad6fb6ee",
+    "timestamp": "2026-05-16T17:21:09.516797",
+    "status": "open"
+  },
+  {
+    "customer_name": "Fatima Khan",
+    "sku": "PKR-003",
+    "product_name": "ORS Sachets",
+    "message": "ORS unavailable at Defence pharmacy",
+    "severity": "medium",
+    "location": "Defence Karachi",
+    "id": "e0c94096",
+    "timestamp": "2026-05-16T17:21:13.006063",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Driver Tariq (driver)",
+    "sku": "MED-001",
+    "product_name": "Zero stock at Korangi supply point, urge...",
+    "message": "Zero stock at Korangi supply point, urgent shortage",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "99849b3f",
+    "timestamp": "2026-05-17T20:11:37.309477",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Field Worker Asma (operator)",
+    "sku": "MED-001",
+    "product_name": "Confirmed zero physical stock, patients ...",
+    "message": "Confirmed zero physical stock, patients waiting",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "a1301a29",
+    "timestamp": "2026-05-17T20:11:49.366768",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Supervisor Bilal (operator)",
+    "sku": "MED-001",
+    "product_name": "Third report - shelves empty despite sys...",
+    "message": "Third report - shelves empty despite system showing stock",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "9a530806",
+    "timestamp": "2026-05-17T20:12:01.698651",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Driver Tariq (driver)",
+    "sku": "MED-001",
+    "product_name": "Zero stock at Korangi supply point, urge...",
+    "message": "Zero stock at Korangi supply point, urgent shortage",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "f9c5dc13",
+    "timestamp": "2026-05-17T20:14:28.068097",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Field Worker Asma (operator)",
+    "sku": "MED-001",
+    "product_name": "Confirmed zero physical stock, patients ...",
+    "message": "Confirmed zero physical stock, patients waiting",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "eca0c6bf",
+    "timestamp": "2026-05-17T20:14:40.103007",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Supervisor Bilal (operator)",
+    "sku": "MED-001",
+    "product_name": "Third report - shelves empty despite sys...",
+    "message": "Third report - shelves empty despite system showing stock",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "a41a69da",
+    "timestamp": "2026-05-17T20:14:51.950180",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Ahmed Khan (field_operator)",
+    "sku": "MED-001",
+    "product_name": "Panadol completely out of stock at Gulsh...",
+    "message": "Panadol completely out of stock at Gulshan branch, urgent needed",
+    "severity": "high",
+    "location": "Gulshan Karachi",
+    "id": "2094d778",
+    "timestamp": "2026-05-17T21:45:21.606965",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Sara Malik (field_operator)",
+    "sku": "MED-001",
+    "product_name": "No Panadol available in PECHS area pharm...",
+    "message": "No Panadol available in PECHS area pharmacies",
+    "severity": "high",
+    "location": "PECHS Karachi",
+    "id": "b47a7193",
+    "timestamp": "2026-05-17T21:45:33.858897",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Bilal Ahmed (field_operator)",
+    "sku": "MED-001",
+    "product_name": "Panadol shortage in North Nazimabad all ...",
+    "message": "Panadol shortage in North Nazimabad all pharmacies",
+    "severity": "high",
+    "location": "North Nazimabad",
+    "id": "95aad4fd",
+    "timestamp": "2026-05-17T21:45:46.076501",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Fatima Khan (field_operator)",
+    "sku": "MED-006",
+    "product_name": "ORS sachets unavailable at Defence pharm...",
+    "message": "ORS sachets unavailable at Defence pharmacy",
+    "severity": "medium",
+    "location": "Defence Karachi",
+    "id": "8e551caf",
+    "timestamp": "2026-05-17T21:45:58.127546",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-B8F3E58C] Dr Tariq (field_operator)",
+    "sku": "MED-035",
+    "product_name": "Critical insulin shortage reported at ho...",
+    "message": "Critical insulin shortage reported at hospital",
+    "severity": "high",
+    "location": "Korangi Karachi",
+    "id": "7a7cab8c",
+    "timestamp": "2026-05-17T21:46:10.289539",
+    "status": "open"
+  }
+]

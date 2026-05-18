@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiFlow Secure Enterprise Portal</title>
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0F172A;
+            --bg-card: #1E293B;
+            --border-col: #334155;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --green: #10B981;
+            --green-glow: rgba(16, 185, 129, 0.4);
+            --red: #EF4444;
+            --red-glow: rgba(239, 68, 68, 0.4);
+            --amber: #F59E0B;
+            --blue: #3B82F6;
+            --teal: #14B8A6;
+            --purple: #A855F7;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphic scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Helpers */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-col);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .gap-3 {
+            gap: 12px;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge.green {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge.red {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge.amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--amber);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge.blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .badge.teal {
+            background: rgba(20, 184, 166, 0.15);
+            color: var(--teal);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+
+        .badge.purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--purple);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .badge.gray {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 8px currentColor;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.3);
+            }
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: var(--font-main);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-green {
+            background: var(--green);
+        }
+
+        .btn-green:hover {
+            background: #059669;
+        }
+
+        .btn-red {
+            background: var(--red);
+        }
+
+        .btn-red:hover {
+            background: #DC2626;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-col);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-col);
+            border-radius: 8px;
+            color: white;
+            font-family: var(--font-main);
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--blue);
+        }
+
+        /* ================= LOGIN PAGE ================= */
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .login-card {
+            width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .login-tagline {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .demo-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .demo-pill {
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-col);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+        }
+
+        .demo-pill:hover {
+            border-color: white;
+        }
+
+        /* ================= DASHBOARD LAYOUT ================= */
+        .navbar {
+            height: 64px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-col);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .nav-center {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(30, 41, 59, 0.5);
+            border-right: 1px solid var(--border-col);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .metric-card {
+            padding: 16px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-col);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .metric-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .pulse-red-bg {
+            animation: pulseBg 2s infinite;
+        }
+
+        @keyframes pulseBg {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+                border-color: rgba(239, 68, 68, 0.5);
+            }
+        }
+
+        /* Tables */
+        .table-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border-col);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        th {
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-col);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-col);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr.critical td {
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        /* Incident Feed */
+        .incident-card {
+            padding: 12px;
+            border: 1px solid var(--border-col);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 8px;
+        }
+
+        /* Maps */
+        .map-container {
+            height: 300px;
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-col);
+            background: #000;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .leaflet-tile {
+            filter: invert(100%) hue-rotate(180deg) brightness(0.85) contrast(1.2) saturate(0.8);
+        }
+
+        /* Driver UI specific */
+        .driver-mobile-wrap {
+            max-width: 440px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            padding-bottom: 60px;
+        }
+
+        .route-opt {
+            padding: 12px;
+            border: 2px solid var(--border-col);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .route-opt:hover {
+            border-color: white;
+        }
+
+        .route-opt.selected {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--green);
+        }
+
+        .driver-status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-col);
+            padding: 16px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        /* Driver Marker */
+        .driver-dot {
+            width: 16px;
+            height: 16px;
+            background: var(--blue);
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px 5px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Skeletons and Spinners */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+            background-size: 200% 100%;
+            animation: loading-skeleton 1.5s infinite linear;
+            border-radius: 4px;
+            height: 18px;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        @keyframes loading-skeleton {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Connection Status Banner -->
+    <div id="connection-status-banner" style="background: rgba(30, 41, 59, 0.95); border-bottom: 1px solid var(--border-col); padding: 8px 24px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 8px; position: sticky; top: 0; z-index: 2000; backdrop-filter: blur(8px);">
+        <div id="connection-status-dot" style="color: var(--text-muted); background: var(--text-muted); width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></div>
+        <span id="connection-status-text" style="font-weight: 500; color: var(--text-muted);">Checking backend connection...</span>
+        <button id="connection-retry-btn" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.7rem; display: none; margin-left: 8px;" onclick="checkBackend()">Retry</button>
+    </div>
+
+    <!-- ================= SCREEN 1: LOGIN ================= -->
+    <div id="screen-login" class="screen active">
+        <div class="login-wrapper">
+            <div class="card login-card">
+                <div class="login-logo">OptiFlow</div>
+                <div class="login-tagline">Secure Multi-Tenant Logistics Intelligence</div>
+
+                <div class="flex-col gap-4 mt-4">
+                    <input type="email" id="login-email" class="input-field" placeholder="Email Address">
+                    <input type="password" id="login-pass" class="input-field" placeholder="Password">
+                    <button class="btn btn-green mt-4" style="width: 100%;" onclick="performLogin()">Sign In</button>
+                    <!-- Inline login error display -->
+                    <div id="login-error" style="color: var(--red); font-size: 0.8rem; margin-top: 12px; font-weight: 600; display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 10px; text-align: center;"></div>
+                </div>
+            </div>
+
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">
+                <div>Quick Demo Logins</div>
+                <div class="demo-pills">
+                    <div class="demo-pill" onclick="autoLogin('ahmed@karachirelief.org', 'ngo123')">NGO Manager</div>
+                    <div class="demo-pill" onclick="autoLogin('tariq@optiflow.pk', 'driver123')">Driver</div>
+                    <div class="demo-pill" onclick="autoLogin('sara@citypharma.pk', 'pharma123')">Pharma Admin</div>
+                    <div class="demo-pill" onclick="autoLogin('asma@optiflow.pk', 'field123')">Field Operator</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SCREEN 2A: NGO MANAGER ================= -->
+    <div id="screen-ngo" class="screen">
+        <div class="navbar">
+            <div class="nav-logo">OptiFlow</div>
+            <div class="nav-center" id="ngo-nav-center">Loading...</div>
+            <div class="nav-user">
+                <span id="ngo-nav-username">Loading...</span>
+                <div class="avatar" style="background: var(--teal);" id="ngo-nav-avatar">AK</div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;"
+                    onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-container">
+            <div class="sidebar">
+                <div class="card flex-col items-center text-center gap-2">
+                    <div class="avatar" style="width:64px; height:64px; font-size: 1.5rem; background: var(--teal);"
+                        id="ngo-side-avatar">AK</div>
+                    <div style="font-weight: 700;" id="ngo-side-username">Loading...</div>
+                    <div class="badge teal" id="ngo-side-role">NGO Manager</div>
+                </div>
+                <div class="card flex-col gap-3" style="font-size: 0.8rem;">
+                    <div class="flex justify-between"><span style="color:var(--text-muted);">Org ID</span> <span
+                            style="font-family:monospace;" id="ngo-side-orgid">Loading...</span></div>
+                    <div class="flex justify-between"><span style="color:var(--text-muted);">Type</span>
+                        <span>NGO</span>
+                    </div>
+                    <div class="flex justify-between"><span style="color:var(--text-muted);">Status</span> <span
+                            class="badge green">
+                            <div class="pulse-dot"></div> ACTIVE
+                        </span></div>
+                    <div class="flex justify-between"><span style="color:var(--text-muted);">Created</span> <span>17 May
+                            2026</span></div>
+                </div>
+                <div class="flex-col gap-2">
+                    <div class="btn btn-outline" style="justify-content: flex-start; border-color: white;">Dashboard
+                    </div>
+                    <div class="btn btn-outline" style="justify-content: flex-start; border-color: transparent;">Stock
+                    </div>
+                    <div class="btn btn-outline" style="justify-content: flex-start; border-color: transparent;">
+                        Incidents</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Total Stock Records</div>
+                        <div class="metric-val" style="color: var(--amber);" id="ngo-m-total-stock">0</div>
+                    </div>
+                    <div class="metric-card pulse-red-bg">
+                        <div class="metric-label">Critical SKUs</div>
+                        <div class="metric-val" style="color: var(--red);" id="ngo-m-critical-skus">0</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Active Incidents</div>
+                        <div class="metric-val" style="color: var(--red);" id="ngo-m-incidents">0</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Red Zones</div>
+                        <div class="metric-val" id="ngo-m-redzones">None</div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div style="flex: 2;" class="flex-col gap-4">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <th>Item Name</th>
+                                        <th>Zone</th>
+                                        <th>Qty</th>
+                                        <th>Min Threshold</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ngo-stock-table-body">
+                                    <tr>
+                                        <td colspan="6" style="text-align:center; color:var(--text-muted);">Fetching
+                                            Isolated Stock...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="ngo-map" class="map-container"></div>
+                    </div>
+
+                    <div style="flex: 1;" class="card">
+                        <h3 style="font-size:1rem; margin-bottom:16px;">Live Incident Feed</h3>
+                        <div id="ngo-incident-feed">
+                            <div style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:20px;">
+                                Loading live alerts...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SCREEN 2B: DRIVER ================= -->
+    <div id="screen-driver" class="screen">
+        <div class="navbar">
+            <div class="nav-logo">OptiFlow</div>
+            <div class="badge amber">
+                <div class="pulse-dot"></div> Driver Mode
+            </div>
+            <div class="nav-user">
+                <span id="drv-nav-username">Loading...</span>
+                <div class="avatar" style="background: var(--amber);" id="drv-nav-avatar">TH</div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;"
+                    onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div style="padding: 24px;">
+            <div class="driver-mobile-wrap">
+                <div class="card flex-col gap-3">
+                    <div class="flex justify-between items-center">
+                        <span style="font-weight:700;">Current Assignment</span>
+                        <span class="badge green">
+                            <div class="pulse-dot"></div> ON DUTY
+                        </span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">
+                        <div class="flex justify-between mt-4"><span>Vehicle:</span> <strong
+                                style="color:white;">KHI-TRK-042</strong></div>
+                        <div class="flex justify-between mt-4"><span>Cargo:</span> <strong style="color:white;">MED-001
+                                Panadol x 200</strong></div>
+                        <div class="flex justify-between mt-4"><span>From:</span> <strong style="color:white;">SITE
+                                Depot</strong></div>
+                        <div class="flex justify-between mt-4"><span>To:</span> <strong style="color:white;">Korangi
+                                Point</strong></div>
+                        <div class="flex justify-between mt-4"><span>Priority:</span> <strong
+                                class="badge red">URGENT</strong></div>
+                    </div>
+                </div>
+
+                <div class="card flex-col gap-3">
+                    <span style="font-weight:700;">Select Route</span>
+                    <div class="route-opt selected">
+                        <div>
+                            <div style="font-weight:600; color: var(--green);">M9 Highway</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Safety 87/100 (Recommended)</div>
+                        </div>
+                        <div style="font-weight:700;">22 min</div>
+                    </div>
+                    <div class="route-opt">
+                        <div>
+                            <div style="font-weight:600; color: var(--text-muted);">N-55 Route</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Safety 64/100 (Alternate)</div>
+                        </div>
+                        <div style="font-weight:700;">31 min</div>
+                    </div>
+                    <div class="route-opt">
+                        <div>
+                            <div style="font-weight:600; color: var(--red);">Lyari Exp</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Safety 28/100 (Flooded)</div>
+                        </div>
+                        <div style="font-weight:700;">18 min</div>
+                    </div>
+                    <button class="btn btn-green mt-4" style="padding:16px; font-size:1rem;"
+                        onclick="startNavigation()">Start Navigation</button>
+                </div>
+
+                <div id="driver-map" class="map-container"></div>
+            </div>
+        </div>
+
+        <div class="driver-status-bar">
+            <div class="flex-col items-center"><span
+                    style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Zone</span><span
+                    id="drv-zone">SITE</span></div>
+            <div class="flex-col items-center"><span
+                    style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Speed</span><span
+                    id="drv-speed">0 km/h</span></div>
+            <div class="flex-col items-center"><span
+                    style="font-size:0.6rem; color:var(--text-muted); text-transform:uppercase;">Signal</span><span
+                    style="color:var(--green);">STRONG</span></div>
+        </div>
+    </div>
+
+    <!-- ================= SCREEN 2C: PHARMA ADMIN ================= -->
+    <div id="screen-pharma" class="screen">
+        <div class="navbar">
+            <div class="nav-logo">OptiFlow</div>
+            <div class="nav-center">City Pharma Distributor</div>
+            <div class="nav-user">
+                <span id="phr-nav-username">Sara Malik — Pharma Admin</span>
+                <div class="avatar" style="background: var(--blue);" id="phr-nav-avatar">SM</div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;"
+                    onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Total SKUs</div>
+                    <div class="metric-val" style="color:var(--blue);" id="phr-m-skus">0</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Depots</div>
+                    <div class="metric-val" style="color:var(--blue);">2 <span
+                            style="font-size:0.8rem; font-weight:600;">(Clifton, Defence)</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Drivers</div>
+                    <div class="metric-val" style="color:var(--green);">2</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Pending Deliveries</div>
+                    <div class="metric-val" style="color:var(--amber);">3</div>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div style="flex: 2;" class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Item</th>
+                                <th>Depot</th>
+                                <th>Stock</th>
+                                <th>Threshold</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="phr-stock-table-body">
+                            <tr>
+                                <td colspan="6" style="text-align:center; color:var(--text-muted);">Fetching Isolated
+                                    Stock...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="flex: 1;" id="pharma-map" class="map-container"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size:1rem; margin-bottom:16px;">Driver Tracker</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Driver</th>
+                                <th>Vehicle</th>
+                                <th>Route</th>
+                                <th>Status</th>
+                                <th>ETA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ahmed Khan</td>
+                                <td style="font-family:monospace;">TRK-042</td>
+                                <td>SITE → Korangi</td>
+                                <td><span class="badge amber">
+                                        <div class="pulse-dot"></div> In Transit
+                                    </span></td>
+                                <td>22 min</td>
+                            </tr>
+                            <tr>
+                                <td>Sara Malik</td>
+                                <td style="font-family:monospace;">VAN-011</td>
+                                <td>Clifton → Gulshan</td>
+                                <td><span class="badge blue">Dispatched</span></td>
+                                <td>14 min</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SCREEN 2D: FIELD OPERATOR ================= -->
+    <div id="screen-field" class="screen">
+        <div class="navbar">
+            <div class="nav-logo">OptiFlow</div>
+            <div class="nav-user">
+                <span id="fld-nav-username">Asma Bibi</span>
+                <div class="avatar" style="background: var(--purple);" id="fld-nav-avatar">AB</div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;"
+                    onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div style="padding: 24px;">
+            <div class="driver-mobile-wrap">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="badge purple">Field Operator</span>
+                    <span class="badge gray">Korangi Zone</span>
+                </div>
+
+                <div class="card flex-col gap-4">
+                    <h3 style="font-size:1.1rem;">Report Incident</h3>
+
+                    <div class="flex-col gap-2">
+                        <label style="font-size:0.75rem; color:var(--text-muted);">Zone</label>
+                        <select class="input-field" id="fld-zone">
+                            <option value="Korangi">Korangi</option>
+                            <option value="SITE">SITE</option>
+                            <option value="Orangi">Orangi</option>
+                        </select>
+                    </div>
+
+                    <div class="flex-col gap-2">
+                        <label style="font-size:0.75rem; color:var(--text-muted);">SKU (optional)</label>
+                        <input type="text" class="input-field" placeholder="e.g. MED-001" id="fld-sku">
+                    </div>
+
+                    <div class="flex-col gap-2">
+                        <label style="font-size:0.75rem; color:var(--text-muted);">Severity</label>
+                        <div class="flex gap-2">
+                            <label
+                                style="flex:1; background:rgba(0,0,0,0.2); padding:10px; border-radius:6px; border:1px solid var(--border-col); cursor:pointer;"><input
+                                    type="radio" name="fld-sev" value="low"> Low</label>
+                            <label
+                                style="flex:1; background:rgba(0,0,0,0.2); padding:10px; border-radius:6px; border:1px solid var(--border-col); cursor:pointer;"><input
+                                    type="radio" name="fld-sev" value="high"> Med</label>
+                            <label
+                                style="flex:1; background:rgba(239,68,68,0.1); padding:10px; border-radius:6px; border:1px solid var(--red); cursor:pointer; color:var(--red); font-weight:700;"><input
+                                    type="radio" name="fld-sev" value="critical" checked> Critical</label>
+                        </div>
+                    </div>
+
+                    <div class="flex-col gap-2">
+                        <label style="font-size:0.75rem; color:var(--text-muted);">Message</label>
+                        <textarea class="input-field" rows="3" placeholder="Describe the ground situation..."
+                            id="incident-msg"></textarea>
+                    </div>
+
+                    <button class="btn btn-red" style="padding:14px; font-size:1rem;" onclick="submitIncident()">Submit
+                        Report</button>
+                    <div id="inc-success"
+                        style="display:none; color:var(--green); text-align:center; font-size:0.85rem; font-weight:600; margin-top:8px;">
+                        ✓ Report submitted successfully to Command Center</div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size:0.9rem; margin-bottom:12px; color:var(--text-muted);">Zone Status</h3>
+                    <div class="flex justify-between mt-4"><span>My Zone:</span> <strong>Korangi</strong></div>
+                    <div class="flex justify-between mt-4"><span>Risk Level:</span> <span class="badge red">
+                            <div class="pulse-dot"></div> RED
+                        </span></div>
+                    <div class="flex justify-between mt-4"><span>Active Incidents:</span> <strong
+                            id="fld-m-active-incidents">3</strong></div>
+                    <div class="flex justify-between mt-4"><span>Nearest Depot:</span> <strong>SITE (4.2 km)</strong>
+                    </div>
+                </div>
+
+                <h3 style="font-size:0.9rem; color:var(--text-muted); margin-top:8px;">My Workspace Reports</h3>
+                <div id="fld-reports-list">
+                    <div style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:20px;">Fetching
+                        isolated incident reports...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const API_BASE = "http://localhost:8000";
+
+        let currentUser = null;
+        let jwtToken = null;
+
+        // State switching
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            setTimeout(() => {
+                if (screenId === 'screen-ngo' && ngoMap) ngoMap.invalidateSize();
+                if (screenId === 'screen-driver' && driverMap) driverMap.invalidateSize();
+                if (screenId === 'screen-pharma' && pharmaMap) pharmaMap.invalidateSize();
+            }, 100);
+        }
+
+        // Core fetch wrapper — adds token, uses correct port
+        async function apiFetch(endpoint, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                ...(jwtToken ? { 'Authorization': `Bearer ${jwtToken}` } : {})
+            };
+            const res = await fetch(API_BASE + endpoint, { ...options, headers });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.detail || 'Request failed: ' + res.status);
+            }
+            return res.json();
+        }
+
+        function autoLogin(email, pass) {
+            document.getElementById('login-email').value = email;
+            document.getElementById('login-pass').value = pass;
+            performLogin();
+        }
+
+        async function performLogin() {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            const btn = document.querySelector('#screen-login .btn-green');
+            const errEl = document.getElementById('login-error');
+
+            if (!email || !pass) {
+                errEl.textContent = 'Please enter email and password';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            btn.innerHTML = '<div class="spinner"></div> Signing in...';
+            btn.disabled = true;
+            errEl.style.display = 'none';
+
+            try {
+                const data = await apiFetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password: pass })
+                });
+
+                jwtToken = data.access_token;
+
+                // Decode JWT claims
+                const base64Url = jwtToken.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                currentUser = JSON.parse(window.atob(base64));
+                currentUser.org_name = data.user?.org_name || 'OptiFlow';
+                currentUser.name = data.user?.name || 'User';
+
+                loadWorkspace();
+
+            } catch (e) {
+                errEl.textContent = e.message.includes('fetch')
+                    ? 'Cannot connect — make sure uvicorn is running on port 8000'
+                    : (e.message || 'Login failed');
+                errEl.style.display = 'block';
+            } finally {
+                btn.innerHTML = 'Sign In';
+                btn.disabled = false;
+            }
+        }
+
+        function logout() {
+            jwtToken = null;
+            currentUser = null;
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-pass').value = '';
+            switchScreen('screen-login');
+        }
+
+        async function loadWorkspace() {
+            if (!currentUser) return;
+            const role = currentUser.role;
+
+            if (role === 'manager' || role === 'ngo_manager') {
+                switchScreen('screen-ngo');
+                try {
+                    const dbData = await apiFetch('/api/v1/dashboard');
+
+                    document.getElementById('ngo-nav-center').textContent = currentUser.org_name;
+                    document.getElementById('ngo-nav-username').textContent = currentUser.name;
+                    document.getElementById('ngo-side-username').textContent = currentUser.name;
+                    document.getElementById('ngo-side-orgid').textContent = dbData.org_id;
+                    document.getElementById('ngo-m-total-stock').textContent = dbData.overview.total_stock_records;
+                    document.getElementById('ngo-m-critical-skus').textContent = dbData.overview.critical_stock_count;
+                    document.getElementById('ngo-m-incidents').textContent = dbData.overview.active_incidents;
+                    document.getElementById('ngo-m-redzones').textContent = dbData.overview.red_zones.join(', ') || 'None';
+
+                    // Fetch dynamic tenant-isolated stock ledger
+                    const stockData = await apiFetch('/api/v1/stock');
+                    const tbody = document.getElementById('ngo-stock-table-body');
+                    tbody.innerHTML = '';
+                    if (!stockData.records || stockData.records.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:16px;">No stock records found in tenant ledger</td></tr>';
+                    } else {
+                        stockData.records.forEach(r => {
+                            const isCritical = r.quantity < (r.min_threshold || 500);
+                            const tr = document.createElement('tr');
+                            if (isCritical) tr.className = 'critical';
+                            tr.innerHTML = `
+                                <td style="font-family:monospace; font-weight:700;">${r.sku}</td>
+                                <td>${r.item_name || 'Emergency Supply'}</td>
+                                <td>${r.depot_name || (r.zone ? r.zone + ' Depot' : 'Main Depot')}</td>
+                                <td style="color:${isCritical ? 'var(--red)' : '#fff'}; font-weight:700;">${r.quantity}</td>
+                                <td>${r.min_threshold || 500}</td>
+                                <td><span class="badge ${isCritical ? 'red' : 'green'}">${isCritical ? 'CRITICAL' : 'OK'}</span></td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    // Incident feed from dashboard
+                    const incFeed = document.getElementById('ngo-incident-feed');
+                    incFeed.innerHTML = '';
+                    if (!dbData.recent_incidents || dbData.recent_incidents.length === 0) {
+                        incFeed.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">No active incidents</div>';
+                    } else {
+                        dbData.recent_incidents.forEach(i => {
+                            const div = document.createElement('div');
+                            div.className = 'incident-card';
+                            div.innerHTML = `
+                        <div class="flex justify-between mb-4">
+                            <span style="font-weight:600; font-size:0.8rem;">${i.reporter_name}</span>
+                            <span style="font-size:0.7rem; color:var(--text-muted);">
+                                ${new Date(i.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                        </div>
+                        <div style="font-size:0.85rem; margin-bottom:8px;">${i.message}</div>
+                        <div class="flex justify-between items-center">
+                            <span class="badge red">${i.location_zone} — ${i.severity.toUpperCase()}</span>
+                            <button class="btn btn-outline" style="padding:4px 8px; font-size:0.7rem;">Resolve</button>
+                        </div>
+                    `;
+                            incFeed.appendChild(div);
+                        });
+                    }
+
+                } catch (e) {
+                    console.error('NGO dashboard error:', e);
+                    document.getElementById('ngo-incident-feed').innerHTML =
+                        `<div style="color:var(--red); padding:10px;">Error loading data: ${e.message}</div>`;
+                }
+
+            } else if (role === 'driver') {
+                switchScreen('screen-driver');
+                document.getElementById('drv-nav-username').textContent = currentUser.name;
+
+            } else if (role === 'pharma_admin' || role === 'admin') {
+                switchScreen('screen-pharma');
+                try {
+                    const dbData = await apiFetch('/api/v1/dashboard');
+                    document.getElementById('phr-nav-username').textContent = `${currentUser.name} — Pharma Admin`;
+                    document.getElementById('phr-m-skus').textContent = dbData.overview.total_stock_records;
+
+                    // Fetch dynamic tenant-isolated stock ledger
+                    const stockData = await apiFetch('/api/v1/stock');
+                    const tbody = document.getElementById('phr-stock-table-body');
+                    tbody.innerHTML = '';
+                    if (!stockData.records || stockData.records.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:16px;">No stock records found in tenant ledger</td></tr>';
+                    } else {
+                        stockData.records.forEach(r => {
+                            const isCritical = r.quantity < (r.min_threshold || 500);
+                            const tr = document.createElement('tr');
+                            if (isCritical) tr.className = 'critical';
+                            tr.innerHTML = `
+                                <td style="font-family:monospace; font-weight:700;">${r.sku}</td>
+                                <td>${r.item_name || 'Pharma Supply'}</td>
+                                <td>${r.depot_name || (r.zone ? r.zone + ' Depot' : 'Main Depot')}</td>
+                                <td style="color:${isCritical ? 'var(--amber)' : '#fff'}; font-weight:700;">${r.quantity}</td>
+                                <td>${r.min_threshold || 500}</td>
+                                <td><span class="badge ${isCritical ? 'amber' : 'green'}">${isCritical ? 'LOW' : 'OK'}</span></td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                } catch (e) {
+                    console.error('Pharma dashboard error:', e);
+                }
+
+            } else if (role === 'field_operator') {
+                switchScreen('screen-field');
+                document.getElementById('fld-nav-username').textContent = currentUser.name;
+                loadFieldOperatorFeed();
+            }
+        }
+
+        async function loadFieldOperatorFeed() {
+            try {
+                const dbData = await apiFetch('/api/v1/dashboard');
+                const incidents = dbData.recent_incidents || [];
+
+                document.getElementById('fld-m-active-incidents').textContent = incidents.length;
+
+                const fldFeed = document.getElementById('fld-reports-list');
+                fldFeed.innerHTML = '';
+
+                if (incidents.length === 0) {
+                    fldFeed.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">No reports yet</div>';
+                    return;
+                }
+
+                incidents.forEach(i => {
+                    const div = document.createElement('div');
+                    div.className = 'incident-card';
+                    div.innerHTML = `
+                <div class="flex justify-between mb-4">
+                    <span style="font-weight:600; font-size:0.8rem;">${i.reporter_name}</span>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">
+                        ${new Date(i.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
+                <div style="font-size:0.85rem; margin-bottom:8px;">${i.message}</div>
+                <span class="badge red">${i.severity.toUpperCase()}</span>
+            `;
+                    fldFeed.appendChild(div);
+                });
+
+                // Populate zone dropdown from real data
+                const zoneResp = await apiFetch('/api/v1/zone-risk-map');
+                const zoneSelect = document.getElementById('fld-zone');
+                zoneSelect.innerHTML = '';
+                Object.keys(zoneResp.zone_risk_map).forEach(zone => {
+                    const opt = document.createElement('option');
+                    opt.value = zone;
+                    opt.textContent = zone;
+                    zoneSelect.appendChild(opt);
+                });
+
+            } catch (e) {
+                console.error('Field operator error:', e);
+                document.getElementById('fld-reports-list').innerHTML =
+                    `<div style="color:var(--red); padding:10px;">Error: ${e.message}</div>`;
+            }
+        }
+
+        async function submitIncident() {
+            const msg = document.getElementById('incident-msg').value;
+            const zone = document.getElementById('fld-zone').value;
+            const sku = document.getElementById('fld-sku').value;
+            const severity = document.querySelector('input[name="fld-sev"]:checked').value;
+            const successEl = document.getElementById('inc-success');
+
+            if (!msg) {
+                alert('Please describe the incident');
+                return;
+            }
+
+            try {
+                const data = await apiFetch('/api/v1/ingest/incident', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        reporter_name: currentUser.name || 'Field Operator',
+                        reporter_role: 'field_operator',
+                        location_zone: zone,
+                        sku: sku || null,
+                        message: msg,
+                        severity: severity
+                    })
+                });
+
+                successEl.textContent = `✓ Report submitted! Incident ID: ${data.incident_id}`;
+                successEl.style.display = 'block';
+                document.getElementById('incident-msg').value = '';
+                document.getElementById('fld-sku').value = '';
+                loadFieldOperatorFeed();
+                setTimeout(() => { successEl.style.display = 'none'; }, 4000);
+
+            } catch (e) {
+                alert('Failed to submit: ' + e.message);
+            }
+        }
+
+        // Maps
+        let ngoMap, driverMap, pharmaMap;
+        let driverMarker, driverSimInterval;
+
+        function initMaps() {
+            const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            const tileOpt = { maxZoom: 18, attribution: '© OSM' };
+
+            ngoMap = L.map('ngo-map', { zoomControl: false }).setView([24.8607, 67.0011], 11);
+            L.tileLayer(tileUrl, tileOpt).addTo(ngoMap);
+            L.circle([24.819, 67.112], { color: '#EF4444', fillColor: '#EF4444', fillOpacity: 0.4, radius: 3000 }).addTo(ngoMap);
+            L.marker([24.904, 67.003]).addTo(ngoMap).bindPopup('SITE Depot');
+            L.polyline([[24.904, 67.003], [24.890, 67.050], [24.850, 67.105], [24.819, 67.112]], { color: '#10B981', weight: 4 }).addTo(ngoMap);
+
+            driverMap = L.map('driver-map', { zoomControl: false }).setView([24.8607, 67.0511], 12);
+            L.tileLayer(tileUrl, tileOpt).addTo(driverMap);
+            const routePath = [[24.904, 67.003], [24.890, 67.050], [24.850, 67.105], [24.819, 67.112]];
+            L.polyline(routePath, { color: '#10B981', weight: 5 }).addTo(driverMap);
+            const driverIcon = L.divIcon({ className: 'driver-dot', iconSize: [16, 16] });
+            driverMarker = L.marker(routePath[0], { icon: driverIcon }).addTo(driverMap);
+
+            pharmaMap = L.map('pharma-map', { zoomControl: false }).setView([24.819, 67.035], 13);
+            L.tileLayer(tileUrl, tileOpt).addTo(pharmaMap);
+            L.marker([24.819, 67.025]).addTo(pharmaMap).bindPopup('Clifton Depot');
+            L.marker([24.809, 67.042]).addTo(pharmaMap).bindPopup('Defence Depot');
+        }
+
+        function startNavigation() {
+            if (driverSimInterval) return;
+            const path = [[24.904, 67.003], [24.890, 67.050], [24.850, 67.105], [24.819, 67.112]];
+            let ptIdx = 0;
+            let ratio = 0;
+            document.getElementById('drv-speed').textContent = '42 km/h';
+
+            // Log movement to backend
+            apiFetch('/api/v1/ingest/movement', {
+                method: 'POST',
+                body: JSON.stringify({
+                    driver: currentUser?.name || 'Driver',
+                    vehicle: 'KHI-TRK-042',
+                    from: 'SITE',
+                    to: 'Korangi',
+                    sku: 'MED-001',
+                    quantity: 200,
+                    status: 'in_transit'
+                })
+            }).catch(e => console.error('Movement log error:', e));
+
+            driverSimInterval = setInterval(() => {
+                ratio += 0.05;
+                if (ratio >= 1) { ratio = 0; ptIdx++; }
+                if (ptIdx >= path.length - 1) {
+                    clearInterval(driverSimInterval);
+                    driverSimInterval = null;
+                    document.getElementById('drv-speed').textContent = '0 km/h';
+                    document.getElementById('drv-zone').textContent = 'Korangi';
+                    document.getElementById('drv-zone').style.color = 'var(--red)';
+                    return;
+                }
+                const p1 = path[ptIdx];
+                const p2 = path[ptIdx + 1];
+                const lat = p1[0] + (p2[0] - p1[0]) * ratio;
+                const lng = p1[1] + (p2[1] - p1[1]) * ratio;
+                driverMarker.setLatLng([lat, lng]);
+                driverMap.panTo([lat, lng]);
+                if (ptIdx === 1) document.getElementById('drv-zone').textContent = 'PECHS';
+            }, 200);
+        }
+
+        // Check backend on page load
+        async function checkBackend() {
+            const statusDot = document.getElementById('connection-status-dot');
+            const statusText = document.getElementById('connection-status-text');
+            const retryBtn = document.getElementById('connection-retry-btn');
+            const errEl = document.getElementById('login-error');
+            
+            try {
+                const res = await fetch(API_BASE + '/api/v1/orgs');
+                if (res.ok) {
+                    console.log('Backend connected at', API_BASE);
+                    statusDot.style.color = 'var(--green)';
+                    statusDot.style.background = 'var(--green)';
+                    statusText.textContent = "API Connected — http://localhost:8000";
+                    statusText.style.color = 'var(--text-main)';
+                    retryBtn.style.display = 'none';
+                    if (errEl) errEl.style.display = 'none';
+                    return;
+                }
+            } catch (e) {}
+            
+            statusDot.style.color = 'var(--red)';
+            statusDot.style.background = 'var(--red)';
+            statusText.textContent = "Backend Offline — run uvicorn main:app --reload --port 8000 in your terminal";
+            statusText.style.color = 'var(--red)';
+            retryBtn.style.display = 'inline-block';
+            
+            if (errEl) {
+                errEl.textContent = 'Backend offline — run: uvicorn main:app --reload --port 8000';
+                errEl.style.display = 'block';
+            }
+        }
+
+        window.onload = () => {
+            initMaps();
+            checkBackend();
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "inc-01",
+    "org_id": "org-b8f3e58c",
+    "reporter_name": "Driver Tariq",
+    "reporter_role": "driver",
+    "location_zone": "Korangi",
+    "sku": "MED-001",
+    "message": "Zero stock at Korangi supply point",
+    "severity": "critical",
+    "risk_tag": "RED",
+    "resolved": false,
+    "timestamp": "2026-05-17T23:20:00Z"
+  },
+  {
+    "id": "inc-02",
+    "org_id": "org-b8f3e58c",
+    "reporter_name": "Field Worker Asma",
+    "reporter_role": "field_operator",
+    "location_zone": "Korangi",
+    "sku": "MED-001",
+    "message": "Confirmed zero physical stock, patients waiting",
+    "severity": "critical",
+    "risk_tag": "RED",
+    "resolved": false,
+    "timestamp": "2026-05-17T23:19:00Z"
+  },
+  {
+    "id": "inc-03",
+    "org_id": "org-b8f3e58c",
+    "reporter_name": "Supervisor Bilal",
+    "reporter_role": "field_operator",
+    "location_zone": "Korangi",
+    "sku": "MED-001",
+    "message": "Third report \u2014 shelves empty despite system showing stock",
+    "severity": "critical",
+    "risk_tag": "RED",
+    "resolved": false,
+    "timestamp": "2026-05-17T23:18:00Z"
+  }
+]

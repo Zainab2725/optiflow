@@ -1,0 +1,322 @@
+{
+  "test_1_org_1": {
+    "status": "created",
+    "org": {
+      "org_id": "org-89b6d9a3",
+      "name": "Karachi Relief NGO",
+      "org_type": "ngo",
+      "created_at": "2026-05-17T20:14:03.947730",
+      "active": true
+    }
+  },
+  "test_1_org_2": {
+    "status": "created",
+    "org": {
+      "org_id": "org-0cf0b1a6",
+      "name": "City Pharma Distributor",
+      "org_type": "pharma",
+      "created_at": "2026-05-17T20:14:03.961630",
+      "active": true
+    }
+  },
+  "test_2_stock": {
+    "status": "ingested",
+    "record_id": "4cce9577",
+    "event_published": false,
+    "message_id": "LOCAL-201416",
+    "rules_evaluated": {
+      "stock_threshold_breached": true,
+      "current_level": 150,
+      "min_limit": 500,
+      "status": "CRITICAL"
+    }
+  },
+  "test_3_incidents": [
+    {
+      "status": "ingested",
+      "incident_id": "b3495432",
+      "event_published": false,
+      "message_id": "LOCAL-201428",
+      "rules_evaluated": {
+        "location_risk_tagged": "RED",
+        "zone": "Korangi",
+        "severity": "critical"
+      }
+    },
+    {
+      "status": "ingested",
+      "incident_id": "c45a1ff6",
+      "event_published": false,
+      "message_id": "LOCAL-201440",
+      "rules_evaluated": {
+        "location_risk_tagged": "RED",
+        "zone": "Korangi",
+        "severity": "critical"
+      }
+    },
+    {
+      "status": "ingested",
+      "incident_id": "10762599",
+      "event_published": false,
+      "message_id": "LOCAL-201451",
+      "rules_evaluated": {
+        "location_risk_tagged": "RED",
+        "zone": "Korangi",
+        "severity": "critical"
+      }
+    }
+  ],
+  "test_4_risk_map": {
+    "zone_risk_map": {
+      "Saddar": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Clifton": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "SITE": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Korangi": {
+        "risk": "RED",
+        "active_incidents": 6,
+        "critical_incidents": 6
+      },
+      "Malir": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Faisal": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Gulshan": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "PECHS": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "North Nazimabad": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Orangi": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Lyari": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Defence": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      }
+    },
+    "summary": {
+      "red_zones": [
+        "Korangi"
+      ],
+      "yellow_zones": [],
+      "total_zones": 12,
+      "alert_zones": 1
+    },
+    "generated_at": "2026-05-17T20:14:51.964363"
+  },
+  "test_5_dashboard": {
+    "org_id": "org-b8f3e58c",
+    "role": "manager",
+    "user_id": "usr-ahmed",
+    "overview": {
+      "total_stock_records": 2,
+      "critical_stock_count": 2,
+      "active_incidents": 6,
+      "red_zones": [
+        "Korangi"
+      ],
+      "contradictions_found": 0,
+      "complaint_spike": true
+    },
+    "stock_summary": {
+      "total_records": 2,
+      "critical_count": 2,
+      "normal_count": 0,
+      "by_zone": {
+        "SITE": 2
+      },
+      "critical_skus": [
+        "MED-001",
+        "MED-001"
+      ]
+    },
+    "zone_risk_map": {
+      "Saddar": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Clifton": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "SITE": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Korangi": {
+        "risk": "RED",
+        "active_incidents": 6,
+        "critical_incidents": 6
+      },
+      "Malir": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Faisal": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Gulshan": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "PECHS": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "North Nazimabad": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Orangi": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Lyari": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      },
+      "Defence": {
+        "risk": "GREEN",
+        "active_incidents": 0,
+        "critical_incidents": 0
+      }
+    },
+    "recent_incidents": [
+      {
+        "reporter_name": "Supervisor Bilal",
+        "reporter_role": "operator",
+        "location_zone": "Korangi",
+        "sku": "MED-001",
+        "message": "Third report - shelves empty despite system showing stock",
+        "severity": "critical",
+        "org_id": "org-b8f3e58c",
+        "id": "10762599",
+        "timestamp": "2026-05-17T20:14:51.945864",
+        "resolved": false,
+        "risk_tag": "RED"
+      },
+      {
+        "reporter_name": "Field Worker Asma",
+        "reporter_role": "operator",
+        "location_zone": "Korangi",
+        "sku": "MED-001",
+        "message": "Confirmed zero physical stock, patients waiting",
+        "severity": "critical",
+        "org_id": "org-b8f3e58c",
+        "id": "c45a1ff6",
+        "timestamp": "2026-05-17T20:14:40.099143",
+        "resolved": false,
+        "risk_tag": "RED"
+      },
+      {
+        "reporter_name": "Driver Tariq",
+        "reporter_role": "driver",
+        "location_zone": "Korangi",
+        "sku": "MED-001",
+        "message": "Zero stock at Korangi supply point, urgent shortage",
+        "severity": "critical",
+        "org_id": "org-b8f3e58c",
+        "id": "b3495432",
+        "timestamp": "2026-05-17T20:14:28.064446",
+        "resolved": false,
+        "risk_tag": "RED"
+      },
+      {
+        "reporter_name": "Supervisor Bilal",
+        "reporter_role": "operator",
+        "location_zone": "Korangi",
+        "sku": "MED-001",
+        "message": "Third report - shelves empty despite system showing stock",
+        "severity": "critical",
+        "org_id": "org-b8f3e58c",
+        "id": "7a27be76",
+        "timestamp": "2026-05-17T20:12:01.695714",
+        "resolved": false,
+        "risk_tag": "RED"
+      },
+      {
+        "reporter_name": "Field Worker Asma",
+        "reporter_role": "operator",
+        "location_zone": "Korangi",
+        "sku": "MED-001",
+        "message": "Confirmed zero physical stock, patients waiting",
+        "severity": "critical",
+        "org_id": "org-b8f3e58c",
+        "id": "b1f14d20",
+        "timestamp": "2026-05-17T20:11:49.363173",
+        "resolved": false,
+        "risk_tag": "RED"
+      }
+    ],
+    "contradictions": [],
+    "generated_at": "2026-05-17T20:14:51.979442"
+  },
+  "test_6_contradictions": {
+    "contradictions": [],
+    "total_found": 0,
+    "generated_at": "2026-05-17T20:14:51.991693"
+  },
+  "test_7_movement": {
+    "status": "ingested",
+    "event_published": false,
+    "message_id": "LOCAL-201504",
+    "movement": {
+      "event_type": "logistics_movement",
+      "org_id": "org-b8f3e58c",
+      "driver": "Ahmed Khan",
+      "vehicle": "KHI-TRK-042",
+      "from": "SITE",
+      "to": "Korangi",
+      "sku": "MED-001",
+      "quantity": 200,
+      "status": "in_transit",
+      "timestamp": "2026-05-17T20:14:52.000153"
+    }
+  }
+}

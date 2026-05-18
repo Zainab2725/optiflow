@@ -1,0 +1,100 @@
+﻿{
+    "warehouse":  {
+                      "source":  "warehouse",
+                      "error":  "Redirect response \u0027307 Temporary Redirect\u0027 for url \u0027https://docs.google.com/spreadsheets/d/e/2PACX-1vSbk5ufU5LcTJlxFhRRoqtOw3xcdGknfs2JirMI88vHMWXvy1XmeHGd_s4vZVYGi9Je3z8RLiwcgx9p/pub?gid=0\u0026single=true\u0026output=csv\u0027\nRedirect location: \u0027https://doc-10-4s-sheets.googleusercontent.com/pub/54bogvaave6cua4cdnls17ksc4/0rhdd6k0v18oa0d6fmsmmameuc/1778824645000/104900980653925800496/*/e@2PACX-1vSbk5ufU5LcTJlxFhRRoqtOw3xcdGknfs2JirMI88vHMWXvy1XmeHGd_s4vZVYGi9Je3z8RLiwcgx9p?gid=0\u0026single=true\u0026output=csv\u0027\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307",
+                      "credibility":  0.0,
+                      "fetched_at":  "2026-05-15T05:57:30.411940"
+                  },
+    "news":  {
+                 "source":  "NewsData.io Pakistan",
+                 "source_type":  "news_api",
+                 "fetched_at":  "2026-05-15T05:57:30.034912",
+                 "credibility":  0.85,
+                 "data":  {
+                              "articles":  [
+
+                                           ],
+                              "total_fetched":  0
+                          }
+             },
+    "dawn_rss":  {
+                     "source":  "Dawn News RSS",
+                     "source_type":  "rss_feed",
+                     "fetched_at":  "2026-05-15T05:57:28.359825",
+                     "credibility":  0.9,
+                     "data":  {
+                                  "articles":  [
+                                                   {
+                                                       "title":  "IMF highlights âGulf exposureâ as biggest external risk for Pakistan",
+                                                       "summary":  "\u003cp\u003eISLAMABAD: Following the \u003ca href=\"https://www.dawn.com/news/1998725\"\u003erelease \u003c/a\u003eof a $1.1 billion tranche for Pakistan, the International Monetary Fund (IMF) has identified Pakistanâs economic exposure to the Gulf CoopeÂ­ration Council (GCC) as its most acute external vulnerability.\u003c/p\u003e\n\u003cp\u003eIn its",
+                                                       "published":  "Fri, 15 May 2026 07:30:42 +0500",
+                                                       "link":  "https://www.dawn.com/news/2000334/imf-highlights-gulf-exposure-as-biggest-external-risk-for-pakistan"
+                                                   },
+                                                   {
+                                                       "title":  "Punjab police want Anmol alias Pinkyâs custody from Sindh",
+                                                       "summary":  "\u003cp\u003eLAHORE: After the \u003ca href=\"https://www.dawn.com/news/1999759/three-policemen-suspended-for-giving-protocol-to-drug-dealer\"\u003earrest \u003c/a\u003eof drug dealer Anmol alias Pinky by Sindh Police, her appearance in a Karachi court whose video went viral on mainstream as well as social media and her revelation",
+                                                       "published":  "Fri, 15 May 2026 09:20:53 +0500",
+                                                       "link":  "https://www.dawn.com/news/2000297/punjab-police-want-anmol-alias-pinkys-custody-from-sindh"
+                                                   },
+                                                   {
+                                                       "title":  "Lawmakers decry slow internet in National Assembly, across country",
+                                                       "summary":  "\u003cp\u003e\u003cstrong\u003eâ¢ MNAs complain poor connectivity affecting parliamentâs paperless mechanism\u003cbr /\u003eâ¢ Minister assures them spectrum auction will address problem\u003cbr /\u003eâ¢ Concerns raised over digital harassment, online fraud\u003c/strong\u003e\u003c/p\u003e\n\u003cp\u003eISLAMABAD: Several members of the National Assembly on Thursday rais",
+                                                       "published":  "Fri, 15 May 2026 07:54:35 +0500",
+                                                       "link":  "https://www.dawn.com/news/2000356/lawmakers-decry-slow-internet-in-national-assembly-across-country"
+                                                   },
+                                                   {
+                                                       "title":  "Pakistan raises $250m equivalent in inaugural Panda bond issuance",
+                                                       "summary":  "\u003cp\u003eISLAMABAD: Pakistan raised $250 million equivalent through its inaugural Panda bond issuance in the Chinese capital market at an interest rate of 2.5 per cent, with a three-year maturity, according to Advisor to the Finance Minister Khurram Schehzad.\u003c/p\u003e\n\u003cp\u003eIn a social media post on X on Thursday",
+                                                       "published":  "Thu, 14 May 2026 21:02:10 +0500",
+                                                       "link":  "https://www.dawn.com/news/2000249/pakistan-raises-250m-equivalent-in-inaugural-panda-bond-issuance"
+                                                   },
+                                                   {
+                                                       "title":  "Pakistan-UAE ties unaffected by external engagements, says FO",
+                                                       "summary":  "\u003cp\u003eThe Foreign Office (FO) on Thursday said Pakistanâs relations with the United Arab Emirates remained unaffected by any external engagements the Gulf state may have, expressing confidence in the strength of bilateral ties. It said the relationship was based on mutual trust, adding that this sentim",
+                                                       "published":  "Thu, 14 May 2026 21:38:15 +0500",
+                                                       "link":  "https://www.dawn.com/news/2000199/pakistan-uae-ties-unaffected-by-external-engagements-says-fo"
+                                                   }
+                                               ],
+                                  "matched":  5
+                              }
+                 },
+    "weather":  {
+                    "source":  "OpenWeatherMap Karachi",
+                    "source_type":  "weather_api",
+                    "fetched_at":  "2026-05-15T05:57:29.561305",
+                    "credibility":  0.95,
+                    "data":  {
+                                 "condition":  "Clouds",
+                                 "rain_mm":  0,
+                                 "temp_c":  31.79,
+                                 "description":  "scattered clouds",
+                                 "logistics_risk":  "LOW",
+                                 "road_impact":  "Roads clear"
+                             }
+                },
+    "currency":  {
+                     "source":  "ExchangeRate-API",
+                     "source_type":  "financial_api",
+                     "fetched_at":  "2026-05-15T05:57:30.411755",
+                     "credibility":  0.99,
+                     "data":  {
+                                  "usd_to_pkr":  278.9985,
+                                  "budget_50k_pkr_in_usd":  179.21,
+                                  "budget_80k_pkr_in_usd":  286.74,
+                                  "budget_120k_pkr_in_usd":  430.11,
+                                  "note":  "Used for PKR budget constraint checking"
+                              }
+                 },
+    "meta":  {
+                 "fetched_at":  "2026-05-15T05:57:30.411956",
+                 "sources_healthy":  4,
+                 "sources_total":  5,
+                 "keywords_used":  [
+                                       "medicine shortage Pakistan",
+                                       "supply chain Karachi",
+                                       "freight delay Pakistan",
+                                       "pharmaceutical shortage",
+                                       "motorway closure Pakistan"
+                                   ]
+             }
+}

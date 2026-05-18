@@ -1,0 +1,38 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+venv/
+__pycache__/
+*.pyc
+
+node_modules/
+build/
+dist/
+
+.env
+.env.example
+
+flutter/.dart_tool/
+flutter/build/
+optiflow_app/.dart_tool/
+optiflow_app/build/

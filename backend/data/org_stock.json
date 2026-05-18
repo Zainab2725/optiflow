@@ -1,0 +1,67 @@
+[
+  {
+    "id": "s001",
+    "org_id": "org-demo",
+    "depot_id": "depot-01",
+    "depot_name": "North Relief Hub",
+    "zone": "North Nazimabad",
+    "sku": "RELIEF-001",
+    "item_name": "Clean Water Packets",
+    "quantity": 200,
+    "min_threshold": 1000,
+    "unit": "packets",
+    "last_updated": "2026-05-18T06:00:00"
+  },
+  {
+    "id": "s002",
+    "org_id": "org-demo",
+    "depot_id": "depot-02",
+    "depot_name": "Saddar Emergency Depot",
+    "zone": "Saddar",
+    "sku": "MED-001",
+    "item_name": "Emergency Medical Kits",
+    "quantity": 45,
+    "min_threshold": 200,
+    "unit": "kits",
+    "last_updated": "2026-05-17T18:00:00"
+  },
+  {
+    "id": "s003",
+    "org_id": "org-demo",
+    "depot_id": "depot-03",
+    "depot_name": "Korangi Distribution Center",
+    "zone": "Korangi",
+    "sku": "RELIEF-002",
+    "item_name": "Emergency Food Packs",
+    "quantity": 300,
+    "min_threshold": 800,
+    "unit": "packs",
+    "last_updated": "2026-05-18T07:00:00"
+  },
+  {
+    "id": "s004",
+    "org_id": "org-demo",
+    "depot_id": "depot-04",
+    "depot_name": "SITE Rescue Station",
+    "zone": "SITE Karachi",
+    "sku": "RESCUE-001",
+    "item_name": "Rescue Equipment Sets",
+    "quantity": 12,
+    "min_threshold": 50,
+    "unit": "sets",
+    "last_updated": "2026-05-17T12:00:00"
+  },
+  {
+    "id": "s005",
+    "org_id": "org-demo",
+    "depot_id": "depot-05",
+    "depot_name": "Lyari Flood Response Unit",
+    "zone": "Lyari",
+    "sku": "FLOOD-001",
+    "item_name": "Inflatable Rescue Boats",
+    "quantity": 3,
+    "min_threshold": 15,
+    "unit": "boats",
+    "last_updated": "2026-05-18T05:00:00"
+  }
+]

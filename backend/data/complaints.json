@@ -1,0 +1,82 @@
+[
+  {
+    "id": "c001",
+    "customer_name": "Field Unit Alpha",
+    "sku": "GENERAL",
+    "product_name": "Flash Flooding",
+    "message": "Lyari Expressway completely flooded. 2 feet water level. Vehicles stuck.",
+    "severity": "critical",
+    "location": "Lyari",
+    "timestamp": "2026-05-18T08:00:00"
+  },
+  {
+    "id": "c002", 
+    "customer_name": "Traffic Control",
+    "sku": "GENERAL",
+    "product_name": "Road Blockage",
+    "message": "MA Jinnah Road blocked due to protest. All supply routes diverted.",
+    "severity": "high",
+    "location": "Saddar",
+    "timestamp": "2026-05-18T08:30:00"
+  },
+  {
+    "id": "c003",
+    "customer_name": "Grid Monitor",
+    "sku": "GENERAL", 
+    "product_name": "Power Outage",
+    "message": "SITE industrial area grid failure. 3 warehouses without power.",
+    "severity": "critical",
+    "location": "SITE Karachi",
+    "timestamp": "2026-05-18T09:00:00"
+  },
+  {
+    "id": "c004",
+    "customer_name": "NGO Field Operator",
+    "sku": "RELIEF-001",
+    "product_name": "Relief Supply Shortage",
+    "message": "Orangi camp running out of clean water. 500 families affected.",
+    "severity": "critical",
+    "location": "Orangi",
+    "timestamp": "2026-05-18T09:15:00"
+  },
+  {
+    "id": "c005",
+    "customer_name": "Hospital Admin",
+    "sku": "MED-001",
+    "product_name": "Medical Supply Critical",
+    "message": "Civil Hospital emergency supplies exhausted. Ambulances being rerouted.",
+    "severity": "high",
+    "location": "Saddar",
+    "timestamp": "2026-05-18T09:30:00"
+  },
+  {
+    "id": "c006",
+    "customer_name": "Port Authority",
+    "sku": "GENERAL",
+    "product_name": "Port Access Blocked",
+    "message": "Port Qasim access road flooded. 12 supply trucks stranded.",
+    "severity": "high",
+    "location": "Port Qasim",
+    "timestamp": "2026-05-18T10:00:00"
+  },
+  {
+    "id": "c007",
+    "customer_name": "Fire Station 7",
+    "sku": "GENERAL",
+    "product_name": "Warehouse Fire",
+    "message": "SITE-B industrial warehouse fire. Hazardous materials detected.",
+    "severity": "critical",
+    "location": "SITE Karachi",
+    "timestamp": "2026-05-18T10:20:00"
+  },
+  {
+    "id": "c008",
+    "customer_name": "Relief Coordinator",
+    "sku": "RELIEF-002",
+    "product_name": "Food Supply Gap",
+    "message": "Korangi distribution center reports 40 percent stock gap vs demand.",
+    "severity": "high",
+    "location": "Korangi",
+    "timestamp": "2026-05-18T10:45:00"
+  }
+]

@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+httpx
+google-generativeai==0.8.3
+feedparser
+pandas
+python-dotenv
+websockets
+pdfplumber
+google-cloud-aiplatform>=1.70.0
+google-cloud-pubsub>=2.15.0
+functions-framework==3.8.1
+vertexai==1.43.0

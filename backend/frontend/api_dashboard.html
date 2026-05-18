@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiFlow Multi-Org Secure API Test Dashboard</title>
+    <!-- Premium sans-serif font Inter -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <style>
+        :root {
+            --bg-dark: #0F172A;
+            --bg-surface: #1E293B;
+            --bg-surface-hover: #334155;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --accent-green: #10B981;
+            --accent-green-glow: rgba(16, 185, 129, 0.4);
+            --accent-red: #EF4444;
+            --accent-red-glow: rgba(239, 68, 68, 0.4);
+            --accent-amber: #F59E0B;
+            --accent-blue: #3B82F6;
+            --font-main: 'Inter', sans-serif;
+            --border-color: rgba(255,255,255,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Glassmorphic scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+        header.main-header {
+            padding: 16px 24px;
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 310px 1fr 380px;
+            gap: 24px;
+            padding: 24px;
+            height: calc(100vh - 65px);
+            overflow: hidden;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .col-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: var(--bg-dark);
+            z-index: 10;
+        }
+
+        /* Helper Classes */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .btn {
+            font-family: var(--font-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .btn:hover { background: rgba(255,255,255,0.15); }
+        .btn-primary { background: var(--accent-green); }
+        .btn-primary:hover { background: #059669; }
+
+        /* ================= ORG CARDS ================= */
+        .org-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.2s;
+        }
+        .org-card:hover { border-color: rgba(255,255,255,0.2); }
+        .org-header { display: flex; align-items: center; gap: 12px; }
+        .org-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.95rem; color: white;
+        }
+        .avatar-teal { background: var(--accent-green); }
+        .avatar-blue { background: var(--accent-blue); }
+        .org-details h3 { font-size: 0.9rem; font-weight: 700; }
+        .org-type-id { font-size: 0.65rem; color: var(--text-muted); font-family: monospace; }
+        .status-badge {
+            align-self: flex-start;
+            font-size: 0.65rem; font-weight: 700;
+            padding: 2px 8px; border-radius: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .status-active { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .org-stats {
+            display: flex; justify-content: space-between;
+            font-size: 0.7rem; color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;
+        }
+
+        /* Pulsing Dot */
+        .pulsing-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+            animation: pulse-green 1.5s infinite;
+        }
+        @keyframes pulse-green {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.5; }
+        }
+
+        /* Zone Risk Grid */
+        .zone-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        }
+        .zone-pill {
+            padding: 6px; border-radius: 6px; text-align: center;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase; border: 1px solid transparent;
+        }
+        .zone-pill.green { background: rgba(16,185,129,0.1); color: var(--accent-green); border-color: rgba(16,185,129,0.2); }
+        .zone-pill.yellow { background: rgba(245,158,11,0.1); color: var(--accent-amber); border-color: rgba(245,158,11,0.2); }
+        .zone-pill.red {
+            background: rgba(239,68,68,0.15); color: var(--accent-red); border-color: rgba(239,68,68,0.3);
+            box-shadow: 0 0 8px rgba(239,68,68,0.1);
+        }
+
+        /* ================= TEST RUNNER ================= */
+        .test-actions { display: flex; gap: 12px; position: sticky; top: 0; background: var(--bg-dark); z-index: 5; }
+        .progress-bar-container {
+            height: 4px; background: rgba(255,255,255,0.05);
+            border-radius: 2px; overflow: hidden; opacity: 0; transition: opacity 0.3s;
+        }
+        .progress-bar { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.3s; }
+
+        .test-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 12px;
+            transition: all 0.3s;
+        }
+        .test-card.running { border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(59,130,246,0.15); }
+        .test-card.success { border-color: var(--accent-green); }
+        .test-card.error { border-color: var(--accent-red); }
+
+        .test-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .test-info { display: flex; gap: 12px; }
+        .test-badge {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); display: flex;
+            align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;
+        }
+        .test-method {
+            font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+        }
+        .method-post { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+        .method-get { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+        .test-path { font-family: monospace; font-size: 0.8rem; font-weight: 600; color: white; margin-left: 4px; }
+        .test-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+        
+        .test-req-res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .test-response, .test-request {
+            background: #090D16; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px; padding: 10px; font-family: monospace; font-size: 0.65rem;
+            color: #A7F3D0; overflow-x: auto; white-space: pre-wrap; display: none; max-height: 180px; overflow-y: auto;
+        }
+        .test-request { color: #93C5FD; }
+
+        /* ================= RIGHT COLUMN ================= */
+        .ticker-container {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border-color);
+            border-radius: 6px; height: 32px; overflow: hidden; display: flex; align-items: center;
+        }
+        .ticker-text {
+            display: flex; gap: 40px; animation: ticker 25s linear infinite;
+            white-space: nowrap; font-size: 0.75rem; font-weight: 600;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+        .tick-crit { color: var(--accent-red); }
+        .tick-warn { color: var(--accent-amber); }
+        .tick-ok { color: var(--accent-green); }
+
+        .incident-feed { display: flex; flex-direction: column; gap: 8px; }
+        .incident-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .inc-header { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); }
+        .inc-rep { font-weight: 700; color: white; }
+        .inc-msg { font-size: 0.75rem; font-style: italic; }
+        .inc-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+
+        .contra-card {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(245,158,11,0.05));
+            border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; padding: 16px;
+            display: flex; flex-direction: column; gap: 8px; transition: all 0.3s;
+        }
+        .contra-card.glow {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+        }
+        .contra-title { font-size: 0.75rem; font-weight: 800; color: var(--accent-red); text-transform: uppercase; letter-spacing: 0.5px; }
+        .contra-score { font-size: 1.8rem; font-weight: 900; color: white; line-height: 1; margin: 4px 0; }
+        .contra-row { display: flex; justify-content: space-between; font-size: 0.75rem; }
+        .contra-action { margin-top: 12px; font-size: 0.75rem; color: var(--accent-amber); font-weight: 600; background: rgba(245,158,11,0.1); padding: 6px; border-radius: 4px; }
+
+        .movement-card {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 16px;
+        }
+        .mov-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .mov-driver { font-weight: 700; font-size: 0.85rem; }
+        .mov-status { font-size: 0.7rem; font-weight: 700; color: var(--accent-amber); animation: pulse-op 2s infinite; }
+        @keyframes pulse-op { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .mov-route { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; }
+        .mov-progress-bg { height: 6px; background: rgba(0,0,0,0.5); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+        .mov-progress-fill { height: 100%; background: var(--accent-blue); width: 0%; transition: width 1s ease; }
+        .mov-meta { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; }
+
+        .terminal {
+            background: #090D16; border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 12px; font-family: monospace; font-size: 0.7rem; color: var(--text-muted);
+            height: 120px; overflow-y: auto;
+        }
+        .term-line { margin-bottom: 4px; }
+        .term-tag { color: var(--accent-blue); }
+        .term-sys { color: var(--accent-amber); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .modal {
+            background: var(--bg-surface); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 24px; width: 320px;
+        }
+        .modal h2 { font-size: 1.1rem; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+            color: white; font-family: var(--font-main);
+        }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-title">
+            OptiFlow <span>Urban Crisis Logistics Intelligence System</span>
+        </div>
+        <div style="font-family: monospace; color: var(--text-muted); font-size: 0.8rem;">
+            [ SECURE ENVIRONMENT: STAGING_KARACHI_v2 ]
+        </div>
+    </header>
+
+    <div class="layout-grid">
+        
+        <!-- ================= LEFT COLUMN ================= -->
+        <div class="col" id="col-left">
+            <div class="col-title">Multi-Org Workspace Manager</div>
+            
+            <div id="org-list" style="display:flex; flex-direction: column; gap: 12px;">
+                <!-- Dynamically loaded -->
+                <div style="text-align:center; padding: 20px; font-size:0.8rem; color: var(--text-muted);">Syncing secure organizations...</div>
+            </div>
+
+            <button class="btn" style="margin-top: 8px;" onclick="openModal()">+ Register New Org</button>
+
+            <div class="col-title" style="margin-top: 24px;">Karachi Zone Risk Grid</div>
+            <div class="zone-grid" id="zone-grid">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+
+        <!-- ================= CENTER COLUMN ================= -->
+        <div class="col" id="col-center">
+            <div class="col-title">
+                Live API Test Suite 
+                <div class="pulsing-dot" style="margin-left:auto;"></div>
+            </div>
+
+            <div class="test-actions">
+                <button class="btn btn-primary" onclick="runAllTests()">Run All Tests</button>
+                <button class="btn" onclick="resetTests()">Reset All</button>
+            </div>
+            
+            <div class="progress-bar-container" id="test-progress-container">
+                <div class="progress-bar" id="test-progress"></div>
+            </div>
+
+            <div id="test-list" style="display:flex; flex-direction: column; gap: 12px;">
+                <!-- Tests generated by JS -->
+            </div>
+        </div>
+
+        <!-- ================= RIGHT COLUMN ================= -->
+        <div class="col" id="col-right">
+            <div class="col-title">
+                System Intelligence Feed
+                <span style="margin-left:auto; font-family:monospace; font-size:0.7rem; font-weight:normal;" id="clock">00:00:00</span>
+            </div>
+
+            <!-- Ticker -->
+            <div class="ticker-container">
+                <div class="ticker-text">
+                    <span class="tick-crit">CRITICAL: MED-001 below threshold in SITE depot</span>
+                    <span class="tick-warn">WARNING: CET-10 stock at 60% in Clifton</span>
+                    <span class="tick-ok">OK: AMX-250 fully stocked in Saddar</span>
+                </div>
+            </div>
+
+            <!-- Incident Feed -->
+            <div class="col-title" style="border:none; padding-bottom:0; font-size:0.75rem; margin-top:8px;">Active Incidents</div>
+            <div class="incident-feed" id="incident-feed">
+                <div style="text-align:center; padding:12px; color:var(--text-muted); font-size:0.75rem;">No active incidents reported.</div>
+            </div>
+
+            <!-- Contradiction Detector -->
+            <div class="contra-card" id="contra-card" style="display:none;">
+                <div class="contra-title">⚠ Supply Chain Contradiction Detected</div>
+                <div class="contra-score">94<span style="font-size:0.6rem;">/100</span></div>
+                <div class="contra-row"><span>System Stock (MED-001):</span> <span style="font-family:monospace; color:#fff;" id="contra-syst">0 units</span></div>
+                <div class="contra-row"><span>Ground Reports:</span> <span style="font-family:monospace; color:var(--accent-red); font-weight:700;" id="contra-gro">0 units</span></div>
+                <div class="contra-action" id="contra-expl">RECOMMENDED: Dispatch audit team + emergency resupply</div>
+            </div>
+
+            <!-- Movement Tracker -->
+            <div class="movement-card" style="display:none;" id="movement-box">
+                <div class="mov-header">
+                    <span class="mov-driver" id="mov-drv">Ahmed Khan | KHI-TRK-042</span>
+                    <span class="mov-status">IN TRANSIT</span>
+                </div>
+                <div class="mov-route" id="mov-rt">SITE → Korangi via M9</div>
+                <div class="mov-progress-bg">
+                    <div class="mov-progress-fill" id="mov-progress"></div>
+                </div>
+                <div class="mov-meta">
+                    <span style="color:var(--accent-green);">Safety: 87/100</span>
+                    <span>ETA: 22 mins</span>
+                </div>
+            </div>
+
+            <!-- PubSub Log -->
+            <div class="terminal" id="pubsub-log">
+                <div class="term-line"><span class="term-sys">[GCP]</span> Pub/Sub pipeline active — listening on topics...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="orgModal">
+        <div class="modal">
+            <h2>Register New Organization</h2>
+            <div class="form-group">
+                <label>Organization Name</label>
+                <input type="text" id="newOrgName" placeholder="e.g. Sindh Govt Relief">
+            </div>
+            <div class="form-group">
+                <label>Organization Type</label>
+                <select id="newOrgType">
+                    <option value="NGO">NGO</option>
+                    <option value="PHARMA">Pharma</option>
+                    <option value="GOVERNMENT">Government</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitOrg()">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let apiToken = null;
+
+        // Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', {hour12: false});
+        }, 1000);
+
+        // Zone Grid Setup
+        const zones = ['SITE', 'Korangi', 'Saddar', 'Clifton', 'Malir', 'Orangi', 'Gulshan', 'Defence', 'Lyari', 'PECHS', 'North Nazimabad', 'Faisal'];
+        const zoneGrid = document.getElementById('zone-grid');
+        zones.forEach(z => {
+            const d = document.createElement('div');
+            d.className = 'zone-pill green';
+            d.id = `zone-${z.toLowerCase().replace(/\s+/g, '').replace(/\./g, '')}`;
+            d.innerText = z;
+            zoneGrid.appendChild(d);
+        });
+
+        // Initialize Orangi to Yellow risk per spec
+        document.getElementById('zone-orangi').className = 'zone-pill yellow';
+
+        // Secure Live API Tests Definition
+        const tests = [
+            { 
+                id: 1, 
+                method: 'POST', 
+                path: '/api/v1/auth/login', 
+                desc: 'Retrieve secure multi-tenant JWT credentials for NGO Manager Ahmed', 
+                reqBody: { email: 'ahmed@karachirelief.org', password: 'ngo123' } 
+            },
+            { 
+                id: 2, 
+                method: 'POST', 
+                path: '/api/v1/ingest/stock', 
+                desc: 'Ingest SITE Depot stock — triggers CRITICAL threshold rules internally', 
+                reqBody: { depot_id: 'depot-site', depot_name: 'SITE Depot', zone: 'SITE', sku: 'MED-001', item_name: 'Panadol 500mg', quantity: 150, min_threshold: 500 }
+            },
+            { 
+                id: 3, 
+                method: 'POST', 
+                path: '/api/v1/ingest/incident', 
+                desc: 'Log critical ground stockout incident in Korangi zone', 
+                reqBody: { reporter_name: 'Driver Tariq', reporter_role: 'driver', location_zone: 'Korangi', sku: 'MED-001', message: 'Zero stock at Korangi supply point', severity: 'critical' }
+            },
+            { 
+                id: 4, 
+                method: 'GET', 
+                path: '/api/v1/zone-risk-map', 
+                desc: 'Fetch current dynamic zone risk levels securely via token', 
+                reqBody: null 
+            },
+            { 
+                id: 5, 
+                method: 'GET', 
+                path: '/api/v1/dashboard', 
+                desc: 'Pull master command intelligence dashboard filtered by NGO tenant', 
+                reqBody: null 
+            },
+            { 
+                id: 6, 
+                method: 'GET', 
+                path: '/api/v1/contradictions', 
+                desc: 'Scan for active ground/system stock contradiction anomalies', 
+                reqBody: null 
+            },
+            { 
+                id: 7, 
+                method: 'POST', 
+                path: '/api/v1/ingest/movement', 
+                desc: 'Dispatch emergency resupply driver to Korangi point', 
+                reqBody: { driver_name: 'Ahmed Khan', vehicle_id: 'KHI-TRK-042', origin_zone: 'SITE', destination_zone: 'Korangi', sku: 'MED-001', quantity: 200, status: 'in_transit' }
+            }
+        ];
+
+        const testList = document.getElementById('test-list');
+        tests.forEach(t => {
+            const mClass = t.method === 'POST' ? 'method-post' : 'method-get';
+            const reqStr = t.reqBody ? JSON.stringify(t.reqBody, null, 2) : '';
+            const html = `
+                <div class="test-card" id="test-${t.id}">
+                    <div class="test-header">
+                        <div class="test-info">
+                            <div class="test-badge">${t.id}</div>
+                            <div>
+                                <div><span class="test-method ${mClass}">${t.method}</span> <span class="test-path">${t.path}</span></div>
+                                <div class="test-desc">${t.desc}</div>
+                            </div>
+                        </div>
+                        <button class="btn" style="padding: 6px 12px; font-size: 0.7rem;" onclick="runSingleTest(${t.id})">Run Test</button>
+                    </div>
+                    <div class="test-req-res-grid">
+                        <div class="test-request" id="req-${t.id}">${reqStr}</div>
+                        <div class="test-response" id="resp-${t.id}">...</div>
+                    </div>
+                </div>
+            `;
+            testList.insertAdjacentHTML('beforeend', html);
+            if(t.reqBody) document.getElementById(`req-${t.id}`).style.display = 'block';
+        });
+
+        // Sync Left Column Orgs initially
+        async function syncOrgs() {
+            try {
+                const response = await fetch('/api/v1/orgs');
+                const data = await response.json();
+                const orgList = document.getElementById('org-list');
+                orgList.innerHTML = '';
+                
+                data.organizations.forEach(o => {
+                    const avatarBg = o.org_type === 'NGO' ? 'avatar-teal' : 'avatar-blue';
+                    const initials = o.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+                    const card = `
+                        <div class="org-card">
+                            <div class="org-header">
+                                <div class="org-avatar ${avatarBg}">${initials}</div>
+                                <div class="org-details">
+                                    <h3>${o.name}</h3>
+                                    <div class="org-type-id">TYPE: ${o.org_type} | ID: ${o.org_id}</div>
+                                </div>
+                            </div>
+                            <div class="status-badge status-active"><div class="pulsing-dot" style="width:6px;height:6px;"></div> ACTIVE</div>
+                            <div class="org-stats" id="stats-${o.org_id}">
+                                <span>Syncing...</span>
+                            </div>
+                        </div>
+                    `;
+                    orgList.insertAdjacentHTML('beforeend', card);
+                    
+                    // Fetch details asynchronously if authenticated
+                    if (apiToken) {
+                        fetchOrgStats(o.org_id);
+                    } else {
+                        document.getElementById(`stats-${o.org_id}`).innerHTML = `
+                            <span>Locked</span>
+                            <span>Require Auth</span>
+                        `;
+                    }
+                });
+            } catch(e) {
+                console.error("Error syncing orgs", e);
+            }
+        }
+
+        async function fetchOrgStats(orgId) {
+            try {
+                const res = await fetch(`/api/v1/orgs/${orgId}`);
+                if (!res.ok) return;
+                const details = await res.json();
+                document.getElementById(`stats-${orgId}`).innerHTML = `
+                    <span>${details.stock_summary?.total_records || 0} Stock records</span>
+                    <span>${details.total_incidents || 0} Incidents</span>
+                `;
+            } catch(e) {}
+        }
+
+        // PubSub logging panel
+        function logPubSub(msg) {
+            const term = document.getElementById('pubsub-log');
+            term.innerHTML += `<div class="term-line"><span class="term-tag">[STREAM]</span> ${msg}</div>`;
+            term.scrollTop = term.scrollHeight;
+        }
+
+        // Execute dynamic backend test calls
+        async function runSingleTest(id) {
+            const card = document.getElementById(`test-${id}`);
+            const respBox = document.getElementById(`resp-${id}`);
+            const t = tests.find(x => x.id === id);
+            
+            card.className = 'test-card running';
+            respBox.style.display = 'block';
+            respBox.innerText = 'Executing Fetch...';
+
+            const headers = { 'Content-Type': 'application/json' };
+            if (apiToken) {
+                headers['Authorization'] = `Bearer ${apiToken}`;
+            }
+
+            try {
+                const fetchOpts = {
+                    method: t.method,
+                    headers: headers
+                };
+                if(t.reqBody) {
+                    fetchOpts.body = JSON.stringify(t.reqBody);
+                }
+
+                const response = await fetch(t.path, fetchOpts);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    card.className = 'test-card success';
+                    respBox.style.color = '#A7F3D0';
+                    respBox.innerText = JSON.stringify(data, null, 2);
+
+                    // Perform visual UI updates based on real returns!
+                    if (id === 1) {
+                        apiToken = data.access_token;
+                        logPubSub('JWT acquired successfully for ' + t.reqBody.email);
+                        // Refresh organizations lists now that we are authenticated!
+                        syncOrgs();
+                    }
+                    else if (id === 2) {
+                        logPubSub(`Stock update ingested for NGO! SKU: ${t.reqBody.sku}, Qty: ${t.reqBody.quantity}`);
+                        syncOrgs();
+                    }
+                    else if (id === 3) {
+                        logPubSub('New critical incident logged: ' + t.reqBody.message);
+                        loadLiveIncidentFeed();
+                    }
+                    else if (id === 4) {
+                        // Color the Karachi Zone Risk Grid using real hazards map!
+                        const risks = data.zone_risk_map;
+                        for (const zone in risks) {
+                            const zId = `zone-${zone.toLowerCase().replace(/\s+/g, '').replace(/\./g, '')}`;
+                            const pill = document.getElementById(zId);
+                            if(pill) {
+                                const riskLevel = risks[zone].risk;
+                                if(riskLevel === 'RED') pill.className = 'zone-pill red';
+                                else if(riskLevel === 'YELLOW') pill.className = 'zone-pill yellow';
+                                else pill.className = 'zone-pill green';
+                            }
+                        }
+                        logPubSub('Karachi Risk grid colored using real /api/v1/zone-risk-map');
+                    }
+                    else if (id === 5) {
+                        logPubSub('Command Dashboard loaded for tenant org: ' + data.org_id);
+                        loadLiveIncidentFeed();
+                    }
+                    else if (id === 6) {
+                        // If contradictions found, display card
+                        if(data.contradictions && data.contradictions.length > 0) {
+                            const anomaly = data.contradictions[0];
+                            document.getElementById('contra-syst').innerText = anomaly.ledger_quantity + ' units';
+                            document.getElementById('contra-gro').innerText = '0 units';
+                            document.getElementById('contra-expl').innerText = anomaly.explanation;
+                            document.getElementById('contra-card').style.display = 'flex';
+                            document.getElementById('contra-card').classList.add('glow');
+                            logPubSub('Active Supply Contradiction detected! Score: 94/100');
+                        }
+                    }
+                    else if (id === 7) {
+                        document.getElementById('mov-drv').innerText = `${data.movement.driver} | ${data.movement.vehicle}`;
+                        document.getElementById('mov-rt').innerText = `${data.movement.from} → ${data.movement.to} via M9`;
+                        document.getElementById('movement-box').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('mov-progress').style.width = '75%';
+                        }, 100);
+                        logPubSub('Emergency logistics transit active! ' + data.movement.vehicle + ' dispatched');
+                    }
+
+                } else {
+                    card.className = 'test-card error';
+                    respBox.style.color = '#FCA5A5';
+                    respBox.innerText = JSON.stringify(data, null, 2);
+                    logPubSub(`Error [${response.status}] calling ${t.path}: ` + (data.detail || 'unknown error'));
+                }
+            } catch(e) {
+                card.className = 'test-card error';
+                respBox.style.color = '#FCA5A5';
+                respBox.innerText = 'Connection Refused: backend server is offline or failed.';
+                console.error(e);
+            }
+        }
+
+        async function loadLiveIncidentFeed() {
+            if(!apiToken) return;
+            try {
+                const response = await fetch('/api/v1/incidents', {
+                    headers: { 'Authorization': `Bearer ${apiToken}` }
+                });
+                const data = await response.json();
+                const feed = document.getElementById('incident-feed');
+                feed.innerHTML = '';
+                
+                if (data.incidents.length === 0) {
+                    feed.innerHTML = '<div style="text-align:center; padding:12px; color:var(--text-muted); font-size:0.75rem;">No active incidents.</div>';
+                    return;
+                }
+
+                data.incidents.forEach(i => {
+                    const card = `
+                        <div class="incident-card">
+                            <div class="inc-header">
+                                <span class="inc-rep">${i.reporter_name} (${i.reporter_role})</span>
+                                <span class="inc-time">${new Date(i.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            </div>
+                            <div class="inc-msg">"${i.message}"</div>
+                            <div class="inc-meta">
+                                <span class="zone-pill ${i.risk_tag === 'RED' ? 'red' : 'yellow'}" style="padding:2px 6px; font-size:0.6rem;">${i.location_zone.toUpperCase()}</span>
+                                <span style="color:${i.risk_tag === 'RED' ? 'var(--accent-red)' : 'var(--accent-amber)'}; font-size:0.65rem; font-weight:700;">${i.severity.toUpperCase()}</span>
+                            </div>
+                        </div>
+                    `;
+                    feed.insertAdjacentHTML('beforeend', card);
+                });
+            } catch(e){}
+        }
+
+        async function runAllTests() {
+            const container = document.getElementById('test-progress-container');
+            const bar = document.getElementById('test-progress');
+            container.style.opacity = '1';
+            bar.style.width = '0%';
+            
+            resetTests(false); // reset states
+
+            for(let i=0; i<tests.length; i++) {
+                await runSingleTest(tests[i].id);
+                bar.style.width = `${((i+1)/tests.length)*100}%`;
+                // Small gap between tests
+                await new Promise(r => setTimeout(r, 600));
+            }
+            
+            setTimeout(() => { container.style.opacity = '0'; }, 1000);
+        }
+
+        function resetTests(full = true) {
+            tests.forEach(t => {
+                document.getElementById(`test-${t.id}`).className = 'test-card';
+                document.getElementById(`resp-${t.id}`).style.display = 'none';
+            });
+            
+            // Revert zones to default setup
+            zones.forEach(z => {
+                const zId = `zone-${z.toLowerCase().replace(/\s+/g, '').replace(/\./g, '')}`;
+                const pill = document.getElementById(zId);
+                if(pill) pill.className = 'zone-pill green';
+            });
+            document.getElementById('zone-orangi').className = 'zone-pill yellow';
+
+            document.getElementById('incident-feed').innerHTML = '<div style="text-align:center; padding:12px; color:var(--text-muted); font-size:0.75rem;">No active incidents reported.</div>';
+            document.getElementById('contra-card').style.display = 'none';
+            document.getElementById('contra-card').classList.remove('glow');
+            document.getElementById('movement-box').style.display = 'none';
+            document.getElementById('mov-progress').style.width = '0%';
+            
+            if(full) {
+                apiToken = null;
+                document.getElementById('pubsub-log').innerHTML = '<div class="term-line"><span class="term-sys">[GCP]</span> Pub/Sub pipeline active — listening on topics...</div>';
+                syncOrgs();
+            }
+        }
+
+        // Modal Logic
+        function openModal() { document.getElementById('orgModal').style.display = 'flex'; }
+        function closeModal() { 
+            document.getElementById('orgModal').style.display = 'none';
+            document.getElementById('newOrgName').value = ''; 
+        }
+        
+        async function submitOrg() {
+            const name = document.getElementById('newOrgName').value;
+            const type = document.getElementById('newOrgType').value;
+            if(!name) return alert("Enter organization name");
+            
+            try {
+                const response = await fetch('/api/v1/orgs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, org_type: type })
+                });
+                
+                if(response.ok) {
+                    const data = await response.json();
+                    logPubSub(`org.registered — Added workspace: ${data.org.name} (${data.org.org_id})`);
+                    closeModal();
+                    syncOrgs();
+                } else {
+                    alert("Error registering organization");
+                }
+            } catch(e) {
+                console.error(e);
+                alert("Connection failed to backend server");
+            }
+        }
+
+        // Initial Sync on load
+        window.onload = syncOrgs;
+    </script>
+</body>
+</html>

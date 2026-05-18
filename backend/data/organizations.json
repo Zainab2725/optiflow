@@ -1,0 +1,16 @@
+[
+  {
+    "org_id": "org-b8f3e58c",
+    "name": "Karachi Relief NGO",
+    "org_type": "NGO",
+    "created_at": "2026-05-17T15:43:38Z",
+    "active": true
+  },
+  {
+    "org_id": "org-f5d8e23b",
+    "name": "City Pharma Distributor",
+    "org_type": "PHARMA",
+    "created_at": "2026-05-17T15:43:38Z",
+    "active": true
+  }
+]

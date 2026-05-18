@@ -1,0 +1,30 @@
+[
+  {
+    "depot_id": "depot-site-01",
+    "depot_name": "SITE Industrial Hub",
+    "zone": "SITE",
+    "sku": "MED-001",
+    "item_name": "Panadol Extra 500mg",
+    "quantity": 150,
+    "min_threshold": 500,
+    "org_id": "org-b8f3e58c",
+    "id": "31390a15",
+    "timestamp": "2026-05-17T20:11:25.413551",
+    "threshold_breached": true,
+    "status": "CRITICAL"
+  },
+  {
+    "depot_id": "depot-site-01",
+    "depot_name": "SITE Industrial Hub",
+    "zone": "SITE",
+    "sku": "MED-001",
+    "item_name": "Panadol Extra 500mg",
+    "quantity": 150,
+    "min_threshold": 500,
+    "org_id": "org-b8f3e58c",
+    "id": "4cce9577",
+    "timestamp": "2026-05-17T20:14:16.161627",
+    "threshold_breached": true,
+    "status": "CRITICAL"
+  }
+]

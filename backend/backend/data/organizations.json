@@ -1,0 +1,30 @@
+[
+  {
+    "org_id": "org-c3fde98e",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "created_at": "2026-05-17T20:11:13.596067",
+    "active": true
+  },
+  {
+    "org_id": "org-c268b55b",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "created_at": "2026-05-17T20:11:13.610149",
+    "active": true
+  },
+  {
+    "org_id": "org-89b6d9a3",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "created_at": "2026-05-17T20:14:03.947730",
+    "active": true
+  },
+  {
+    "org_id": "org-0cf0b1a6",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "created_at": "2026-05-17T20:14:03.961630",
+    "active": true
+  }
+]

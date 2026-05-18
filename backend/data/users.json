@@ -1,0 +1,29 @@
+[
+  {
+    "user_id": "usr-001",
+    "name": "Zainab Ali",
+    "email": "admin@optiflow.pk",
+    "password": "optiflow123",
+    "org_id": "org-demo",
+    "org_name": "Karachi Crisis Response Authority",
+    "role": "admin"
+  },
+  {
+    "user_id": "usr-002",
+    "name": "Kamran Siddiqui",
+    "email": "manager@optiflow.pk",
+    "password": "optiflow123",
+    "org_id": "org-demo",
+    "org_name": "Karachi Crisis Response Authority",
+    "role": "manager"
+  },
+  {
+    "user_id": "usr-003",
+    "name": "Ahmed Raza",
+    "email": "driver@optiflow.pk",
+    "password": "optiflow123",
+    "org_id": "org-demo",
+    "org_name": "Karachi Crisis Response Authority",
+    "role": "driver"
+  }
+]
