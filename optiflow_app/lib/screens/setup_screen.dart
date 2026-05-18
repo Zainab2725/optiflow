@@ -102,9 +102,11 @@ class _SetupScreenState extends State<SetupScreen> {
               // Top descriptive header
               Container(
                 width: double.infinity,
-                color: AppTheme.primary.withOpacity(0.05),
                 padding: const EdgeInsets.all(16),
-                border: const Border(bottom: BorderSide(color: AppTheme.outlineVar, width: 0.5)),
+                decoration: BoxDecoration(
+                  color: AppTheme.primary.withOpacity(0.05),
+                  border: const Border(bottom: BorderSide(color: AppTheme.outlineVar, width: 0.5)),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -291,7 +293,10 @@ class _SetupScreenState extends State<SetupScreen> {
                 }
               },
               icon: const Icon(Icons.add),
-              style: IconButton.styleFrom(backgroundColor: AppTheme.primary, borderRadius: BorderRadius.circular(4)),
+              style: IconButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              ),
             ),
           ],
         ),
@@ -339,7 +344,10 @@ class _SetupScreenState extends State<SetupScreen> {
                 }
               },
               icon: const Icon(Icons.add),
-              style: IconButton.styleFrom(backgroundColor: AppTheme.primary, borderRadius: BorderRadius.circular(4)),
+              style: IconButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              ),
             ),
           ],
         ),
@@ -387,7 +395,10 @@ class _SetupScreenState extends State<SetupScreen> {
                 }
               },
               icon: const Icon(Icons.add),
-              style: IconButton.styleFrom(backgroundColor: AppTheme.primary, borderRadius: BorderRadius.circular(4)),
+              style: IconButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+              ),
             ),
           ],
         ),
