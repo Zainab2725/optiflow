@@ -75,16 +75,13 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     });
 
     _logStep("[INGESTION] Fetching and parsing telemetry channels...");
-    await Future.delayed(const Duration(milliseconds: 700));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     _logStep("[INGESTION] Bundling unstructured inputs: weather alerts, live news broadcasts, and sheet inventory records.");
-    await Future.delayed(const Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 400));
 
-    _logStep("[INSIGHTS] Dispatching telemetry payload to Insight Aggregation Agent...");
-    await Future.delayed(const Duration(milliseconds: 800));
-
-    _logStep("[INSIGHTS] Insight Agent (powered by gemini-2.5-flash) scanning for anomalies and risk signals...");
-    await Future.delayed(const Duration(milliseconds: 600));
+    _logStep("[AGENTIC PIPELINE] Initiating connection to FastAPI Multi-Agent system...");
+    await Future.delayed(const Duration(milliseconds: 400));
 
     try {
       final response = await _api.runAgentWorkflow(
@@ -94,19 +91,29 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
         stockSheetData: _stockController.text.trim().isEmpty ? null : _stockController.text,
       );
 
-      _logStep("[ORCHESTRATOR] Insights aggregated. Invoking Decision Orchestrator Agent...");
-      await Future.delayed(const Duration(milliseconds: 800));
+      // Extract the actual trace logs returned by the backend agents
+      final rawTrace = response['agent_trace'] as List<dynamic>? ?? [];
+      final List<String> backendTrace = rawTrace.map((e) => e.toString()).toList();
 
-      _logStep("[ORCHESTRATOR] Resolving resource conflicts, evaluating threat impact levels, and planning emergency routing...");
-      await Future.delayed(const Duration(milliseconds: 700));
-
-      _logStep("[SIMULATOR] Strategy formulated. Dispatching sandbox parameters to Operational Action Simulator...");
-      await Future.delayed(const Duration(milliseconds: 800));
-
-      _logStep("[SIMULATOR] Calculating before-vs-after logistical metrics, delay mitigation, and stock restoration profiles.");
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      _logStep("[COMPLETED] Multi-agent workflow executed successfully. Visualizing final tactical state.");
+      // Animate the backend agent trace logs sequentially in our console UI
+      for (final step in backendTrace) {
+        String prefix = "[AGENT]";
+        final lowerStep = step.toLowerCase();
+        if (lowerStep.contains('ingest')) {
+          prefix = "[INGESTION]";
+        } else if (lowerStep.contains('insight') || lowerStep.contains('signal') || lowerStep.contains('extract')) {
+          prefix = "[INSIGHTS]";
+        } else if (lowerStep.contains('decision') || lowerStep.contains('risk') || lowerStep.contains('orchestrat') || lowerStep.contains('evaluated')) {
+          prefix = "[ORCHESTRATOR]";
+        } else if (lowerStep.contains('simulat')) {
+          prefix = "[SIMULATOR]";
+        } else if (lowerStep.contains('complet') || lowerStep.contains('success')) {
+          prefix = "[COMPLETED]";
+        }
+        
+        _logStep("$prefix $step");
+        await Future.delayed(const Duration(milliseconds: 650));
+      }
 
       if (mounted) {
         setState(() {
@@ -141,6 +148,16 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
         }
       });
     }
+  }
+
+  double _safeParseDouble(dynamic value, {double defaultValue = 0.0}) {
+    if (value == null) return defaultValue;
+    if (value is num) return value.toDouble();
+    if (value is String) {
+      final clean = value.replaceAll('%', '').trim();
+      return double.tryParse(clean) ?? defaultValue;
+    }
+    return defaultValue;
   }
 
   @override
@@ -448,7 +465,17 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
   Widget _buildInsightsSection() {
     final insights = _agentResult?['insights'] as Map<String, dynamic>? ?? {};
     final signals = insights['signals'] as List<dynamic>? ?? [];
-    final riskScore = (insights['overall_risk_score'] ?? 0.0) as double;
+
+    final scores = insights['confidence_scores'] as Map<String, dynamic>? ?? {};
+    double avgConfidence = 0.0;
+    if (scores.isNotEmpty) {
+      double sum = 0;
+      scores.forEach((key, val) {
+        sum += _safeParseDouble(val, defaultValue: 1.0);
+      });
+      avgConfidence = sum / scores.length;
+    }
+    final riskScore = _safeParseDouble(insights['overall_risk_score'], defaultValue: avgConfidence);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -495,9 +522,31 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
               physics: const NeverScrollableScrollPhysics(),
               itemCount: signals.length,
               itemBuilder: (context, index) {
-                final sig = signals[index] as Map<String, dynamic>;
-                final severity = sig['severity']?.toString().toUpperCase() ?? 'MEDIUM';
-                final confidence = (sig['confidence'] ?? 1.0) as double;
+                final dynamic rawSig = signals[index];
+                String signalName = "";
+                double confidence = 1.0;
+                String severity = "MEDIUM";
+
+                if (rawSig is String) {
+                  signalName = rawSig;
+                  final scores = insights['confidence_scores'] as Map<String, dynamic>? ?? {};
+                  confidence = _safeParseDouble(scores[signalName], defaultValue: 1.0);
+                  
+                  // Infer severity from name
+                  final lowerName = signalName.toLowerCase();
+                  if (lowerName.contains('critical') || lowerName.contains('flood') || lowerName.contains('block')) {
+                    severity = 'CRITICAL';
+                  } else if (lowerName.contains('warning') || lowerName.contains('low')) {
+                    severity = 'HIGH';
+                  } else {
+                    severity = 'MEDIUM';
+                  }
+                } else if (rawSig is Map<String, dynamic>) {
+                  signalName = rawSig['name'] ?? rawSig['signal'] ?? 'Hazard Signal';
+                  confidence = _safeParseDouble(rawSig['confidence'], defaultValue: 1.0);
+                  severity = rawSig['severity']?.toString().toUpperCase() ?? 'MEDIUM';
+                }
+
                 Color sevColor = Colors.green;
                 if (severity == 'CRITICAL' || severity == 'HIGH') {
                   sevColor = Colors.redAccent;
@@ -530,7 +579,7 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          sig['name'] ?? sig['signal'] ?? 'Hazard Signal',
+                          signalName,
                           style: GoogleFonts.inter(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -644,9 +693,15 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     final after = simulation['after_state'] as Map<String, dynamic>? ?? {};
     final metrics = simulation['impact_metrics'] as Map<String, dynamic>? ?? {};
 
-    // Safety parse
-    final delayMinsSaved = metrics['delay_saved_mins'] ?? 140;
-    final riskReduction = metrics['risk_reduction_pct'] ?? 85.0;
+    final rawDelay = metrics['delay_saved_mins'] ?? metrics['delay_reduction'] ?? metrics['eta_improvement'] ?? '140';
+    final String delayDisplay = rawDelay.toString().toLowerCase().contains('min') || rawDelay.toString().contains('%') || rawDelay.toString().toLowerCase().contains('hour')
+        ? rawDelay.toString()
+        : '$rawDelay Mins';
+
+    final rawRisk = metrics['risk_reduction_pct'] ?? metrics['risk_reduction'] ?? '85';
+    final String riskDisplay = rawRisk.toString().contains('%') || rawRisk.toString().toLowerCase().contains('high') || rawRisk.toString().toLowerCase().contains('critical')
+        ? rawRisk.toString()
+        : '$rawRisk%';
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -698,8 +753,8 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                   child: Column(
                     children: [
                       Text(
-                        '$delayMinsSaved Mins',
-                        style: GoogleFonts.jetBrainsMono(color: const Color(0xFF60A5FA), fontSize: 18, fontWeight: FontWeight.bold),
+                        delayDisplay,
+                        style: GoogleFonts.jetBrainsMono(color: const Color(0xFF60A5FA), fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 2),
                       const Text(
@@ -722,8 +777,8 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                   child: Column(
                     children: [
                       Text(
-                        '${riskReduction.toStringAsFixed(0)}%',
-                        style: GoogleFonts.jetBrainsMono(color: const Color(0xFF34D399), fontSize: 18, fontWeight: FontWeight.bold),
+                        riskDisplay,
+                        style: GoogleFonts.jetBrainsMono(color: const Color(0xFF34D399), fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 2),
                       const Text(
@@ -754,17 +809,17 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                     const SizedBox(height: 8),
                     _buildCompareTile(
                       label: 'Transit Status',
-                      value: before['delivery_status']?.toString() ?? 'Delayed (Blocked)',
+                      value: before['delivery_status']?.toString() ?? before['route'] ?? before['status'] ?? 'Delayed (Blocked)',
                       color: Colors.redAccent,
                     ),
                     _buildCompareTile(
                       label: 'Stockout Risk',
-                      value: before['stockout_risk']?.toString() ?? 'CRITICAL (92%)',
+                      value: before['stockout_risk']?.toString() ?? before['stock_level'] ?? 'CRITICAL (92%)',
                       color: Colors.redAccent,
                     ),
                     _buildCompareTile(
                       label: 'Supplier Status',
-                      value: before['supplier_status']?.toString() ?? 'Inactive',
+                      value: before['supplier_status']?.toString() ?? before['status'] ?? 'Inactive',
                       color: Colors.redAccent,
                     ),
                   ],
@@ -783,17 +838,17 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                     const SizedBox(height: 8),
                     _buildCompareTile(
                       label: 'Transit Status',
-                      value: after['delivery_status']?.toString() ?? 'Re-routed (On-Time)',
+                      value: after['delivery_status']?.toString() ?? after['route'] ?? after['status'] ?? 'Re-routed (On-Time)',
                       color: Colors.greenAccent,
                     ),
                     _buildCompareTile(
                       label: 'Stockout Risk',
-                      value: after['stockout_risk']?.toString() ?? 'RESOLVED (12%)',
+                      value: after['stockout_risk']?.toString() ?? after['stock_level'] ?? 'RESOLVED (12%)',
                       color: Colors.greenAccent,
                     ),
                     _buildCompareTile(
                       label: 'Emergency Order',
-                      value: after['emergency_orders']?.toString() ?? 'Restock Sent',
+                      value: after['emergency_orders']?.toString() ?? after['status'] ?? 'Restock Sent',
                       color: Colors.greenAccent,
                     ),
                   ],
