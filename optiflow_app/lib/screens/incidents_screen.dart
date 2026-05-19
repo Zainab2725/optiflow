@@ -700,7 +700,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
             _buildCorridorRow(
               name: altRoute,
               status: 'AI DETOUR APPROVED',
-              badgeColor: AppTheme.successGreen,
+              badgeColor: AppTheme.success,
               desc: 'Optimized alternative route. Traffic flowing nominally.',
             ),
         ],

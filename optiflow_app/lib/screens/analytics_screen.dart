@@ -411,7 +411,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
             value: aiDelaySavings,
             subtitle: 'Logistics time saved',
             icon: Icons.timer_outlined,
-            color: AppTheme.successGreen,
+            color: AppTheme.success,
           ),
           _buildStatCard(
             title: 'AI RISK REDUCTION',
