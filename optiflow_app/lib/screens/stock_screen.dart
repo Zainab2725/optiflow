@@ -411,13 +411,13 @@ class _StockScreenState extends State<StockScreen> {
     // Compute status variables for the donut chart
     final int total = merged.length;
     final int healthy = merged.where((a) {
-      final qty = (a['quantity'] as num).toInt();
-      final thresh = (a['min_threshold'] as num).toInt();
+      final qty = ((a['quantity'] ?? 0) as num).toInt();
+      final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
       return qty >= thresh;
     }).length;
     final int warning = merged.where((a) {
-      final qty = (a['quantity'] as num).toInt();
-      final thresh = (a['min_threshold'] as num).toInt();
+      final qty = ((a['quantity'] ?? 0) as num).toInt();
+      final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
       return qty < thresh && qty >= thresh * 0.5;
     }).length;
     final int critical = total - healthy - warning;
@@ -428,14 +428,20 @@ class _StockScreenState extends State<StockScreen> {
 
     // Filter top critical alerts
     final criticalAlerts = merged.where((a) {
-      final qty = (a['quantity'] as num).toInt();
-      final thresh = (a['min_threshold'] as num).toInt();
+      final qty = ((a['quantity'] ?? 0) as num).toInt();
+      final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
       return qty < thresh;
     }).toList();
     // Sort critical alerts so that lower stock level ratios are shown first
     criticalAlerts.sort((a, b) {
-      final aRatio = (a['quantity'] as num).toDouble() / (a['min_threshold'] as num).toDouble();
-      final bRatio = (b['quantity'] as num).toDouble() / (b['min_threshold'] as num).toDouble();
+      final double qtyA = ((a['quantity'] ?? 0) as num).toDouble();
+      final double threshA = ((a['min_threshold'] ?? 500) as num).toDouble();
+      final double aRatio = threshA > 0 ? (qtyA / threshA) : 0.0;
+
+      final double qtyB = ((b['quantity'] ?? 0) as num).toDouble();
+      final double threshB = ((b['min_threshold'] ?? 500) as num).toDouble();
+      final double bRatio = threshB > 0 ? (qtyB / threshB) : 0.0;
+
       return aRatio.compareTo(bRatio);
     });
 
@@ -584,8 +590,8 @@ class _StockScreenState extends State<StockScreen> {
                       )
                     else
                       ...criticalAlerts.take(4).map((a) {
-                        final qty = (a['quantity'] as num).toInt();
-                        final thresh = (a['min_threshold'] as num).toInt();
+                        final qty = ((a['quantity'] ?? 0) as num).toInt();
+                        final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
                         final ratio = thresh > 0 ? (qty / thresh).clamp(0.0, 1.0) : 0.0;
                         final isCritical = qty < thresh * 0.5;
 
@@ -707,8 +713,8 @@ class _StockScreenState extends State<StockScreen> {
                 return qty < thresh; // Only show Warning and Critical products!
               }).map((a) {
                 final sector = getSector(a['sku'] ?? '');
-                final qty = (a['quantity'] as num).toInt();
-                final thresh = (a['min_threshold'] as num).toInt();
+                final qty = ((a['quantity'] ?? 0) as num).toInt();
+                final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
 
                 // Status calculation
                 String statusLabel = 'Nominal';
@@ -954,8 +960,8 @@ class _StockScreenState extends State<StockScreen> {
                 const SizedBox(height: 6),
                 () {
                   final a = _selectedInspectorAsset!;
-                  final qty = (a['quantity'] as num).toInt();
-                  final thresh = (a['min_threshold'] as num).toInt();
+                  final qty = ((a['quantity'] ?? 0) as num).toInt();
+                  final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
 
                   String estDepletion = '14 Days';
                   if (qty < thresh * 0.5) {

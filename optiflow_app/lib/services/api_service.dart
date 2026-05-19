@@ -391,14 +391,15 @@ class ApiService {
     String? stockSheetData,
   }) async {
     try {
+      final String targetInput = input ?? "DEMO SCENARIO: Flood warning in Karachi. Highway blocked. Insulin stock low. Delivery scheduled.";
       final res = await http.post(
-        Uri.parse('$baseUrl/api/v1/agent/run'),
+        Uri.parse('$baseUrl/agent/run'), // Supports both /agent/run and /api/v1/agent/run
         headers: _headers(),
         body: json.encode({
-          'input': input,
-          'news_text': newsText,
-          'weather_update': weatherUpdate,
-          'stock_sheet_data': stockSheetData,
+          'input': targetInput,
+          if (newsText != null) 'news_text': newsText,
+          if (weatherUpdate != null) 'weather_update': weatherUpdate,
+          if (stockSheetData != null) 'stock_sheet_data': stockSheetData,
         }),
       ).timeout(const Duration(seconds: 45));
 

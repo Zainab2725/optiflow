@@ -5,7 +5,6 @@ import 'stock_screen.dart';
 import 'incidents_screen.dart';
 import 'fleet_screen.dart';
 import 'analytics_screen.dart';
-import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,9 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: (i) => setState(() => _index = i),
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard_outlined),
-              activeIcon: Icon(Icons.dashboard),
-              label: 'Dashboard',
+              icon: Icon(Icons.space_dashboard_outlined),
+              activeIcon: Icon(Icons.space_dashboard),
+              label: 'Command Center',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.inventory_2_outlined),
@@ -67,3 +66,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

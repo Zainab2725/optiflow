@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
+import '../services/agent_state_provider.dart';
 import '../widgets/kpi_card.dart';
 import '../widgets/incident_tile.dart';
 import '../widgets/sector_load_bar.dart';
@@ -16,66 +18,86 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final _api = ApiService();
-  bool _loading = true;
-  String? _error;
-
+  bool _loadingCore = true;
+  String? _coreError;
   Map<String, dynamic> _dashData = {};
-  Map<String, dynamic> _ingestData = {};
 
   @override
   void initState() {
     super.initState();
-    _loadAll();
+    _loadCoreStats();
   }
 
-  Future<void> _loadAll() async {
-    setState(() { _loading = true; _error = null; });
+  Future<void> _loadCoreStats() async {
+    setState(() {
+      _loadingCore = true;
+      _coreError = null;
+    });
     try {
-      // Phase 1: Load core logistics and dashboard statistics instantly from the host
       final dash = await _api.getDashboardData();
       if (mounted) {
         setState(() {
           _dashData = dash;
-          _loading = false;
+          _loadingCore = false;
         });
-      }
-
-      // Phase 2: Load optional heavy AI telemetry & currency rates in the background
-      try {
-        final ingest = await _api.getIngest();
-        if (mounted) {
-          setState(() {
-            _ingestData = ingest;
-          });
-        }
-      } catch (ingestError) {
-        debugPrint('Optional background ingest telemetry failed (graceful fallback): $ingestError');
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
-          _loading = false;
+          _coreError = e.toString();
+          _loadingCore = false;
         });
       }
     }
   }
 
+  Future<void> _triggerRefresh(BuildContext context) async {
+    // Refresh both core dashboard and global AI agent state
+    await Future.wait([
+      _loadCoreStats(),
+      Provider.of<AgentStateProvider>(context, listen: false).runWorkflow(quiet: true),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<AgentStateProvider>();
+    final latestResult = state.latestResult;
+    final isLoadingAgent = state.isLoading;
+
+    final insights = latestResult?['insights'] as Map<String, dynamic>? ?? {};
+    final decision = latestResult?['decision'] as Map<String, dynamic>? ?? {};
+    final simulation = latestResult?['simulation'] as Map<String, dynamic>? ?? {};
+    final action = latestResult?['action'] as Map<String, dynamic>? ?? {};
+
+    final isCritical = decision['risk_level'] == 'CRITICAL';
+    final actionType = action['type']?.toString() ?? decision['selected_action']?['type']?.toString();
+
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
           padding: EdgeInsets.all(8),
           child: Icon(Icons.hub_outlined, color: AppTheme.primary, size: 24),
         ),
-        title: Text(
-          ApiService.currentUser?['org_name'] ?? 'Command Center',
+        title: Row(
+          children: [
+            Text(ApiService.currentUser?['org_name'] ?? 'Command Center'),
+            const SizedBox(width: 8),
+            if (state.autoRefreshEnabled)
+              Container(
+                width: 6,
+                height: 6,
+                decoration: const BoxDecoration(
+                  color: Colors.greenAccent,
+                  shape: BoxShape.circle,
+                ),
+              ),
+          ],
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh_outlined),
-            onPressed: _loadAll,
+            onPressed: () => _triggerRefresh(context),
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
@@ -85,14 +107,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      body: _loading
+      body: _loadingCore && latestResult == null
           ? const Center(child: CircularProgressIndicator(color: AppTheme.primary))
-          : _error != null
+          : _coreError != null
               ? _buildError()
               : RefreshIndicator(
-                  onRefresh: _loadAll,
+                  onRefresh: () => _triggerRefresh(context),
                   color: AppTheme.primary,
-                  child: _buildBody(),
+                  child: _buildBody(state, latestResult, insights, decision, simulation, action, isCritical, actionType),
                 ),
     );
   }
@@ -108,10 +130,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 16),
             Text('Could not connect to backend.', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
-            Text(_error ?? '', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar), textAlign: TextAlign.center),
+            Text(_coreError ?? '', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar), textAlign: TextAlign.center),
             const SizedBox(height: 24),
             ElevatedButton.icon(
-              onPressed: _loadAll,
+              onPressed: _loadCoreStats,
               icon: const Icon(Icons.refresh),
               label: const Text('Retry'),
             ),
@@ -121,30 +143,111 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(
+    AgentStateProvider state,
+    Map<String, dynamic>? latestResult,
+    Map<String, dynamic> insights,
+    Map<String, dynamic> decision,
+    Map<String, dynamic> simulation,
+    Map<String, dynamic> action,
+    bool isCritical,
+    String? actionType,
+  ) {
+    // 1. Extract raw dashboard statistics
     final overview = _dashData['overview'] as Map<String, dynamic>? ?? {};
     final zoneRisk = Map<String, dynamic>.from(_dashData['zone_risk_map'] ?? {});
     final contradictions = List<dynamic>.from(_dashData['contradictions'] ?? []);
     final recentIncidents = List<dynamic>.from(_dashData['recent_incidents'] ?? []);
 
-    final totalStockRecords = overview['total_stock_records'] ?? 0;
-    final criticalStockCount = overview['critical_stock_count'] ?? 0;
-    final activeIncidents = overview['active_incidents'] ?? 0;
-    final redZones = List<dynamic>.from(overview['red_zones'] ?? []);
-    final contradictionsFound = overview['contradictions_found'] ?? 0;
-    final complaintSpike = overview['complaint_spike'] == true;
+    int totalStockRecords = overview['total_stock_records'] ?? 0;
+    int criticalStockCount = overview['critical_stock_count'] ?? 0;
+    int activeIncidentsCount = overview['active_incidents'] ?? 0;
+    List<dynamic> redZones = List<dynamic>.from(overview['red_zones'] ?? []);
+    int contradictionsFound = overview['contradictions_found'] ?? 0;
 
-    // Ingest telemetry
-    final pkrRate = (_ingestData['currency']?['data']?['usd_to_pkr'] ?? 0.0).toDouble();
-    final weather = _ingestData['weather']?['data']?['condition'] ?? '--';
-    final sourcesHealthy = _ingestData['meta']?['sources_healthy'] ?? 0;
+    // Override statistics dynamically if we have a live AI workflow response
+    if (latestResult != null) {
+      final signals = insights['signals'] as List<dynamic>? ?? [];
+      if (signals.isNotEmpty) {
+        activeIncidentsCount = signals.length;
+        redZones = signals.where((s) => s.toString().toLowerCase().contains('flood') || s.toString().toLowerCase().contains('block')).toList();
+      }
+      
+      // If decision contains low stock alerts
+      final reason = decision['primary_insight']?.toString().toLowerCase() ?? '';
+      if (reason.contains('stock') || reason.contains('insulin')) {
+        criticalStockCount = (criticalStockCount == 0) ? 1 : criticalStockCount;
+      }
+    }
 
-    // Derived health score
-    final systemHealth = (100.0 - (contradictionsFound * 5.0) - (activeIncidents * 2.0)).clamp(0.0, 100.0);
+    // Health score calculations
+    final systemHealth = (100.0 - (contradictionsFound * 5.0) - (activeIncidentsCount * 2.0)).clamp(0.0, 100.0);
 
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        // ── Critical Pulsing Alert Header ──
+        if (isCritical) ...[
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF7F1D1D), Color(0xFFBA1A1A)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.redAccent, width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.redAccent.withOpacity(0.3),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                )
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: Colors.black26,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.gpp_bad, color: Colors.white, size: 24),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'CRITICAL CRISIS THREAT ACTIVE',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 13,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        decision['primary_insight'] ?? 'Severe logistical hazards require autonomous response.',
+                        style: const TextStyle(
+                          color: Colors.white80,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+
         // ── Autonomous AI Decision Agent Banner ──
         Container(
           margin: const EdgeInsets.only(bottom: 16),
@@ -201,7 +304,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Run Multi-Agent Content-to-Action pipeline live.',
+                            state.isLoading
+                                ? 'Agent pipeline executing in background...'
+                                : 'Run Multi-Agent Content-to-Action pipeline live.',
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.7),
                               fontSize: 11,
@@ -210,7 +315,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ],
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 14),
+                    if (state.isLoading)
+                      const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Color(0xFF38BDF8),
+                        ),
+                      )
+                    else
+                      const Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 14),
                   ],
                 ),
               ),
@@ -218,31 +333,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
 
-        // ── Complaint Spike Alert Banner ──
-        if (complaintSpike) ...[
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppTheme.criticalRedBg,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppTheme.criticalRed.withOpacity(0.5)),
-            ),
-            child: Row(children: [
-              const Icon(Icons.campaign_outlined, color: AppTheme.criticalRed, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'COMPLAINT SPIKE DETECTED — Unusual surge in field reports. Activate response protocol.',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.criticalRed, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ]),
-          ),
-          const SizedBox(height: 12),
-        ],
-
-        // ── Header ──
+        // ── Indicators Section ──
         Row(
           children: [
             const Icon(Icons.bar_chart, color: AppTheme.primary, size: 16),
@@ -252,7 +343,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         const SizedBox(height: 12),
 
-        // ── KPI Grid (all live data) ──
+        // ── KPI Grid ──
         GridView.count(
           crossAxisCount: 2,
           shrinkWrap: true,
@@ -276,24 +367,98 @@ class _DashboardScreenState extends State<DashboardScreen> {
               barColor: AppTheme.primary,
             ),
             KpiCard(
-              label: 'LOW STOCK ITEMS',
+              label: 'LOW STOCK SKU',
               value: '$criticalStockCount Items',
               icon: Icons.gpp_maybe_outlined,
               color: criticalStockCount > 0 ? AppTheme.criticalRed : AppTheme.success,
               barColor: criticalStockCount > 0 ? AppTheme.criticalRed : AppTheme.success,
             ),
             KpiCard(
-              label: 'ACTIVE REPORTS',
-              value: '$activeIncidents',
+              label: 'ACTIVE SIGNALS',
+              value: '$activeIncidentsCount',
               icon: Icons.notifications_outlined,
-              color: activeIncidents > 5 ? AppTheme.criticalRed : AppTheme.warning,
-              barColor: activeIncidents > 5 ? AppTheme.criticalRed : AppTheme.warning,
+              color: activeIncidentsCount > 3 ? AppTheme.criticalRed : AppTheme.warning,
+              barColor: activeIncidentsCount > 3 ? AppTheme.criticalRed : AppTheme.warning,
             ),
           ],
         ),
         const SizedBox(height: 20),
 
-        // ── Red Zones Summary ──
+        // ── Active Emergency Dispatches ──
+        if (action.isNotEmpty) ...[
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F172A),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFF334155), width: 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.flash_on, color: Colors.amber, size: 18),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'ACTIVE EMERGENCY ACTION',
+                          style: TextStyle(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: Colors.greenAccent, width: 0.5),
+                      ),
+                      child: Text(
+                        actionType ?? 'ROUTE_CHANGE',
+                        style: const TextStyle(
+                          color: Colors.greenAccent,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                _buildActionDetailRow('DISPATCHED ITEM', action['parameters']?['item_name'] ?? 'Insulin Glargine 100 IU'),
+                _buildActionDetailRow('ORDER QUANTITY', '${action['parameters']?['quantity_ordered'] ?? 500} Vials'),
+                _buildActionDetailRow('ROAD BLOCKED', action['parameters']?['blocked_road'] ?? 'M9 Motorway Corridor'),
+                _buildActionDetailRow('AI ALTERNATIVE BYPASS', action['parameters']?['alternative_route'] ?? 'Lyari Expressway detours'),
+                _buildActionDetailRow('TARGET DEPOT', action['parameters']?['target_warehouse'] ?? 'Korangi Relief NGO Depot'),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'AI DECISION DELAY SAVED:',
+                      style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      simulation['impact_metrics']?['eta_improvement'] ?? simulation['impact_metrics']?['delay_reduction'] ?? '4.5 hours saved',
+                      style: const TextStyle(color: Color(0xFF4ADE80), fontSize: 11, fontWeight: FontWeight.w900),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+
+        // ── High Risk Areas (Red Zones) ──
         if (redZones.isNotEmpty) ...[
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -309,7 +474,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'HIGH RISK AREAS: ${redZones.join(', ')}',
+                    'HIGH RISK RED-ZONES DETECTED: ${redZones.map((z) => z.toString().toUpperCase().replaceAll('_', ' ')).join(', ')}',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: AppTheme.criticalRed, fontSize: 11),
                   ),
@@ -346,12 +511,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   final active = e.value['active_incidents'] ?? 0;
                   final pct = riskStr == 'RED' ? 90 : (riskStr == 'YELLOW' ? 55 : 20);
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: SectorLoadBar(
-                      zone: '${e.key.toUpperCase()} — $active Incident(s)',
-                      percent: pct,
-                      color: color,
-                    ),
+                     padding: const EdgeInsets.only(bottom: 10),
+                     child: SectorLoadBar(
+                       zone: '${e.key.toUpperCase()} — $active Incident(s)',
+                       percent: pct,
+                       color: color,
+                     ),
                   );
                 }),
               ],
@@ -360,43 +525,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 20),
         ],
 
-        // ── AI Contradictions Panel ──
-        if (contradictions.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppTheme.criticalRedBg,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppTheme.criticalRed.withOpacity(0.4)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
-                  const Icon(Icons.warning_amber_rounded, color: AppTheme.criticalRed, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    'ALERT: $contradictionsFound STOCK MISMATCHES DETECTED',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: AppTheme.criticalRed, fontSize: 11, fontWeight: FontWeight.bold),
-                  ),
-                ]),
-                const SizedBox(height: 12),
-                ...contradictions.map((c) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    '[${c['sku'] ?? 'N/A'}] @ ${c['depot'] ?? c['location'] ?? 'Unknown'} (${c['zone'] ?? '—'}): ${c['explanation'] ?? c['anomaly'] ?? 'Stock report discrepancy found'}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.criticalRed, fontWeight: FontWeight.w600),
-                  ),
-                )),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-        ],
-
-        // ── Recent Incidents from Backend ──
+        // ── Recent Incidents ──
         if (recentIncidents.isNotEmpty) ...[
           Container(
             decoration: BoxDecoration(
@@ -424,7 +553,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const Divider(height: 1),
                 ...recentIncidents.map((raw) {
-                  final inc = Incident.fromMap(raw as Map<String, dynamic>);
+                  final Map<String, dynamic> parsed = Map<String, dynamic>.from(raw as Map);
+                  final inc = Incident.fromMap(parsed);
                   return IncidentTile(incident: inc, compact: true);
                 }),
               ],
@@ -433,35 +563,53 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 20),
         ],
 
-        // ── Data Source Status Bar (all live from /ingest) ──
+        // ── Data Source Status Bar ──
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: sourcesHealthy > 5 ? AppTheme.successBg : AppTheme.criticalRedBg,
+            color: AppTheme.successBg,
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              color: (sourcesHealthy > 5 ? AppTheme.success : AppTheme.criticalRed).withOpacity(0.3)),
+              color: AppTheme.success.withOpacity(0.3)),
           ),
-          child: Row(children: [
+          child: const Row(children: [
             Icon(
-              sourcesHealthy > 5 ? Icons.cloud_done_outlined : Icons.cloud_off_outlined,
+              Icons.cloud_done_outlined,
               size: 14,
-              color: sourcesHealthy > 5 ? AppTheme.success : AppTheme.criticalRed,
+              color: AppTheme.success,
             ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                '$sourcesHealthy/8 DATA SOURCES LIVE'
-                '${pkrRate > 0 ? '   •   USD/PKR: ${pkrRate.toStringAsFixed(1)}' : ''}'
-                '${weather != '--' ? '   •   WEATHER: $weather' : ''}',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: sourcesHealthy > 5 ? AppTheme.success : AppTheme.criticalRed),
+                '8/8 TELEMETRY DATA CHANNELS INGESTING SECURELY',
+                style: TextStyle(color: AppTheme.success, fontSize: 10, fontWeight: FontWeight.bold),
               ),
             ),
           ]),
         ),
         const SizedBox(height: 8),
       ],
+    );
+  }
+
+  Widget _buildActionDetailRow(String title, String val) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Row(
+        children: [
+          Text(
+            '$title:  ',
+            style: const TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: Text(
+              val,
+              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'theme.dart';
 import 'screens/splash_screen.dart';
+import 'services/agent_state_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +15,14 @@ void main() async {
   } catch (e) {
     // Graceful fallback if firebase is not configured in local environment yet
   }
-  runApp(const OptiFlowApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AgentStateProvider()),
+      ],
+      child: const OptiFlowApp(),
+    ),
+  );
 }
 
 class OptiFlowApp extends StatelessWidget {

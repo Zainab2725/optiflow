@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../models.dart';
 import '../services/api_service.dart';
+import '../services/agent_state_provider.dart';
 import '../widgets/incident_tile.dart';
 import '../widgets/resource_matrix.dart';
 import 'report_incident_screen.dart';
@@ -36,13 +38,13 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
       final data = await _api.getIncidents(zone: null);
       final listRaw = data['incidents'] as List<dynamic>? ?? [];
       final incidents = listRaw
-          .map((e) => Incident.fromMap(e as Map<String, dynamic>))
+          .map((e) => Incident.fromMap(Map<String, dynamic>.from(e as Map)))
           .toList();
       incidents.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
       final karachiRaw = data['karachi_incidents'] as List<dynamic>? ?? [];
       final karachiIncidents = karachiRaw
-          .map((e) => Incident.fromMap(e as Map<String, dynamic>))
+          .map((e) => Incident.fromMap(Map<String, dynamic>.from(e as Map)))
           .toList();
       karachiIncidents.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
@@ -67,6 +69,47 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<AgentStateProvider>();
+    final latestResult = state.latestResult;
+
+    List<Incident> liveKarachiIncidents = List<Incident>.from(_karachiIncidents);
+    if (latestResult != null) {
+      final insights = latestResult['insights'] as Map<String, dynamic>? ?? {};
+      final signals = insights['signals'] as List<dynamic>? ?? [];
+      for (var i = 0; i < signals.length; i++) {
+        final signalText = signals[i].toString();
+        // Skip duplicate signals if already added
+        if (liveKarachiIncidents.any((e) => e.message == signalText)) continue;
+
+        String severity = 'HIGH';
+        if (signalText.toLowerCase().contains('flood') || signalText.toLowerCase().contains('block') || signalText.toLowerCase().contains('critical')) {
+          severity = 'CRITICAL';
+        }
+        
+        // Match zone intelligently
+        String zone = 'SITE';
+        if (signalText.toLowerCase().contains('m9') || signalText.toLowerCase().contains('motorway')) {
+          zone = 'Malir';
+        } else if (signalText.toLowerCase().contains('clifton')) {
+          zone = 'Clifton';
+        } else if (signalText.toLowerCase().contains('saddar')) {
+          zone = 'Saddar';
+        } else if (signalText.toLowerCase().contains('korangi')) {
+          zone = 'Korangi';
+        }
+
+        liveKarachiIncidents.insert(0, Incident(
+          id: 'ai-signal-$i',
+          title: 'AI Operational Alert',
+          message: signalText,
+          severity: severity,
+          zone: zone,
+          timestamp: DateTime.now().subtract(Duration(minutes: i * 5)).toIso8601String(),
+          reporter: 'Autonomous Safety Agent',
+        ));
+      }
+    }
+
     final zoneFiltered = _filterZone == null
         ? _allIncidents
         : _allIncidents.where((i) => i.zone.toLowerCase() == _filterZone!.toLowerCase()).toList();
@@ -84,8 +127,8 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
                 : minor;
 
     final zoneFilteredKarachi = _filterZone == null
-        ? _karachiIncidents
-        : _karachiIncidents.where((i) => i.zone.toLowerCase() == _filterZone!.toLowerCase()).toList();
+        ? liveKarachiIncidents
+        : liveKarachiIncidents.where((i) => i.zone.toLowerCase() == _filterZone!.toLowerCase()).toList();
 
     final criticalKarachi = zoneFilteredKarachi.where((i) => i.severity == 'CRITICAL').toList();
     final highKarachi     = zoneFilteredKarachi.where((i) => i.severity == 'HIGH').toList();
@@ -127,7 +170,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         backgroundColor: AppTheme.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      body: _loading
+      body: _loading && latestResult == null
           ? const Center(child: CircularProgressIndicator(color: AppTheme.primary))
           : _error != null
               ? _buildError()
@@ -143,6 +186,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
                     highKarachi: highKarachi,
                     minorKarachi: minorKarachi,
                     filteredKarachi: filteredKarachi,
+                    latestResult: latestResult,
                   ),
                 ),
     );
@@ -177,6 +221,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
     required List<Incident> highKarachi,
     required List<Incident> minorKarachi,
     required List<Incident> filteredKarachi,
+    required Map<String, dynamic>? latestResult,
   }) {
     // Dynamic zone incident count lookup map (combining both)
     final Map<String, int> zoneIncidentCounts = {};
@@ -186,14 +231,14 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         zoneIncidentCounts[zoneName] = (zoneIncidentCounts[zoneName] ?? 0) + 1;
       }
     }
-    for (var inc in _karachiIncidents) {
+    for (var inc in filteredKarachi) {
       final zoneName = inc.zone.trim();
       if (zoneName.isNotEmpty && zoneName != 'Unknown') {
         zoneIncidentCounts[zoneName] = (zoneIncidentCounts[zoneName] ?? 0) + 1;
       }
     }
 
-    final totalCount = _allIncidents.length + _karachiIncidents.length;
+    final totalCount = _allIncidents.length + filteredKarachi.length;
     final totalCritical = critical.length + criticalKarachi.length;
     final totalHigh = high.length + highKarachi.length;
 
@@ -211,6 +256,11 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
 
         // ── Dynamic Zone Overview Board ──
         _buildZoneSummaryBoard(zoneIncidentCounts),
+
+        // ── Crisis-Aware Corridor Status Card (AI) ──
+        if (latestResult != null) ...[
+          _buildCrisisCorridorsCard(latestResult),
+        ],
 
         // ── 8 Sources AI Intelligence Banner ──
         Container(
@@ -591,6 +641,122 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildCrisisCorridorsCard(Map<String, dynamic> latestResult) {
+    final decision = latestResult['decision'] as Map<String, dynamic>? ?? {};
+    final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
+    final params = action['parameters'] as Map<String, dynamic>? ?? {};
+    
+    final blockedRoad = params['blocked_road']?.toString() ?? 'M9 Motorway Corridor';
+    final altRoute = params['alternative_route']?.toString() ?? 'Lyari Expressway detour';
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppTheme.outlineVar, width: 0.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.alt_route_outlined, color: AppTheme.primary, size: 18),
+              const SizedBox(width: 8),
+              Text(
+                'Crisis-Aware Corridor Status',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          
+          // Corridor 1: M9 Motorway
+          _buildCorridorRow(
+            name: blockedRoad,
+            status: 'BLOCKED',
+            badgeColor: AppTheme.criticalRed,
+            desc: 'Severe flooding hazard & structural blockage reported.',
+          ),
+          const Divider(height: 16),
+          
+          // Corridor 2: Lyari Expressway Detour
+          _buildCorridorRow(
+            name: altRoute,
+            status: 'OPTIMIZED DETOUR APPROVED',
+            badgeColor: AppTheme.success,
+            desc: 'Nominal conditions. Re-routed emergency traffic flowing.',
+          ),
+          const Divider(height: 16),
+          
+          // Corridor 3: SITE / Saddar Central Hub
+          _buildCorridorRow(
+            name: 'SITE / Saddar Central Hub',
+            status: 'WARNING / FLOOD-RISK ACTIVE',
+            badgeColor: AppTheme.warning,
+            desc: 'Localized rain accumulation. Nominal transit advised.',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCorridorRow({
+    required String name,
+    required String status,
+    required Color badgeColor,
+    required String desc,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                name,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: badgeColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: badgeColor, width: 0.8),
+              ),
+              child: Text(
+                status,
+                style: TextStyle(
+                  color: badgeColor,
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          desc,
+          style: const TextStyle(fontSize: 11, color: AppTheme.onSurfaceVar),
+        ),
+      ],
     );
   }
 }

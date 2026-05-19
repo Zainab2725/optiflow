@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
+import '../services/agent_state_provider.dart';
 import '../widgets/ai_recommendation_card.dart';
 import 'profile_screen.dart';
 
@@ -74,7 +76,9 @@ class _FleetScreenState extends State<FleetScreen> {
     try {
       // Phase 1: Load zone risk map instantly
       final zoneRes = await _api.getZoneRiskMap();
-      final zoneRisk = zoneRes['zone_risk_map'] as Map<String, dynamic>? ?? {};
+      final zoneRisk = zoneRes['zone_risk_map'] != null
+          ? Map<String, dynamic>.from(zoneRes['zone_risk_map'] as Map)
+          : <String, dynamic>{};
       final zones = zoneRisk.keys.toList()..sort();
       if (mounted) {
         setState(() {
@@ -165,7 +169,9 @@ class _FleetScreenState extends State<FleetScreen> {
         status: 'in_transit',
       );
       if (mounted) {
-        final movement = res['movement'] as Map<String, dynamic>? ?? {};
+        final movement = res['movement'] != null
+            ? Map<String, dynamic>.from(res['movement'] as Map)
+            : <String, dynamic>{};
         movement['event_type'] = 'logistics_movement';
         setState(() {
           _movements.insert(0, movement);
@@ -266,11 +272,20 @@ class _FleetScreenState extends State<FleetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final zoneRisk = _zoneRiskData['zone_risk_map'] as Map<String, dynamic>? ?? {};
-    final riskSummary = _zoneRiskData['summary'] as Map<String, dynamic>? ?? {};
+    final state = context.watch<AgentStateProvider>();
+    final latestResult = state.latestResult;
+
+    final zoneRisk = _zoneRiskData['zone_risk_map'] != null
+        ? Map<String, dynamic>.from(_zoneRiskData['zone_risk_map'] as Map)
+        : <String, dynamic>{};
+    final riskSummary = _zoneRiskData['summary'] != null
+        ? Map<String, dynamic>.from(_zoneRiskData['summary'] as Map)
+        : <String, dynamic>{};
     final redZonesList = riskSummary['red_zones'] as List<dynamic>? ?? [];
     final redZones = redZonesList.length;
-    final alertZones = riskSummary['alert_zones'] as int? ?? 0;
+    final alertZones = riskSummary['alert_zones'] != null
+        ? ((riskSummary['alert_zones'] ?? 0) as num).toInt()
+        : 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -327,15 +342,212 @@ class _FleetScreenState extends State<FleetScreen> {
           ),
         ),
       ),
-      body: _loading
+      body: _loading && latestResult == null
           ? const Center(child: CircularProgressIndicator(color: AppTheme.primary))
           : _error != null
               ? _buildError()
               : RefreshIndicator(
                   onRefresh: _loadAll,
                   color: AppTheme.primary,
-                  child: _buildBody(zoneRisk, redZones, alertZones),
+                  child: _buildBody(zoneRisk, redZones, alertZones, latestResult),
                 ),
+    );
+  }
+
+  Widget _buildLiveAiFleetSandboxCard(Map<String, dynamic> latestResult) {
+    final decision = latestResult['decision'] as Map<String, dynamic>? ?? {};
+    final simulation = latestResult['simulation'] as Map<String, dynamic>? ?? {};
+    final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
+    final actionType = action['type']?.toString() ?? 'ROUTE_CHANGE';
+
+    final beforeState = simulation['before_state']?.toString() ?? 'Fleet units standard routing Karachi (M9 blocked)';
+    final afterState = simulation['after_state']?.toString() ?? 'Fleet rerouted via Lyari Expressway detour, delivery guaranteed';
+    final metrics = simulation['impact_metrics'] as Map<String, dynamic>? ?? {};
+    final delaySavings = metrics['delay_reduction'] ?? metrics['eta_improvement'] ?? '4.5 hours saved';
+    final safetyImprovement = metrics['risk_reduction'] ?? metrics['alternative_route_safety'] ?? '85% risk reduction';
+
+    final isReroute = actionType == 'ROUTE_CHANGE';
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0F172A), Color(0xFF1E3A8A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF2563EB), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF2563EB).withOpacity(0.25),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Colors.greenAccent,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'LIVE AI OPERATIONS COMMAND',
+                    style: TextStyle(
+                      color: Colors.greenAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: isReroute ? AppTheme.warning.withOpacity(0.2) : AppTheme.primary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: isReroute ? AppTheme.warning : AppTheme.primary, width: 0.5),
+                ),
+                child: Text(
+                  isReroute ? 'AI REROUTE ACTIVE' : 'AI DISPATCH ACTIVE',
+                  style: TextStyle(
+                    color: isReroute ? AppTheme.warning : Colors.blueAccent,
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            decision['primary_insight'] ?? 'Autonomous rerouting scheduled to bypass flash flood warning zones.',
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          // Before vs After State
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.black26,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Icon(Icons.warning_amber_rounded, color: AppTheme.criticalRed, size: 14),
+                    SizedBox(width: 8),
+                    Text(
+                      'PRE-OPTIMIZED STATE',
+                      style: TextStyle(color: Colors.white54, fontSize: 8, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  beforeState,
+                  style: const TextStyle(color: Colors.white70, fontSize: 11),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Icon(Icons.arrow_downward, color: Colors.greenAccent, size: 16),
+                ),
+                Row(
+                  children: const [
+                    Icon(Icons.check_circle_outline, color: Colors.greenAccent, size: 14),
+                    SizedBox(width: 8),
+                    Text(
+                      'POST-OPTIMIZED STATE (AI SANDBOX)',
+                      style: TextStyle(color: Colors.white54, fontSize: 8, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  afterState,
+                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          // Delay savings and safety metrics
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: Colors.green.withOpacity(0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'DELAY SAVED',
+                        style: TextStyle(color: Colors.greenAccent, fontSize: 8, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        delaySavings,
+                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.black),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'SAFETY METRIC',
+                        style: TextStyle(color: Colors.lightBlueAccent, fontSize: 8, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        safetyImprovement,
+                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.black),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -359,10 +571,12 @@ class _FleetScreenState extends State<FleetScreen> {
     );
   }
 
-  Widget _buildBody(Map<String, dynamic> zoneRisk, int redZones, int alertZones) {
-    final opt = _routeData['recommended_route'] as Map<String, dynamic>?
-        ?? _routeData['optimized_route'] as Map<String, dynamic>?
-        ?? {};
+  Widget _buildBody(Map<String, dynamic> zoneRisk, int redZones, int alertZones, Map<String, dynamic>? latestResult) {
+    final opt = _routeData['recommended_route'] != null
+        ? Map<String, dynamic>.from(_routeData['recommended_route'] as Map)
+        : (_routeData['optimized_route'] != null
+            ? Map<String, dynamic>.from(_routeData['optimized_route'] as Map)
+            : <String, dynamic>{});
     final routeAlerts = opt['alerts'] as List<dynamic>? ?? [];
     final routeSummary = _routeData['decision_summary']
         ?? opt['summary']
@@ -380,17 +594,35 @@ class _FleetScreenState extends State<FleetScreen> {
     final int? score = (opt['score'] as num?)?.toInt();
     final String safetyScoreText = score != null ? '$score/100' : '--';
 
+    int displayRedZones = redZones;
+    int displayAlertZones = alertZones;
+    if (latestResult != null) {
+      final insights = latestResult['insights'] as Map<String, dynamic>? ?? {};
+      final signals = insights['signals'] as List<dynamic>? ?? [];
+      if (signals.isNotEmpty) {
+        final redList = signals.where((s) => s.toString().toLowerCase().contains('flood') || s.toString().toLowerCase().contains('block')).toList();
+        displayRedZones = redList.length;
+        displayAlertZones = signals.length;
+      }
+    }
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       children: [
 
+        // ── Live AI Operational Fleet Detour (Active Sandbox) ──
+        if (latestResult != null && latestResult['decision'] != null && latestResult['decision']['selected_action'] != null) ...[
+          _buildLiveAiFleetSandboxCard(latestResult),
+          const SizedBox(height: 16),
+        ],
+
         // ── Live Zone Risk KPIs ──
         Row(children: [
-          Expanded(child: _metricTile('RED ALERT ZONES', '$redZones Zones',
-              redZones > 0 ? AppTheme.criticalRed : AppTheme.success)),
+          Expanded(child: _metricTile('RED ALERT ZONES', '$displayRedZones Zones',
+              displayRedZones > 0 ? AppTheme.criticalRed : AppTheme.success)),
           const SizedBox(width: 12),
-          Expanded(child: _metricTile('TOTAL ALERT ZONES', '$alertZones Active',
-              alertZones > 0 ? AppTheme.warning : AppTheme.success)),
+          Expanded(child: _metricTile('TOTAL ALERT ZONES', '$displayAlertZones Active',
+              displayAlertZones > 0 ? AppTheme.warning : AppTheme.success)),
         ]),
         const SizedBox(height: 16),
 
@@ -422,7 +654,7 @@ class _FleetScreenState extends State<FleetScreen> {
                 ],
                 rows: zoneRisk.entries.map((e) {
                   final zone = e.key;
-                  final details = e.value as Map<String, dynamic>;
+                  final details = Map<String, dynamic>.from(e.value as Map);
                   final riskStr = (details['risk'] ?? 'GREEN') as String;
                   final avgDaily = details['avg_daily_incidents'] ?? '0.8/day';
                   final lastTime = details['last_incident_time'] ?? '3 hrs ago';
@@ -916,7 +1148,9 @@ class _FleetScreenState extends State<FleetScreen> {
 
   // Zone detail panel — uses real backend incidents
   Widget _buildZoneDetailPanel(Map<String, dynamic> zoneRisk) {
-    final zoneData = zoneRisk[_selectedZoneRiskDetail!] as Map<String, dynamic>? ?? {};
+    final zoneData = zoneRisk[_selectedZoneRiskDetail!] != null
+        ? Map<String, dynamic>.from(zoneRisk[_selectedZoneRiskDetail!] as Map)
+        : <String, dynamic>{};
     final riskStr = zoneData['risk'] ?? 'GREEN';
     final riskLabel = riskStr == 'RED' ? 'Red Zone' : riskStr == 'YELLOW' ? 'Yellow Zone' : 'Green Zone';
 

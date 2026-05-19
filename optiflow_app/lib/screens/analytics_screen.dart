@@ -54,21 +54,37 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
       List<dynamic> activeMovements = [];
       try {
         final movementsList = await _api.getMovements();
-        activeMovements = movementsList
-            .where((m) => m['status'] == 'in_transit' || m['status'] == 'dispatched')
-            .toList();
+        if (movementsList is List) {
+          activeMovements = movementsList
+              .where((m) => m is Map)
+              .map((m) => Map<String, dynamic>.from(m as Map))
+              .where((m) => m['status'] == 'in_transit' || m['status'] == 'dispatched')
+              .toList();
+        }
       } catch (_) {}
 
       List<dynamic> incidentsList = [];
       try {
         final incidentsResult = await _api.getIncidents();
-        incidentsList = incidentsResult['karachi_incidents'] ?? [];
+        if (incidentsResult is Map && incidentsResult['karachi_incidents'] is List) {
+          incidentsList = (incidentsResult['karachi_incidents'] as List)
+              .where((i) => i is Map)
+              .map((i) => Map<String, dynamic>.from(i as Map))
+              .toList();
+        }
       } catch (_) {}
 
       if (mounted) {
         setState(() {
-          _zoneRiskMap = riskData['zone_risk_map'] ?? {};
-          _stockList = stockData['records'] ?? [];
+          _zoneRiskMap = (riskData is Map && riskData['zone_risk_map'] is Map)
+              ? Map<String, dynamic>.from(riskData['zone_risk_map'] as Map)
+              : {};
+          _stockList = (stockData is Map && stockData['records'] is List)
+              ? (stockData['records'] as List)
+                  .where((e) => e is Map)
+                  .map((e) => Map<String, dynamic>.from(e as Map))
+                  .toList()
+              : [];
           _activeMovements = activeMovements;
           _incidentsList = incidentsList;
           _loading = false;
@@ -101,10 +117,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     String highestZone = "Saddar";
     double highestScore = 0.0;
     _zoneRiskMap.forEach((zone, data) {
-      double score = (data['risk_pct'] ?? 0.0).toDouble();
-      if (score > highestScore) {
-        highestScore = score;
-        highestZone = zone;
+      if (data is Map) {
+        double score = (data['risk_percent'] ?? data['risk_pct'] ?? 0.0).toDouble();
+        if (score > highestScore) {
+          highestScore = score;
+          highestZone = zone;
+        }
       }
     });
 
@@ -123,8 +141,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
 
     // 1. Stock Replenishments
     for (var stock in _stockList) {
-      final int qty = (stock['quantity'] ?? 0) as int;
-      final int threshold = (stock['min_threshold'] ?? 500) as int;
+      if (stock is! Map) continue;
+      final int qty = ((stock['quantity'] ?? 0) as num).toInt();
+      final int threshold = ((stock['min_threshold'] ?? 500) as num).toInt();
       final String sku = (stock['sku'] ?? '') as String;
       final String itemName = (stock['item_name'] ?? '') as String;
       final String zone = (stock['zone'] ?? 'Unknown') as String;
@@ -143,6 +162,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
 
     // 2. Critical/High Incident Response
     for (var incident in _incidentsList) {
+      if (incident is! Map) continue;
       final String msg = incident['message'] ?? '';
       final String severity = (incident['severity'] ?? 'medium').toString().toUpperCase();
       final String zone = incident['location_zone'] ?? incident['zone'] ?? 'Unknown';
@@ -163,16 +183,18 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     // 3. High Risk Zone Diverts
     if (_zoneRiskMap.isNotEmpty) {
       _zoneRiskMap.forEach((zone, data) {
-        final double score = (data['risk_pct'] ?? 0.0).toDouble();
-        if (score >= 65.0) {
-          recommendations.add({
-            'type': 'risk',
-            'severity': 'high',
-            'title': 'High Risk Corridor Divert: $zone',
-            'description': '$zone zone is exhibiting elevated crisis risk indicators (${score.toStringAsFixed(0)}%). Consider pausing dispatches and establishing supply hub reroutes.',
-            'action': 'Optimize Routes',
-            'target': const FleetScreen(),
-          });
+        if (data is Map) {
+          final double score = (data['risk_percent'] ?? data['risk_pct'] ?? 0.0).toDouble();
+          if (score >= 65.0) {
+            recommendations.add({
+              'type': 'risk',
+              'severity': 'high',
+              'title': 'High Risk Corridor Divert: $zone',
+              'description': '$zone zone is exhibiting elevated crisis risk indicators (${score.toStringAsFixed(0)}%). Consider pausing dispatches and establishing supply hub reroutes.',
+              'action': 'Optimize Routes',
+              'target': const FleetScreen(),
+            });
+          }
         }
       });
     }
@@ -196,9 +218,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
   int _getCriticalStockCount() {
     int count = 0;
     for (var s in _stockList) {
-      final int qty = (s['quantity'] ?? 0) as int;
-      final int threshold = (s['min_threshold'] ?? 500) as int;
-      if (qty < threshold) count++;
+      if (s is Map) {
+        final int qty = ((s['quantity'] ?? 0) as num).toInt();
+        final int threshold = ((s['min_threshold'] ?? 500) as num).toInt();
+        if (qty < threshold) count++;
+      }
     }
     return count;
   }
@@ -208,10 +232,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     String highestZone = "Saddar";
     double highestScore = 0.0;
     _zoneRiskMap.forEach((zone, data) {
-      double score = (data['risk_pct'] ?? 0.0).toDouble();
-      if (score > highestScore) {
-        highestScore = score;
-        highestZone = zone;
+      if (data is Map) {
+        double score = (data['risk_percent'] ?? data['risk_pct'] ?? 0.0).toDouble();
+        if (score > highestScore) {
+          highestScore = score;
+          highestZone = zone;
+        }
       }
     });
     return {'zone': highestZone, 'risk': '${highestScore.toStringAsFixed(0)}%'};
@@ -597,8 +623,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
 
   Widget _buildZoneRiskChartCard() {
     // Prepare Top 5 active risk zones
-    final sortedZones = _zoneRiskMap.entries.toList()
-      ..sort((a, b) => (b.value['risk_pct'] ?? 0).compareTo(a.value['risk_pct'] ?? 0));
+    final sortedZones = _zoneRiskMap.entries.where((e) => e.value is Map).toList()
+      ..sort((a, b) {
+        final double scoreA = ((a.value as Map)['risk_percent'] ?? (a.value as Map)['risk_pct'] ?? 0).toDouble();
+        final double scoreB = ((b.value as Map)['risk_percent'] ?? (b.value as Map)['risk_pct'] ?? 0).toDouble();
+        return scoreB.compareTo(scoreA);
+      });
     final zonesToShow = sortedZones.take(5).toList();
 
     return Container(
@@ -694,7 +724,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
                       borderData: FlBorderData(show: false),
                       barGroups: zonesToShow.asMap().entries.map((entry) {
                         final idx = entry.key;
-                        final double score = (entry.value.value['risk_pct'] ?? 0.0).toDouble();
+                        final valMap = entry.value.value as Map;
+                        final double score = (valMap['risk_percent'] ?? valMap['risk_pct'] ?? 0.0).toDouble();
                         Color barCol = AppTheme.success;
                         if (score >= 70.0) {
                           barCol = AppTheme.criticalRed;
@@ -729,7 +760,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
 
   Widget _buildStockShortfallChartCard() {
     // Filter stock entries to show top 5 in greatest need of attention
-    final stockToShow = List<dynamic>.from(_stockList)
+    final stockToShow = _stockList.where((s) => s is Map).map((s) => s as Map).toList()
       ..sort((a, b) {
         final double qtyA = (a['quantity'] ?? 0).toDouble();
         final double limitA = (a['min_threshold'] ?? 500).toDouble();
@@ -874,15 +905,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     int minor = 0;
 
     for (var incident in _incidentsList) {
-      final String sev = (incident['severity'] ?? 'medium').toString().toLowerCase();
-      if (sev == 'critical') {
-        critical++;
-      } else if (sev == 'high') {
-        high++;
-      } else if (sev == 'minor' || sev == 'low' || sev == 'green') {
-        minor++;
-      } else {
-        medium++;
+      if (incident is Map) {
+        final String sev = (incident['severity'] ?? 'medium').toString().toLowerCase();
+        if (sev == 'critical') {
+          critical++;
+        } else if (sev == 'high') {
+          high++;
+        } else if (sev == 'minor' || sev == 'low' || sev == 'green') {
+          minor++;
+        } else {
+          medium++;
+        }
       }
     }
 
@@ -1083,6 +1116,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
               separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (context, index) {
                 final m = _activeMovements[index];
+                if (m is! Map) return const SizedBox();
                 return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   decoration: BoxDecoration(
@@ -1096,7 +1130,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          '${m['driver'] ?? 'Unit'} driving vehicle ${m['vehicle'] ?? 'ID'} (${m['sku'] ?? 'GENERAL'})',
+                          '${m['driver_name'] ?? m['driver'] ?? 'Unit'} driving vehicle ${m['vehicle_id'] ?? m['vehicle'] ?? 'ID'} (${m['sku'] ?? 'GENERAL'})',
                           style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
                         ),
                       ),
@@ -1107,7 +1141,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          '${m['from'] ?? 'Central'} ➔ ${m['to'] ?? 'Destination'}',
+                          '${m['origin_zone'] ?? m['from'] ?? 'Central'} ➔ ${m['destination_zone'] ?? m['to'] ?? 'Destination'}',
                           style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
