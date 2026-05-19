@@ -7,8 +7,8 @@
     "message": "Zero stock at Korangi supply point, urgent shortage",
     "severity": "critical",
     "org_id": "org-demo",
-    "id": "68cf1510",
-    "timestamp": "2026-05-19T19:19:21.608024",
+    "id": "95b3a65b",
+    "timestamp": "2026-05-19T19:37:13.549217",
     "resolved": false,
     "risk_tag": "RED"
   },
@@ -20,8 +20,8 @@
     "message": "Confirmed zero physical stock, patients waiting",
     "severity": "critical",
     "org_id": "org-demo",
-    "id": "6a6fea89",
-    "timestamp": "2026-05-19T19:19:21.623482",
+    "id": "d284043d",
+    "timestamp": "2026-05-19T19:37:13.562776",
     "resolved": false,
     "risk_tag": "RED"
   },
@@ -33,8 +33,8 @@
     "message": "Third report - shelves empty despite system showing stock",
     "severity": "critical",
     "org_id": "org-demo",
-    "id": "04ac071d",
-    "timestamp": "2026-05-19T19:19:21.639334",
+    "id": "a9007d10",
+    "timestamp": "2026-05-19T19:37:13.576115",
     "resolved": false,
     "risk_tag": "RED"
   }

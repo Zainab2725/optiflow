@@ -384,6 +384,35 @@ class ApiService {
     }
   }
 
+  Future<Map<String, dynamic>> runAgentWorkflow({
+    String? input,
+    String? newsText,
+    String? weatherUpdate,
+    String? stockSheetData,
+  }) async {
+    try {
+      final res = await http.post(
+        Uri.parse('$baseUrl/api/v1/agent/run'),
+        headers: _headers(),
+        body: json.encode({
+          'input': input,
+          'news_text': newsText,
+          'weather_update': weatherUpdate,
+          'stock_sheet_data': stockSheetData,
+        }),
+      ).timeout(const Duration(seconds: 45));
+
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Agent run failed');
+      }
+    } catch (e) {
+      throw Exception('Autonomous Agent run failed: $e');
+    }
+  }
+
   Future<Map<String, dynamic>> getStatus() async {
     try {
       final res = await http.get(

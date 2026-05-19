@@ -8,8 +8,8 @@
     "quantity": 150,
     "min_threshold": 500,
     "org_id": "org-demo",
-    "id": "e5fef518",
-    "timestamp": "2026-05-19T19:19:21.592860",
+    "id": "55e15b3d",
+    "timestamp": "2026-05-19T19:37:13.538096",
     "threshold_breached": true,
     "status": "CRITICAL"
   }

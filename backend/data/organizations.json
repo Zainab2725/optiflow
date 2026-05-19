@@ -104,5 +104,21 @@
     "custom_sheet_url": null,
     "created_at": "2026-05-19T19:19:21.561217",
     "active": true
+  },
+  {
+    "org_id": "org-7af71ade",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "custom_sheet_url": null,
+    "created_at": "2026-05-19T19:37:13.503614",
+    "active": true
+  },
+  {
+    "org_id": "org-2c76e6c1",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "custom_sheet_url": null,
+    "created_at": "2026-05-19T19:37:13.515807",
+    "active": true
   }
 ]

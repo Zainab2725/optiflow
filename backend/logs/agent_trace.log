@@ -4,3 +4,9 @@
 [2026-05-19T19:19:51.962519] decision generated
 [2026-05-19T19:19:59.266449] simulation executed
 [2026-05-19T19:19:59.271233] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T19:37:21.036881] ingestion completed
+[2026-05-19T19:37:24.060326] insight extraction done
+[2026-05-19T19:37:37.134355] risk evaluated
+[2026-05-19T19:37:37.138539] decision generated
+[2026-05-19T19:37:41.837346] simulation executed
+[2026-05-19T19:37:41.841235] Workflow completed successfully. Action: ROUTE_CHANGE

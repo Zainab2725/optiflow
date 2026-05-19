@@ -295,5 +295,38 @@
     "id": "b6d61165",
     "timestamp": "2026-05-19T19:19:21.642410",
     "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Driver Tariq (driver)",
+    "sku": "MED-001",
+    "product_name": "Zero stock at Korangi supply point, urge...",
+    "message": "Zero stock at Korangi supply point, urgent shortage",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "575016a5",
+    "timestamp": "2026-05-19T19:37:13.551627",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Field Worker Asma (operator)",
+    "sku": "MED-001",
+    "product_name": "Confirmed zero physical stock, patients ...",
+    "message": "Confirmed zero physical stock, patients waiting",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "2cdbf5e1",
+    "timestamp": "2026-05-19T19:37:13.565289",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Supervisor Bilal (operator)",
+    "sku": "MED-001",
+    "product_name": "Third report - shelves empty despite sys...",
+    "message": "Third report - shelves empty despite system showing stock",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "d878a616",
+    "timestamp": "2026-05-19T19:37:13.578596",
+    "status": "open"
   }
 ]

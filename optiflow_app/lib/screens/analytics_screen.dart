@@ -4,6 +4,7 @@ import '../theme.dart';
 import '../services/api_service.dart';
 import 'profile_screen.dart';
 import 'fleet_screen.dart';
+import 'agent_console_screen.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({super.key});
@@ -314,15 +315,23 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
             ),
           ),
           const SizedBox(width: 16),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Colors.white.withOpacity(0.2)),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const AgentConsoleScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2563EB),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              minimumSize: Size.zero,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
             ),
-            child: const Text('LIVE ANALYSIS',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10, letterSpacing: 0.5)),
+            child: const Text(
+              'LAUNCH AGENT',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, letterSpacing: 0.5),
+            ),
           ),
         ],
       ),
