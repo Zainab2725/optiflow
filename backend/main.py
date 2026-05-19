@@ -130,6 +130,7 @@ class CreateOrgInput(BaseModel):
 class SignupOrgInput(BaseModel):
     organization_name: str
     organization_type: str = "NGO"
+    custom_sheet_url: Optional[str] = None
     admin_name: str
     email: str
     password: str
@@ -228,6 +229,7 @@ def signup_org(payload: SignupOrgInput):
         "org_id": org_id,
         "name": payload.organization_name,
         "type": payload.organization_type,
+        "custom_sheet_url": payload.custom_sheet_url,
         "created_at": datetime.utcnow().isoformat()
     }
     
@@ -321,7 +323,7 @@ def invite_user(
 
 @app.post("/api/v1/ingest/stock", status_code=201)
 @app.post("/ingest/stock", status_code=201)
-async def api_ingest_stock(payload: IngestStockInput, current_user: dict = Depends(require_roles(["manager", "pharma_admin"]))):
+async def api_ingest_stock(payload: IngestStockInput, current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin"]))):
     org_id = current_user["org_id"]
     event_data = {
         "event_type": "stock_update",
@@ -355,16 +357,103 @@ async def api_ingest_stock(payload: IngestStockInput, current_user: dict = Depen
         }
     }
 
-@app.get("/api/v1/stock")
-@app.get("/stock")
-def api_get_stock(current_user: dict = Depends(require_roles(["manager", "pharma_admin"]))):
-    org_id = current_user["org_id"]
-    records = get_org_stock(org_id)
-    summary = get_stock_summary(org_id)
+async def get_merged_stock_ledger(org_id: str) -> dict:
+    # 1. Fetch backend sheet data
+    from utils.data_sources import fetch_warehouse_csv
+    from utils.org_store import get_org
+    
+    org = get_org(org_id)
+    sheet_url = org.get("custom_sheet_url") if org else None
+    
+    sheet_records = []
+    try:
+        sheet_res = await fetch_warehouse_csv(sheet_url)
+        if "data" in sheet_res and "records" in sheet_res["data"]:
+            sheet_records = sheet_res["data"]["records"]
+    except Exception as e:
+        print(f"Error fetching warehouse sheet: {e}")
+        
+    # 2. Get local overrides from org_stock.json
+    local_records = get_org_stock(org_id)
+    
+    # Helper to map warehouse name to zone
+    def get_zone_for_warehouse(wh: str) -> str:
+        w = str(wh).lower()
+        if "clifton" in w: return "Clifton"
+        if "saddar" in w: return "Saddar"
+        if "malir" in w: return "Malir"
+        if "site" in w: return "SITE"
+        if "korangi" in w: return "Korangi"
+        if "lyari" in w or "keamari" in w: return "Lyari"
+        if "orangi" in w: return "Orangi"
+        if "defence" in w: return "Defence"
+        if "gulshan" in w: return "Gulshan"
+        return "Saddar"
+        
+    # 3. Merge sheet data with local overrides
+    merged_records = []
+    local_map = {(r.get("sku"), r.get("zone")): r for r in local_records if r.get("sku") and r.get("zone")}
+    
+    # If we have sheet data, use it as the base
+    if sheet_records:
+        for row in sheet_records:
+            sku = row.get("sku")
+            if not sku:
+                continue
+            zone = get_zone_for_warehouse(row.get("warehouse", "Saddar Depot"))
+            key = (sku, zone)
+            if key in local_map:
+                # Use local override (which has updated quantity from ingest/dispatch)
+                merged_records.append(local_map[key])
+            else:
+                # Construct stock item from Google Sheet
+                qty = int(row.get("quantity", 0))
+                # Set default min_threshold to 200 or 1000 depending on qty/sku
+                min_threshold = 1000 if sku.startswith("FUEL") or qty > 500 else 200
+                
+                merged_records.append({
+                    "id": f"sheet-{sku.lower()}-{zone.lower().replace(' ', '-')}",
+                    "org_id": org_id,
+                    "depot_id": f"depot-{zone.lower()}",
+                    "depot_name": row.get("warehouse", f"{zone} Depot"),
+                    "zone": zone,
+                    "sku": sku,
+                    "item_name": row.get("product_name", sku),
+                    "quantity": qty,
+                    "min_threshold": min_threshold,
+                    "unit": row.get("unit", "units"),
+                    "threshold_breached": qty < min_threshold,
+                    "status": "CRITICAL" if qty < min_threshold else "NORMAL"
+                })
+    else:
+        # Fallback to local_records if sheet fetch failed
+        merged_records = local_records
+
+    # Re-compute summary based on merged records
+    critical = [s for s in merged_records if s.get("status") == "CRITICAL"]
+    by_zone = {}
+    for s in merged_records:
+        zone = s.get("zone", "unknown")
+        by_zone[zone] = by_zone.get(zone, 0) + 1
+        
+    summary = {
+        "total_records": len(merged_records),
+        "critical_count": len(critical),
+        "normal_count": len(merged_records) - len(critical),
+        "by_zone": by_zone,
+        "critical_skus": [s.get("sku") for s in critical]
+    }
+    
     return {
-        "records": records,
+        "records": merged_records,
         "summary": summary
     }
+
+@app.get("/api/v1/stock")
+@app.get("/stock")
+async def api_get_stock(current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin"]))):
+    org_id = current_user["org_id"]
+    return await get_merged_stock_ledger(org_id)
 
 # ════════════════════════════════════════
 # MULTI-TENANT INCIDENTS
@@ -372,7 +461,7 @@ def api_get_stock(current_user: dict = Depends(require_roles(["manager", "pharma
 
 @app.post("/api/v1/ingest/incident", status_code=201)
 @app.post("/ingest/incident", status_code=201)
-async def api_ingest_incident(payload: IngestIncidentInput, current_user: dict = Depends(require_roles(["manager", "pharma_admin", "field_operator", "driver"]))):
+async def api_ingest_incident(payload: IngestIncidentInput, current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin", "field_operator", "driver"]))):
     org_id = current_user["org_id"]
     event_data = {
         "event_type": "incident_report",
@@ -422,21 +511,109 @@ async def api_ingest_incident(payload: IngestIncidentInput, current_user: dict =
 
 @app.get("/api/v1/incidents")
 @app.get("/incidents")
-def api_get_incidents(zone: str = None, current_user: dict = Depends(require_roles(["manager", "pharma_admin", "field_operator"]))):
+async def api_get_incidents(zone: str = None, current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin", "field_operator"]))):
     org_id = current_user["org_id"]
-    incidents = get_org_incidents(org_id, zone)
+    org_incidents = get_org_incidents(org_id, zone)
+    all_incidents = get_org_incidents(None, zone)
+    
+    # Dynamically inject events from all 8 live sources as simulated public incidents!
+    try:
+        from utils.data_sources import fetch_all_sources
+        sources = await fetch_all_sources()
+        
+        # 1. Weather Event (Only if logistics risk is HIGH)
+        w = sources.get("weather", {}).get("data", {})
+        if w and w.get("logistics_risk") == "HIGH":
+            all_incidents.append({
+                "id": "ai-weather-alert",
+                "reporter_name": "AI Weather Monitor",
+                "reporter_role": "AI agent",
+                "location_zone": "Clifton",
+                "sku": "GENERAL",
+                "message": f"WEATHER HAZARD: Extreme logistics safety risk due to weather condition: {w.get('description', 'Heavy Rain')}. Possible flooded roads.",
+                "severity": "CRITICAL",
+                "org_id": "public",
+                "timestamp": datetime.utcnow().isoformat(),
+                "resolved": False,
+                "risk_tag": "RED"
+            })
+            
+        # 2. Supplier Delay Events (Only major supplier logistics disruptions)
+        delays = sources.get("supplier_feed", {}).get("data", {}).get("active_delays", [])
+        for idx, d in enumerate(delays):
+            if d.get("severity") in ["HIGH", "CRITICAL"]:
+                all_incidents.append({
+                    "id": f"ai-supplier-delay-{idx}",
+                    "reporter_name": "AI Supplier Channel",
+                    "reporter_role": "AI agent",
+                    "location_zone": "SITE",
+                    "sku": d.get("sku", "GENERAL"),
+                    "message": f"SUPPLIER DELAY: Shipment from {d.get('supplier', 'Supplier')} delayed by {d.get('delay_days', 3)} days. Reason: {d.get('reason', 'M9 motorway partial closure')}.",
+                    "severity": "HIGH",
+                    "org_id": "public",
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "resolved": False,
+                    "risk_tag": "YELLOW"
+                })
+            
+        # 3. Google Trends / Media Trend Event (Only if actual critical panic spikes are detected)
+        trends = sources.get("google_trends", {}).get("data", {})
+        if trends and trends.get("public_panic_signal"):
+            all_incidents.append({
+                "id": "ai-trend-panic",
+                "reporter_name": "AI Media Monitor",
+                "reporter_role": "AI agent",
+                "location_zone": "Saddar",
+                "sku": "GENERAL",
+                "message": f"SHORTAGE ALERT: Elevated media panic signal scanned. Topic: {trends.get('trend_alert', 'Medicine scarcity')}.",
+                "severity": "CRITICAL",
+                "org_id": "public",
+                "timestamp": datetime.utcnow().isoformat(),
+                "resolved": False,
+                "risk_tag": "RED"
+            })
+            
+        # 4. RSS News matched feed (Only if logistics blockade/strike relevant)
+        articles = sources.get("rss_news", {}).get("data", {}).get("articles", [])
+        for idx, art in enumerate(articles[:4]):
+            title_lower = art.get('title', '').lower()
+            summary_lower = art.get('summary', '').lower()
+            combined = title_lower + " " + summary_lower
+            if any(k in combined for k in ["strike", "block", "close", "flood", "protest", "delay", "highway", "motorway", "shutdown"]):
+                all_incidents.append({
+                    "id": f"ai-news-{idx}",
+                    "reporter_name": "AI RSS News Channel",
+                    "reporter_role": "AI agent",
+                    "location_zone": "Korangi",
+                    "sku": "GENERAL",
+                    "message": f"NEWS SCAN: {art.get('title', 'Supply Chain News')}.",
+                    "severity": "MINOR",
+                    "org_id": "public",
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "resolved": False,
+                    "risk_tag": "GREEN"
+                })
+    except Exception as e:
+        print(f"Failed to inject dynamic AI incidents: {e}")
+
+    # Re-filter by zone if zone filter was requested
+    if zone:
+        all_incidents = [i for i in all_incidents if i.get("location_zone", "").lower() == zone.lower()]
+
     return {
-        "incidents": incidents,
-        "total": len(incidents)
+        "incidents": org_incidents,
+        "karachi_incidents": all_incidents,
+        "total": len(org_incidents),
+        "total_karachi": len(all_incidents)
     }
 
-# ════════════════════════════════════════
-# MULTI-TENANT MOVEMENT TRACKING
-# ════════════════════════════════════════
+# In-memory registry for vehicle movements to expose to the operational UI
+_movements_db = []
 
 @app.post("/api/v1/ingest/movement", status_code=201)
 @app.post("/ingest/movement", status_code=201)
-async def api_ingest_movement(payload: IngestMovementInput, current_user: dict = Depends(require_roles(["manager", "pharma_admin", "driver"]))):
+async def api_ingest_movement(payload: IngestMovementInput, current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin", "driver"]))):
+    global _movements_db
     org_id = current_user["org_id"]
     event_data = {
         "event_type": "logistics_movement",
@@ -452,6 +629,7 @@ async def api_ingest_movement(payload: IngestMovementInput, current_user: dict =
     }
 
     published, message_id = publish_to_pubsub(event_data)
+    _movements_db.insert(0, event_data)
 
     return {
         "status": "ingested",
@@ -459,6 +637,14 @@ async def api_ingest_movement(payload: IngestMovementInput, current_user: dict =
         "message_id": message_id,
         "movement": event_data
     }
+
+@app.get("/api/v1/movements")
+@app.get("/movements")
+async def api_get_movements(current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin", "driver", "user"]))):
+    global _movements_db
+    org_id = current_user["org_id"]
+    org_movements = [m for m in _movements_db if m.get("org_id") == org_id]
+    return org_movements
 
 # ════════════════════════════════════════
 # INTELLIGENCE MAPS & CONTRADICTIONS
@@ -483,12 +669,13 @@ def api_zone_risk_map(current_user: dict = Depends(get_current_user)):
 
 @app.get("/api/v1/contradictions")
 @app.get("/contradictions")
-def api_contradictions(current_user: dict = Depends(require_roles(["manager", "pharma_admin"]))):
+async def api_contradictions(current_user: dict = Depends(require_roles(["admin", "manager", "pharma_admin"]))):
     org_id = current_user["org_id"]
     contradictions = detect_org_contradictions()
     
     # Isolate contradictions to ONLY those SKUs that belong to this organization's active stock ledger
-    org_skus = [s.get("sku") for s in get_org_stock(org_id)]
+    merged_stock = await get_merged_stock_ledger(org_id)
+    org_skus = [s.get("sku") for s in merged_stock["records"]]
     org_contradictions = [c for c in contradictions if c.get("sku") in org_skus]
     
     return {
@@ -506,14 +693,15 @@ async def api_dashboard_json(request: Request, current_user: dict = Depends(get_
     from utils.complaint_store import get_complaint_summary
     
     org_id = current_user["org_id"]
-    stock_summary = get_stock_summary(org_id)
+    merged_stock = await get_merged_stock_ledger(org_id)
+    stock_summary = merged_stock["summary"]
     incidents = get_org_incidents(org_id)
     zone_risk = get_zone_risk_map()
     contradictions = detect_org_contradictions()
     complaint_summary = get_complaint_summary()
     
     # Isolate anomalies to own org scope
-    org_skus = [s.get("sku") for s in get_org_stock(org_id)]
+    org_skus = [s.get("sku") for s in merged_stock["records"]]
     org_contradictions = [c for c in contradictions if c.get("sku") in org_skus]
     
     red_zones = [z for z, d in zone_risk.items() if d["risk"] == "RED"]
@@ -622,7 +810,8 @@ async def analyze(request: AnalyzeRequest = None):
     PUBSUB_TOPIC = f"projects/{GCP_PROJECT_ID}/topics/supply-chain-alerts"
 
     pubsub_results = []
-    if critical_alerts:
+    from utils.pubsub_handler import is_gcp_configured
+    if critical_alerts and is_gcp_configured():
         try:
             publisher = pubsub_v1.PublisherClient()
             for alert in critical_alerts:
@@ -631,13 +820,17 @@ async def analyze(request: AnalyzeRequest = None):
                 pubsub_results.append({
                     "sku": alert.get("sku"),
                     "published": True,
-                    "message_id": future.result(timeout=10)
+                    "message_id": future.result(timeout=5)
                 })
         except Exception as e:
             pubsub_results.append({
                 "error": str(e),
                 "note": "Pub/Sub alert processed locally"
             })
+    elif critical_alerts:
+        pubsub_results.append({
+            "note": "Pub/Sub bypassed - credentials not configured. Alert processed locally."
+        })
 
     return {
         "analysis_id": action_result.get("action_chain_id"),
@@ -680,9 +873,18 @@ async def analyze_status():
 
 @app.get("/route")
 async def route_optimization(
+    request: Request,
     origin: str = "Hyderabad, Pakistan",
     destination: str = "Karachi, Pakistan"
 ):
+    org_id = "org-demo"
+    try:
+        current_user = get_current_user(request)
+        if current_user:
+            org_id = current_user.get("org_id", "org-demo")
+    except Exception:
+        pass
+
     ingest_data = await fetch_all_sources()
     weather = ingest_data.get("weather", {}).get("data", {})
     dawn_articles = (
@@ -695,7 +897,7 @@ async def route_optimization(
         [a.get("title", "") for a in dawn_articles] +
         [a.get("title", "") for a in news_articles]
     )
-    result = await optimize_route(weather, all_headlines, origin, destination)
+    result = await optimize_route(weather, all_headlines, origin, destination, org_id)
     return result
 
 @app.post("/api/v1/orgs", status_code=201)

@@ -18,6 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _adminNameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
+  final _sheetUrlCtrl = TextEditingController();
   String _orgType = 'NGO';
   bool _loading = false;
   String _error = '';
@@ -35,6 +36,22 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
+    // Strong password complexity validation
+    if (pass.length < 8) {
+      setState(() => _error = 'Passcode must be at least 8 characters long.');
+      return;
+    }
+    final hasUppercase = pass.contains(RegExp(r'[A-Z]'));
+    final hasDigits = pass.contains(RegExp(r'[0-9]'));
+    final hasSpecial = pass.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+    
+    if (!hasUppercase || !hasDigits || !hasSpecial) {
+      setState(() => _error = 'Passcode must contain at least 1 uppercase letter, 1 digit, and 1 special character.');
+      return;
+    }
+
+    final customSheetUrl = _sheetUrlCtrl.text.trim();
+
     setState(() {
       _loading = true;
       _error = '';
@@ -48,6 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
         adminName: adminName,
         email: email,
         password: pass,
+        customSheetUrl: customSheetUrl.isEmpty ? null : customSheetUrl,
       );
 
       final String orgId = backendRes['organization']?['org_id'] ?? 'org-${DateTime.now().millisecond}';
@@ -111,33 +129,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.hub_outlined, color: AppTheme.primary, size: 20),
-                          const SizedBox(width: 6),
-                          Text(
-                            'OptiFlow',
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: AppTheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppTheme.outlineVar),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.security_outlined, size: 12, color: AppTheme.primary),
-                            const SizedBox(width: 4),
-                            Text('NEW_ORG_REQUEST', style: Theme.of(context).textTheme.labelSmall),
-                          ],
+                      const Icon(Icons.hub_outlined, color: AppTheme.primary, size: 20),
+                      const SizedBox(width: 6),
+                      Text(
+                        'OptiFlow',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: AppTheme.primary,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -267,6 +266,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                       prefixIcon: Icon(Icons.lock_outline, size: 18),
                                     ),
                                   ),
+                                  const SizedBox(height: 16),
+                                  
+                                  _label('WAREHOUSE SPREADSHEET URL (OPTIONAL)'),
+                                  const SizedBox(height: 6),
+                                  TextField(
+                                    controller: _sheetUrlCtrl,
+                                    keyboardType: TextInputType.url,
+                                    decoration: const InputDecoration(
+                                      hintText: 'https://docs.google.com/spreadsheets/d/...',
+                                      prefixIcon: Icon(Icons.table_chart_outlined, size: 18),
+                                    ),
+                                  ),
                                   
                                   if (_error.isNotEmpty) ...[
                                     const SizedBox(height: 16),
@@ -301,15 +312,32 @@ class _SignupScreenState extends State<SignupScreen> {
                                     ),
                                   ),
                                   
-                                  const SizedBox(height: 16),
-                                  OutlinedButton.icon(
-                                    onPressed: () {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(builder: (_) => const LoginScreen()),
-                                      );
-                                    },
-                                    icon: const Icon(Icons.arrow_back, size: 18),
-                                    label: const Text('Return to Login'),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Already have an account? ",
+                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                          color: AppTheme.onSurfaceVar,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                          );
+                                        },
+                                        child: Text(
+                                          "Sign In",
+                                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                            color: AppTheme.primary,
+                                            fontWeight: FontWeight.bold,
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -321,16 +349,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 
-                // Bottom Copyright Badge
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'OPTIFLOW MULTI-TENANT FEDERATED COMMAND',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppTheme.onSurfaceVar.withOpacity(0.6),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

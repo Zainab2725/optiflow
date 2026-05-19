@@ -1,41 +1,41 @@
 [
   {
-    "id": "inc-01",
-    "org_id": "org-b8f3e58c",
-    "reporter_name": "Driver Tariq",
-    "reporter_role": "driver",
-    "location_zone": "Korangi",
-    "sku": "MED-001",
-    "message": "Zero stock at Korangi supply point",
-    "severity": "critical",
-    "risk_tag": "RED",
+    "reporter_name": "Zainab",
+    "reporter_role": "admin",
+    "location_zone": "Clifton",
+    "sku": "MED-005",
+    "message": "storageeeeeeeeeeeee",
+    "severity": "low",
+    "org_id": "org-7287dfc8",
+    "id": "7985349e",
+    "timestamp": "2026-05-19T09:06:42.719490",
     "resolved": false,
-    "timestamp": "2026-05-17T23:20:00Z"
+    "risk_tag": "GREEN"
   },
   {
-    "id": "inc-02",
-    "org_id": "org-b8f3e58c",
-    "reporter_name": "Field Worker Asma",
-    "reporter_role": "field_operator",
-    "location_zone": "Korangi",
+    "reporter_name": "Maryam",
+    "reporter_role": "admin",
+    "location_zone": "Clifton",
     "sku": "MED-001",
-    "message": "Confirmed zero physical stock, patients waiting",
+    "message": "There is shortage of medicines here",
     "severity": "critical",
-    "risk_tag": "RED",
+    "org_id": "org-8f666b1d",
+    "id": "add230f6",
+    "timestamp": "2026-05-19T15:15:38.996128",
     "resolved": false,
-    "timestamp": "2026-05-17T23:19:00Z"
+    "risk_tag": "RED"
   },
   {
-    "id": "inc-03",
-    "org_id": "org-b8f3e58c",
-    "reporter_name": "Supervisor Bilal",
-    "reporter_role": "field_operator",
+    "reporter_name": "Zainab",
+    "reporter_role": "admin",
     "location_zone": "Korangi",
     "sku": "MED-001",
-    "message": "Third report \u2014 shelves empty despite system showing stock",
-    "severity": "critical",
-    "risk_tag": "RED",
+    "message": "we need 500 medicine urgently",
+    "severity": "high",
+    "org_id": "org-17c0f171",
+    "id": "c13e0304",
+    "timestamp": "2026-05-19T15:51:21.995600",
     "resolved": false,
-    "timestamp": "2026-05-17T23:18:00Z"
+    "risk_tag": "YELLOW"
   }
 ]

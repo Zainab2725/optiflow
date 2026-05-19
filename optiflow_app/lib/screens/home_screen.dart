@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../theme.dart';
-import '../services/firestore_service.dart';
 import 'dashboard_screen.dart';
 import 'stock_screen.dart';
 import 'incidents_screen.dart';
@@ -17,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
-  final _firestoreService = FirestoreService();
 
   final _screens = const [
     DashboardScreen(),
@@ -26,12 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
     FleetScreen(),
     AnalyticsScreen(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _firestoreService.seedDemoData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.warning_amber_outlined),
               activeIcon: Icon(Icons.warning_amber),
-              label: 'Incidents',
+              label: 'Risks & Alerts',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_shipping_outlined),

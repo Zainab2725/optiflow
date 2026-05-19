@@ -25,5 +25,68 @@
     "org_id": "org-demo",
     "org_name": "Karachi Crisis Response Authority",
     "role": "driver"
+  },
+  {
+    "user_id": "usr-3336821d",
+    "name": "Zainab",
+    "email": "zainab@ngo.com",
+    "password": "zainab",
+    "org_id": "org-08b9383f",
+    "org_name": "Karachi Relief NGO",
+    "role": "admin"
+  },
+  {
+    "user_id": "usr-c598d84c",
+    "name": "Maryam",
+    "email": "maryam@gov.pk",
+    "password": "maryam",
+    "org_id": "org-8f666b1d",
+    "org_name": "Karachi Government Hospital",
+    "role": "admin"
+  },
+  {
+    "user_id": "usr-9b5984fa",
+    "name": "Ahmed",
+    "email": "driver@gov.pk",
+    "password": "welcome123",
+    "org_id": "org-8f666b1d",
+    "org_name": "",
+    "role": "driver"
+  },
+  {
+    "user_id": "usr-f22ac8f7",
+    "name": "maryam muhammad",
+    "email": "mary@edu.com",
+    "password": "123456789",
+    "org_id": "org-665b019c",
+    "org_name": "edu company",
+    "role": "admin"
+  },
+  {
+    "user_id": "usr-17ce6a1d",
+    "name": "ali khan",
+    "email": "alikhan@edu.com",
+    "password": "welcome123",
+    "org_id": "org-665b019c",
+    "org_name": "",
+    "role": "manager"
+  },
+  {
+    "user_id": "usr-32057db3",
+    "name": "Zainab",
+    "email": "zainab@ngo.pk",
+    "password": "Zainab@15",
+    "org_id": "org-7287dfc8",
+    "org_name": "Karachi Pharmacy",
+    "role": "admin"
+  },
+  {
+    "user_id": "usr-84d0f812",
+    "name": "Zainab",
+    "email": "zainab@gov.pk",
+    "password": "Zainab@15",
+    "org_id": "org-17c0f171",
+    "org_name": "Karachi Relief",
+    "role": "admin"
   }
 ]

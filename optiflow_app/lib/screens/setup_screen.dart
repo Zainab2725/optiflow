@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
 import 'home_screen.dart';
@@ -35,33 +34,8 @@ class _SetupScreenState extends State<SetupScreen> {
 
   void _saveSetup() async {
     setState(() => _saving = true);
-
-    // Save to static API state
-    ApiService.activeZones = _selectedZones;
-    ApiService.activeWarehouses = _warehouses;
-    ApiService.activeFleetUnits = _fleetUnits;
-    ApiService.activeCategories = _categories;
-    ApiService.activeStaffRoles = _roles;
-
-    // Save to Firestore if available
-    try {
-      final orgId = ApiService.currentUser?['org_id'] ?? 'org-demo';
-      await FirebaseFirestore.instance.collection('organizations').doc(orgId).update({
-        'configured': true,
-        'config': {
-          'zones': _selectedZones,
-          'warehouses': _warehouses,
-          'fleet': _fleetUnits,
-          'categories': _categories,
-          'roles': _roles,
-        }
-      });
-    } catch (_) {
-      // Continue if Firebase connection offline
-    }
-
+    await Future.delayed(const Duration(milliseconds: 600));
     setState(() => _saving = false);
-
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

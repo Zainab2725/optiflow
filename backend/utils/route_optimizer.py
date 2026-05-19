@@ -370,59 +370,245 @@ def make_hold_decision(
 
 
 # ─────────────────────────────────────────
-# MASTER: Run full route optimization
-# ─────────────────────────────────────────
 async def optimize_route(
     weather_data: dict,
     news_headlines: list,
     origin: str = "Hyderabad, Pakistan",
-    destination: str = "Karachi, Pakistan"
+    destination: str = "Karachi, Pakistan",
+    org_id: str = "org-demo"
 ) -> dict:
-
-    # Step 1: Extract risk signals from live sources
+    org_id = org_id or "org-demo"
     weather_risks = extract_weather_risks(weather_data)
     news_risks = extract_news_risks(news_headlines)
 
-    # Step 2: Get live traffic if Google Maps key available
-    live_traffic = await get_live_traffic(origin, destination)
+    # 1. Detect if this is local Karachi warehouse routing
+    KARACHI_ZONES = ["site", "clifton", "saddar", "malir", "korangi", "lyari", "orangi", "defence", "gulshan", "north nazimabad", "pechs", "faisal"]
+    is_local = False
+    for z in KARACHI_ZONES:
+        if z in origin.lower() or z in destination.lower():
+            is_local = True
+            break
 
-    # Step 3: Score all routes dynamically
+    if is_local:
+        # Load local incidents from this organization to check for transit blockages!
+        from utils.org_store import get_org_incidents
+        incidents = get_org_incidents(org_id)
+        
+        # Determine if transit zones have any active incidents
+        saddar_incidents = [i for i in incidents if "saddar" in i.get("location_zone", "").lower() and not i.get("resolved", False)]
+        site_incidents = [i for i in incidents if "site" in i.get("location_zone", "").lower() and not i.get("resolved", False)]
+        clifton_incidents = [i for i in incidents if "clifton" in i.get("location_zone", "").lower() and not i.get("resolved", False)]
+        korangi_incidents = [i for i in incidents if "korangi" in i.get("location_zone", "").lower() and not i.get("resolved", False)]
+
+        # Dynamically calculate distance based on geographical coordinates of the selected zones
+        ZONE_COORDS = {
+            "site": (24.90, 67.01),
+            "clifton": (24.81, 67.03),
+            "saddar": (24.86, 67.02),
+            "malir": (24.90, 67.19),
+            "korangi": (24.83, 67.12),
+            "lyari": (24.87, 66.99),
+            "orangi": (24.95, 66.96),
+            "defence": (24.82, 67.07),
+            "gulshan": (24.92, 67.09),
+            "north nazimabad": (24.94, 67.03),
+            "pechs": (24.87, 67.07),
+            "faisal": (24.89, 67.14),
+        }
+
+        def get_coord(name: str):
+            name_l = name.lower()
+            for k, v in ZONE_COORDS.items():
+                if k in name_l:
+                    return v
+            return (24.86, 67.02) # Default Saddar
+
+        p1 = get_coord(origin)
+        p2 = get_coord(destination)
+        
+        # Approximate L2 distance
+        d_lat = (p1[0] - p2[0]) * 111.0
+        d_lng = (p1[1] - p2[1]) * 100.0
+        base_dist = round((d_lat**2 + d_lng**2)**0.5, 1)
+        if base_dist < 3.0:
+            base_dist = 6.8 # Default minimum city distance for nearby zones
+
+        # Dynamic travel times based on distance
+        direct_base_time = int(base_dist * 1.8 + 4)
+        bypass_base_dist = round(base_dist + 3.5, 1)
+        bypass_base_time = max(8, int(bypass_base_dist * 1.2 + 2))
+        alt_base_dist = round(base_dist + 6.2, 1)
+        alt_base_time = int(alt_base_dist * 1.5 + 5)
+
+        # Path 1: Central City Arterial Route (Direct Path - passes through Saddar and central corridors)
+        direct_reasons = []
+        direct_warnings = []
+        direct_score = 100
+        direct_delay = 0
+        
+        if saddar_incidents:
+            direct_score -= 40
+            direct_delay += 35
+            direct_reasons.append(f"Saddar blockage: {saddar_incidents[0].get('message', 'Road blockage')}")
+            direct_warnings.append("Saddar central corridor is heavily congested/blocked.")
+        if clifton_incidents:
+            direct_score -= 20
+            direct_delay += 15
+            direct_reasons.append(f"Clifton traffic warning: {clifton_incidents[0].get('message', 'Water accumulation')}")
+            
+        # Path 2: Lyari Expressway Fast Bypass
+        bypass_reasons = []
+        bypass_warnings = []
+        bypass_score = 95
+        bypass_delay = 0
+        
+        if site_incidents and "site" in destination.lower():
+            bypass_score -= 15
+            bypass_delay += 10
+            bypass_reasons.append(f"SITE depot advisory: {site_incidents[0].get('message', 'Grid issue')}")
+            
+        # Path 3: Coastal Ring Road
+        alt_reasons = []
+        alt_warnings = []
+        alt_score = 85
+        alt_delay = 0
+        if korangi_incidents and ("korangi" in origin.lower() or "korangi" in destination.lower()):
+            alt_score -= 25
+            alt_delay += 20
+            alt_reasons.append(f"Korangi traffic advisory: {korangi_incidents[0].get('message', 'Heavy flow')}")
+
+        rec_direct = "RECOMMENDED" if direct_score >= 80 else ("PROCEED WITH CAUTION" if direct_score >= 60 else "AVOID")
+        rec_bypass = "RECOMMENDED" if bypass_score >= 80 else ("PROCEED WITH CAUTION" if bypass_score >= 60 else "AVOID")
+        rec_alt = "RECOMMENDED" if alt_score >= 80 else ("PROCEED WITH CAUTION" if alt_score >= 60 else "AVOID")
+
+        routes_list = [
+            {
+                "route_key": "DIRECT",
+                "route_name": f"City Arterial Corridor (via Saddar & M.A. Jinnah Rd)",
+                "distance_km": base_dist,
+                "normal_time_min": direct_base_time,
+                "estimated_time_min": direct_base_time + direct_delay,
+                "delay_added_min": direct_delay,
+                "score": max(0, direct_score),
+                "recommendation": rec_direct,
+                "color": "green" if direct_score >= 80 else ("yellow" if direct_score >= 60 else "red"),
+                "reasons": direct_reasons or [f"Standard direct city corridor from {origin} to {destination} is clear."],
+                "warnings": direct_warnings,
+                "road_type": "city_arterial",
+                "description": f"Standard direct transit between {origin} and {destination} hubs."
+            },
+            {
+                "route_key": "BYPASS",
+                "route_name": "Lyari Expressway Fast Bypass",
+                "distance_km": bypass_base_dist,
+                "normal_time_min": bypass_base_time,
+                "estimated_time_min": bypass_base_time + bypass_delay,
+                "delay_added_min": bypass_delay,
+                "score": max(0, bypass_score),
+                "recommendation": rec_bypass,
+                "color": "green" if bypass_score >= 80 else ("yellow" if bypass_score >= 60 else "red"),
+                "reasons": bypass_reasons or ["Express corridor completely bypassing central Saddar bottlenecks."],
+                "warnings": bypass_warnings,
+                "road_type": "expressway",
+                "description": "High-speed toll expressway bypassing city center."
+            },
+            {
+                "route_key": "ALTERNATE",
+                "route_name": "Coastal Ring Road (via Clifton Beach & Korangi Rd)",
+                "distance_km": alt_base_dist,
+                "normal_time_min": alt_base_time,
+                "estimated_time_min": alt_base_time + alt_delay,
+                "delay_added_min": alt_delay,
+                "score": max(0, alt_score),
+                "recommendation": rec_alt,
+                "color": "green" if alt_score >= 80 else ("yellow" if alt_score >= 60 else "red"),
+                "reasons": alt_reasons or ["Coastal link with smooth transit outside central hubs."],
+                "warnings": alt_warnings,
+                "road_type": "coastal_arterial",
+                "description": "Outer ring road recommended when central blockages are high."
+            }
+        ]
+
+        routes_list.sort(key=lambda x: x["score"], reverse=True)
+        best = routes_list[0]
+        worst = routes_list[-1]
+
+        hold_decision = {
+            "hold_shipment": best["score"] < 40,
+            "decision": "HOLD" if best["score"] < 40 else ("PROCEED WITH CAUTION" if best["score"] < 75 else "CLEAR TO PROCEED"),
+            "reason": (
+                f"Severe local disruptions in Karachi transit corridors. Best route ({best['route_name']}) scores only {best['score']}/100."
+                if best["score"] < 40 else
+                f"Safe to proceed via {best['route_name']} (safety score {best['score']}/100) bypassing central congestion."
+            ),
+            "recheck_in_hours": 1
+        }
+
+        summary_parts = []
+        if saddar_incidents:
+            summary_parts.append("Saddar blockage active")
+        if site_incidents:
+            summary_parts.append("SITE supply chain risk active")
+        if not summary_parts:
+            summary_parts.append("All Karachi local corridors fully operational")
+
+        decision_summary = (
+            f"Recommended Detour: {best['route_name']} "
+            f"(ETA {best['estimated_time_min']} mins, Safety Score {best['score']}/100). "
+            f"Bypassing active bottlenecks: " + ", ".join(summary_parts)
+        )
+
+        return {
+            "recommended_route": best,
+            "all_routes_ranked": routes_list,
+            "worst_route": {
+                "route_key": worst["route_key"],
+                "route_name": worst["route_name"],
+                "score": worst["score"],
+                "avoid_reason": worst["reasons"][0] if worst["reasons"] else "Slower alternative transit route"
+            },
+            "hold_decision": hold_decision,
+            "risk_signals": {
+                "weather": weather_risks,
+                "news": news_risks,
+                "live_traffic": {"status": "ok", "traffic": "nominal"}
+            },
+            "decision_summary": decision_summary,
+            "origin": origin,
+            "destination": destination,
+            "optimized_at": datetime.utcnow().isoformat()
+        }
+
+    # 2. Fallback: Karachi-Hyderabad primary regional routes
+    live_traffic = await get_live_traffic(origin, destination)
     scored_routes = []
     for route_key in ROUTES:
         scored = score_route(route_key, weather_risks, news_risks, live_traffic)
         scored_routes.append(scored)
 
-    # Step 4: Rank routes by score descending
     scored_routes.sort(key=lambda x: x["score"], reverse=True)
-
     best = scored_routes[0]
     worst = scored_routes[-1]
 
-    # Step 5: Make hold/proceed decision
     hold_decision = make_hold_decision(
         best_score=best["score"],
         best_route_name=best["route_name"],
         weather_severity=weather_risks["severity"]
     )
 
-    # Step 6: Build human-readable summary
     summary_parts = []
     if news_risks["m9_risk"]:
         summary_parts.append("M9 disruption detected in news")
     if news_risks["n55_risk"]:
         summary_parts.append("N-55 congestion detected in news")
     if weather_risks["severity"] != "CLEAR":
-        summary_parts.append(
-            f"Weather is {weather_risks['severity']} "
-            f"({weather_risks['condition']})"
-        )
+        summary_parts.append(f"Weather is {weather_risks['severity']} ({weather_risks['condition']})")
     if not summary_parts:
         summary_parts.append("All routes clear, no disruptions detected")
 
     decision_summary = (
         f"Recommended: {best['route_name']} "
-        f"(score {best['score']}/100, "
-        f"ETA {best['estimated_time_min']} min). "
+        f"(score {best['score']}/100, ETA {best['estimated_time_min']} min). "
         + " | ".join(summary_parts)
     )
 
@@ -433,10 +619,7 @@ async def optimize_route(
             "route_key": worst["route_key"],
             "route_name": worst["route_name"],
             "score": worst["score"],
-            "avoid_reason": (
-                worst["reasons"][0] if worst["reasons"]
-                else "Lowest score among available routes"
-            )
+            "avoid_reason": worst["reasons"][0] if worst["reasons"] else "Lowest score among available routes"
         },
         "hold_decision": hold_decision,
         "risk_signals": {
@@ -449,3 +632,4 @@ async def optimize_route(
         "destination": destination,
         "optimized_at": datetime.utcnow().isoformat()
     }
+

@@ -28,10 +28,15 @@ class IncidentTile extends StatelessWidget {
     }
   }
 
-  String _timeAgo() {
-    final diff = DateTime.now().difference(incident.timestamp);
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    return '${diff.inHours}h ago';
+  String _formattedTimestamp() {
+    final hour = incident.timestamp.hour;
+    final period = hour >= 12 ? 'PM' : 'AM';
+    final hour12 = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+    final minute = incident.timestamp.minute.toString().padLeft(2, '0');
+    final day = incident.timestamp.day;
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final month = months[incident.timestamp.month - 1];
+    return '$month $day, $hour12:$minute $period';
   }
 
   @override
@@ -40,25 +45,26 @@ class IncidentTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: selected
             ? AppTheme.primary.withOpacity(0.03) : AppTheme.surface,
-        border: Border(
-          left: BorderSide(color: _sevColor, width: 3),
-          top: BorderSide(
-              color: selected ? AppTheme.primary : AppTheme.outlineVar,
-              width: selected ? 1 : 0.5),
-          right: BorderSide(
-              color: selected ? AppTheme.primary : AppTheme.outlineVar,
-              width: selected ? 1 : 0.5),
-          bottom: BorderSide(
-              color: selected ? AppTheme.primary : AppTheme.outlineVar,
-              width: selected ? 1 : 0.5),
+        border: Border.all(
+          color: selected ? AppTheme.primary : AppTheme.outlineVar,
+          width: selected ? 1 : 0.5,
         ),
-        borderRadius: const BorderRadius.horizontal(
-            right: Radius.circular(8)),
+        borderRadius: BorderRadius.circular(8),
       ),
       padding: EdgeInsets.all(compact ? 10 : 14),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Left accent severity indicator bar
+          Container(
+            width: 4,
+            height: compact ? 32 : 36,
+            decoration: BoxDecoration(
+              color: _sevColor,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 8),
           Container(
             width: 36, height: 36,
             decoration: BoxDecoration(
@@ -83,7 +89,7 @@ class IncidentTile extends StatelessWidget {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
-                    Text(_timeAgo(),
+                    Text(_formattedTimestamp(),
                       style: Theme.of(context).textTheme.labelSmall
                           ?.copyWith(color: AppTheme.criticalRed)),
                   ],

@@ -207,5 +207,60 @@
     "id": "7a7cab8c",
     "timestamp": "2026-05-17T21:46:10.289539",
     "status": "open"
+  },
+  {
+    "customer_name": "[ORG-8F666B1D] Maryam (admin)",
+    "sku": "MED-004",
+    "product_name": "there is shortage of Antibiotics...",
+    "message": "there is shortage of Antibiotics",
+    "severity": "critical",
+    "location": "Clifton",
+    "id": "295f5303",
+    "timestamp": "2026-05-19T07:38:12.498826",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-7287DFC8] Zainab (admin)",
+    "sku": "MED-005",
+    "product_name": "There is shortage of this medicine here...",
+    "message": "There is shortage of this medicine here",
+    "severity": "high",
+    "location": "Clifton",
+    "id": "d1502976",
+    "timestamp": "2026-05-19T08:23:33.682212",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-7287DFC8] Zainab (admin)",
+    "sku": "MED-005",
+    "product_name": "storageeeeeeeeeeeee...",
+    "message": "storageeeeeeeeeeeee",
+    "severity": "low",
+    "location": "Clifton",
+    "id": "28f79487",
+    "timestamp": "2026-05-19T09:06:42.725136",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-8F666B1D] Maryam (admin)",
+    "sku": "MED-001",
+    "product_name": "There is shortage of medicines here...",
+    "message": "There is shortage of medicines here",
+    "severity": "critical",
+    "location": "Clifton",
+    "id": "2ae9925e",
+    "timestamp": "2026-05-19T15:15:39.003670",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-17C0F171] Zainab (admin)",
+    "sku": "MED-001",
+    "product_name": "we need 500 medicine urgently...",
+    "message": "we need 500 medicine urgently",
+    "severity": "high",
+    "location": "Korangi",
+    "id": "825fe783",
+    "timestamp": "2026-05-19T15:51:21.999065",
+    "status": "open"
   }
 ]

@@ -1,22 +1,27 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import '../models.dart';
 
 class ApiService {
-  // Use 127.0.0.1 for local execution, or standard loopback.
-  static const String baseUrl = 'http://127.0.0.1:8000';
+  // Use 10.0.2.2 for Android Emulator, or 127.0.0.1 for standard host loopback.
+  static String baseUrl = _getBaseUrl();
+
+  static String _getBaseUrl() {
+    try {
+      if (Platform.isAndroid) {
+        return 'http://10.0.2.2:8000';
+      }
+    } catch (_) {}
+    return 'http://127.0.0.1:8000';
+  }
 
   // Static Session state
   static String? token;
   static Map<String, dynamic>? currentUser;
   static Map<String, dynamic>? organization;
 
-  // Active setup configuration
-  static List<String> activeZones = ["Saddar", "Clifton", "Korangi", "SITE"];
-  static List<String> activeWarehouses = ["Korangi Depot", "Saddar Depot"];
-  static List<String> activeFleetUnits = ["RESCUE-01", "RELIEF-TRUCK-04"];
-  static List<String> activeCategories = ["Emergency Meds", "Clean Water", "Food Kits"];
-  static List<String> activeStaffRoles = ["Admin", "Manager", "Driver"];
+  // No static config — all zones, SKUs, and fleet data are loaded live from the backend.
 
   // Helper to generate authorized headers
   Map<String, String> _headers() {
@@ -55,23 +60,7 @@ class ApiService {
         throw Exception(err['detail'] ?? 'Login failed');
       }
     } catch (e) {
-      // Offline fallback for demo & testing if server is offline
-      if (email.contains('@optiflow.pk') && password == 'optiflow123') {
-        token = 'mock-jwt-token-xyz';
-        currentUser = {
-          'user_id': email.contains('admin') ? 'usr-001' : 'usr-002',
-          'name': email.contains('admin') ? 'Zainab Ali' : 'Kamran Siddiqui',
-          'role': email.contains('admin') ? 'admin' : 'manager',
-          'org_id': 'org-demo',
-          'org_name': 'Karachi Crisis Response NGO',
-        };
-        organization = {
-          'org_id': 'org-demo',
-          'name': 'Karachi Crisis Response NGO',
-        };
-        return {'access_token': token, 'user': currentUser};
-      }
-      throw Exception('Authentication gateway timeout. Please check if backend is running.');
+      throw Exception('Authentication failed. Please check your credentials and ensure the backend is running.\n\nDetail: $e');
     }
   }
 
@@ -81,6 +70,7 @@ class ApiService {
     required String adminName,
     required String email,
     required String password,
+    String? customSheetUrl,
   }) async {
     try {
       final res = await http.post(
@@ -89,6 +79,7 @@ class ApiService {
         body: json.encode({
           'organization_name': orgName,
           'organization_type': orgType,
+          'custom_sheet_url': customSheetUrl,
           'admin_name': adminName,
           'email': email,
           'password': password,
@@ -106,21 +97,7 @@ class ApiService {
         throw Exception(err['detail'] ?? 'Signup failed');
       }
     } catch (e) {
-      // Mock signup for fallback
-      token = 'mock-jwt-token-new';
-      currentUser = {
-        'user_id': 'usr-new-admin',
-        'name': adminName,
-        'role': 'admin',
-        'org_id': 'org-new-id',
-        'org_name': orgName,
-      };
-      organization = {
-        'org_id': 'org-new-id',
-        'name': orgName,
-        'type': orgType,
-      };
-      return {'token': token, 'user': currentUser, 'organization': organization};
+      throw Exception('Signup failed. Please check your connection and try again.\n\nDetail: $e');
     }
   }
 
@@ -143,11 +120,7 @@ class ApiService {
         throw Exception(err['detail'] ?? 'Invitation failed');
       }
     } catch (e) {
-      return {
-        'status': 'invited',
-        'default_password': 'welcome123',
-        'message': '$name invited successfully (Offline Simulation Mode)'
-      };
+      throw Exception('Invitation failed: $e');
     }
   }
 
@@ -159,20 +132,26 @@ class ApiService {
         Uri.parse('$baseUrl/api/v1/stock'),
         headers: _headers(),
       ).timeout(const Duration(seconds: 10));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to load stock');
+      }
+    } catch (e) {
+      throw Exception('Failed to load stock: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> predictStock() async {
+    try {
+      final res = await http.get(
+        Uri.parse('$baseUrl/predict/stock'),
+        headers: _headers(),
+      ).timeout(const Duration(seconds: 20));
       return json.decode(res.body);
     } catch (e) {
-      return {
-        'records': [
-          {'depot_name': 'Korangi Depot', 'zone': 'Korangi', 'sku': 'MED-001', 'item_name': 'Panadol 500mg', 'quantity': 12000, 'min_threshold': 500},
-          {'depot_name': 'Saddar Depot', 'zone': 'Saddar', 'sku': 'MED-006', 'item_name': 'ORS Sachets', 'quantity': 320, 'min_threshold': 500},
-        ],
-        'summary': {
-          'total_records': 2,
-          'critical_count': 1,
-          'normal_count': 1,
-          'critical_skus': ['MED-006']
-        }
-      };
+      return {'error': 'Failed to reach stock predictor: $e'};
     }
   }
 
@@ -199,7 +178,12 @@ class ApiService {
           'min_threshold': minThreshold
         }),
       ).timeout(const Duration(seconds: 10));
-      return json.decode(res.body);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to ingest stock');
+      }
     } catch (e) {
       final breached = quantity < minThreshold;
       return {
@@ -227,14 +211,14 @@ class ApiService {
         Uri.parse(url),
         headers: _headers(),
       ).timeout(const Duration(seconds: 10));
-      return json.decode(res.body);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to load incidents');
+      }
     } catch (e) {
-      return {
-        'incidents': [
-          {'reporter_name': 'Dr. Farhan', 'location_zone': 'Lyari', 'sku': 'MED-006', 'message': 'Medicine shortage in Lyari Clinic', 'severity': 'critical', 'timestamp': DateTime.now().toIsoformatString(), 'resolved': false},
-        ],
-        'total': 1
-      };
+      throw Exception('Failed to load incidents: $e');
     }
   }
 
@@ -259,17 +243,14 @@ class ApiService {
           'severity': severity.toLowerCase()
         }),
       ).timeout(const Duration(seconds: 10));
-      return json.decode(res.body);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to submit incident');
+      }
     } catch (e) {
-      return {
-        'status': 'ingested',
-        'incident_id': 'mock-inc-999',
-        'rules_evaluated': {
-          'location_risk_tagged': severity == 'critical' ? 'RED' : 'YELLOW',
-          'zone': locationZone,
-          'severity': severity
-        }
-      };
+      throw Exception('Failed to submit incident: $e');
     }
   }
 
@@ -298,18 +279,40 @@ class ApiService {
           'status': status
         }),
       ).timeout(const Duration(seconds: 10));
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to log movement');
+      }
+    } catch (e) {
+      throw Exception('Failed to log movement: $e');
+    }
+  }
+  Future<List<dynamic>> getMovements() async {
+    try {
+      final res = await http.get(
+        Uri.parse('$baseUrl/api/v1/movements'),
+        headers: _headers(),
+      ).timeout(const Duration(seconds: 10));
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        throw Exception('Failed to load movements');
+      }
+    } catch (e) {
+      throw Exception('Failed to load movements: $e');
+    }
+  }
+  Future<Map<String, dynamic>> getRouteOptimization({String origin = "Hyderabad, Pakistan", String destination = "Karachi, Pakistan"}) async {
+    try {
+      final res = await http.get(
+        Uri.parse('$baseUrl/route?origin=$origin&destination=$destination'),
+        headers: _headers(),
+      ).timeout(const Duration(seconds: 15));
       return json.decode(res.body);
     } catch (e) {
-      return {
-        'status': 'ingested',
-        'movement': {
-          'driver': driverName,
-          'vehicle': vehicleId,
-          'from': originZone,
-          'to': destinationZone,
-          'status': status,
-        }
-      };
+      throw Exception('Route optimization failed: $e');
     }
   }
 
@@ -321,15 +324,14 @@ class ApiService {
         Uri.parse('$baseUrl/api/v1/zone-risk-map'),
         headers: _headers(),
       ).timeout(const Duration(seconds: 10));
-      return json.decode(res.body);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to load zone risk map');
+      }
     } catch (e) {
-      return {
-        'zone_risk_map': {
-          'Korangi': {'risk': 'YELLOW', 'active_incidents': 1, 'critical_incidents': 0},
-          'Lyari': {'risk': 'RED', 'active_incidents': 3, 'critical_incidents': 2},
-          'Saddar': {'risk': 'GREEN', 'active_incidents': 0, 'critical_incidents': 0},
-        }
-      };
+      throw Exception('Failed to load zone risk map: $e');
     }
   }
 
@@ -339,23 +341,14 @@ class ApiService {
         Uri.parse('$baseUrl/api/v1/contradictions'),
         headers: _headers(),
       ).timeout(const Duration(seconds: 10));
-      return json.decode(res.body);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to load contradictions');
+      }
     } catch (e) {
-      return {
-        'contradictions': [
-          {
-            'sku': 'MED-001',
-            'item_name': 'Panadol 500mg',
-            'depot': 'Korangi Depot',
-            'zone': 'Korangi',
-            'ledger_quantity': 12000,
-            'ground_reports': 3,
-            'anomaly': 'DISTRIBUTION_GAP',
-            'explanation': 'Ledger shows 12000 units but 3 ground shortages are reported.',
-          }
-        ],
-        'total_found': 1
-      };
+      throw Exception('Failed to load contradictions: $e');
     }
   }
 
@@ -365,20 +358,14 @@ class ApiService {
         Uri.parse('$baseUrl/api/v1/dashboard'),
         headers: _headers(),
       ).timeout(const Duration(seconds: 10));
-      return json.decode(res.body);
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        final err = json.decode(res.body);
+        throw Exception(err['detail'] ?? 'Failed to load dashboard');
+      }
     } catch (e) {
-      return {
-        'org_id': currentUser?['org_id'] ?? 'org-demo',
-        'role': currentUser?['role'] ?? 'admin',
-        'overview': {
-          'total_stock_records': 5,
-          'critical_stock_count': 1,
-          'active_incidents': 3,
-          'red_zones': ['Lyari'],
-          'contradictions_found': 1,
-          'complaint_spike': false
-        }
-      };
+      throw Exception('Failed to load dashboard: $e');
     }
   }
 
@@ -393,7 +380,7 @@ class ApiService {
       ).timeout(const Duration(seconds: 30));
       return json.decode(res.body);
     } catch (e) {
-      return _mockAnalysis();
+      throw Exception('Analysis failed: $e');
     }
   }
 
@@ -405,7 +392,7 @@ class ApiService {
       ).timeout(const Duration(seconds: 10));
       return json.decode(res.body);
     } catch (e) {
-      return {'complaint_spike': false, 'total_complaints': 5, 'ready': true};
+      throw Exception('Status check failed: $e');
     }
   }
 
@@ -416,64 +403,11 @@ class ApiService {
       ).timeout(const Duration(seconds: 15));
       return json.decode(res.body);
     } catch (e) {
-      return {
-        'weather': {'data': {'condition': 'Clear', 'logistics_risk': 'LOW'}},
-        'currency': {'data': {'usd_to_pkr': 278.5}},
-        'meta': {'sources_healthy': 6},
-      };
+      throw Exception('Ingest fetch failed: $e');
     }
   }
 
-  Map<String, dynamic> _mockAnalysis() => {
-    'ai_analysis': {
-      'summary': 'Critical shortage detected for MED-001 in Gulshan. '
-          '3 complaints confirmed against warehouse stock of 10,000 units. '
-          'Supply chain contradiction flagged.',
-      'alerts': [
-        {
-          'sku': 'MED-001',
-          'item_name': 'Panadol 500mg',
-          'risk_level': 'CRITICAL',
-          'location': 'Gulshan Karachi',
-          'reason': 'Warehouse shows 10,000 units but 3 high-severity shortage complaints received',
-        },
-        {
-          'sku': 'MED-006',
-          'item_name': 'ORS Sachets',
-          'risk_level': 'WARNING',
-          'location': 'Lyari',
-          'reason': 'Stock depleting rapidly. Predicted stockout in 48 hours.',
-        },
-      ],
-      'critical_count': 1,
-      'warning_count': 1,
-    },
-    'action_chain': {
-      'before_state': {
-        'stockout_risk': 'HIGH',
-        'supplier_status': 'unverified',
-        'emergency_orders': 0,
-      },
-      'after_state': {
-        'stockout_risk': 'REDUCED',
-        'supplier_status': 'emergency_order_placed',
-        'emergency_orders': 1,
-      },
-      'chain_results': [
-        {'step': 1, 'action': 'validate_stock', 'status': 'completed'},
-        {'step': 2, 'action': 'notify_procurement', 'status': 'completed'},
-        {'step': 3, 'action': 'simulate_emergency_order', 'status': 'completed',
-          'orders': [{'po_number': 'EMG-20260518-MED001'}]},
-        {'step': 4, 'action': 'update_customer_notifications', 'status': 'completed'},
-        {'step': 5, 'action': 'schedule_monitoring', 'status': 'completed'},
-      ],
-    },
-    'ingest_summary': {
-      'pkr_rate': 278.5,
-      'complaint_spike': true,
-      'total_complaints': 8,
-    },
-  };
+  // All mock data removed — the app now exclusively uses live backend responses.
 }
 
 extension DateTimeString on DateTime {

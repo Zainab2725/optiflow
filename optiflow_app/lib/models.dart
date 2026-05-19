@@ -46,6 +46,22 @@ class Incident {
     );
   }
 
+  factory Incident.fromMap(Map<String, dynamic> d) {
+    return Incident(
+      id: d['id'] ?? d['incident_id'] ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      title: d['title'] ?? d['message'] ?? 'Incident',
+      description: d['message'] ?? d['description'] ?? '',
+      severity: (d['severity'] ?? 'minor').toUpperCase(),
+      zone: d['location_zone'] ?? d['zone'] ?? 'Unknown',
+      status: d['status'] ?? 'open',
+      riskScore: d['risk_score'] ?? _riskFromSeverity(d['severity'] ?? 'minor'),
+      sku: d['sku'] ?? 'GENERAL',
+      reporterName: d['reporter_name'] ?? 'Field Operator',
+      timestamp: d['timestamp'] != null && d['timestamp'] is String ? DateTime.parse(d['timestamp']) : DateTime.now(),
+      unitsActive: d['units_active'] ?? 0,
+    );
+  }
+
   static int _riskFromSeverity(String s) {
     switch (s.toLowerCase()) {
       case 'critical': return 90 + DateTime.now().millisecond % 10;

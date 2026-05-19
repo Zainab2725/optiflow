@@ -12,5 +12,65 @@
     "org_type": "PHARMA",
     "created_at": "2026-05-17T15:43:38Z",
     "active": true
+  },
+  {
+    "org_id": "org-08b9383f",
+    "name": "Karachi Relief NGO",
+    "type": "NGO",
+    "created_at": "2026-05-18T20:17:36.976322"
+  },
+  {
+    "org_id": "org-8f666b1d",
+    "name": "Karachi Government Hospital",
+    "type": "GOVERNMENT",
+    "created_at": "2026-05-18T20:22:26.270455"
+  },
+  {
+    "org_id": "org-c3fde98e",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "created_at": "2026-05-17T20:11:13.596067",
+    "active": true
+  },
+  {
+    "org_id": "org-c268b55b",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "created_at": "2026-05-17T20:11:13.610149",
+    "active": true
+  },
+  {
+    "org_id": "org-89b6d9a3",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "created_at": "2026-05-17T20:14:03.947730",
+    "active": true
+  },
+  {
+    "org_id": "org-0cf0b1a6",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "created_at": "2026-05-17T20:14:03.961630",
+    "active": true
+  },
+  {
+    "org_id": "org-665b019c",
+    "name": "edu company",
+    "type": "HUMANITARIAN",
+    "created_at": "2026-05-19T07:44:55.595712"
+  },
+  {
+    "org_id": "org-7287dfc8",
+    "name": "Karachi Pharmacy",
+    "type": "PHARMA_DISTRIBUTOR",
+    "custom_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8xPlBR5CsIpJHN6JnMBqSkyPpZfdmINuPPo8Pq7NS7L0i-HnC3RAtGrszUU-6BM6eC9Hhq8lhCk9z/pub?gid=0&single=true&output=csv",
+    "created_at": "2026-05-19T08:15:08.622995"
+  },
+  {
+    "org_id": "org-17c0f171",
+    "name": "Karachi Relief",
+    "type": "PHARMA_DISTRIBUTOR",
+    "custom_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8xPlBR5CsIpJHN6JnMBqSkyPpZfdmINuPPo8Pq7NS7L0i-HnC3RAtGrszUU-6BM6eC9Hhq8lhCk9z/pub?gid=0&single=true&output=csv",
+    "created_at": "2026-05-19T15:22:08.555395"
   }
 ]

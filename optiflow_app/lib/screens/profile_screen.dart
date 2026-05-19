@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
 import 'login_screen.dart';
@@ -17,6 +16,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _inviteNameCtrl = TextEditingController();
   final _inviteEmailCtrl = TextEditingController();
   String _inviteRole = 'driver';
+  List<String> _liveZones = [];
+  bool _zonesLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadZones();
+  }
+
+  Future<void> _loadZones() async {
+    try {
+      final res = await _api.getZoneRiskMap();
+      final map = res['zone_risk_map'] as Map<String, dynamic>? ?? {};
+      if (mounted) setState(() { _liveZones = map.keys.toList()..sort(); _zonesLoading = false; });
+    } catch (_) {
+      if (mounted) setState(() => _zonesLoading = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -158,13 +175,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _handleLogout() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-    } catch (_) {}
     ApiService.token = null;
     ApiService.currentUser = null;
     ApiService.organization = null;
-
     if (mounted) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -175,16 +188,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ApiService.currentUser ?? {
-      'name': 'Zainab Ali',
-      'email': 'admin@optiflow.pk',
-      'role': 'admin',
-    };
-    final org = ApiService.organization ?? {
-      'org_id': 'org-demo',
-      'name': 'Karachi Crisis Response NGO',
-      'type': 'NGO',
-    };
+    final user = ApiService.currentUser;
+    final org = ApiService.organization;
+
+    // If somehow the user is null, force back to login
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _handleLogout());
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     final roleName = user['role']?.toString().toUpperCase() ?? 'OPERATOR';
     final roleColor = _getRoleColor(roleName);
@@ -270,32 +281,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _infoRow('Workspace Name', org['name'] ?? 'Karachi Relief Hub'),
+                _infoRow('Workspace Name', org?['name'] ?? user['org_name'] ?? '—'),
                 const Divider(height: 20),
-                _infoRow('Organization ID', org['org_id'] ?? 'org-demo'),
+                _infoRow('Organization ID', org?['org_id'] ?? user['org_id'] ?? '—'),
+                const Divider(height: 20),
+                _infoRow('Operator ID', user['user_id'] ?? '—'),
                 const Divider(height: 20),
                 _infoRow('Isolation Scope', 'MULTI-TENANT SECURE CLOUD'),
                 const Divider(height: 20),
                 Text(
-                  'Authorized Operational Sectors:',
+                  'Live Zone Risk Coverage:',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6, runSpacing: 6,
-                  children: ApiService.activeZones.map((zone) => Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primary.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: AppTheme.primary.withOpacity(0.2)),
-                    ),
-                    child: Text(
-                      zone,
-                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppTheme.primary),
-                    ),
-                  )).toList(),
-                ),
+                _zonesLoading
+                  ? const SizedBox(
+                      height: 24,
+                      child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.primary)))
+                  : _liveZones.isEmpty
+                    ? Text('No zones loaded.',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar))
+                    : Wrap(
+                        spacing: 6, runSpacing: 6,
+                        children: _liveZones.map((zone) => Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primary.withOpacity(0.06),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: AppTheme.primary.withOpacity(0.2)),
+                          ),
+                          child: Text(zone,
+                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppTheme.primary)),
+                        )).toList(),
+                      ),
               ],
             ),
           ),

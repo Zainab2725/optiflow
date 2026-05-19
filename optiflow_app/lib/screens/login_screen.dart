@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
 import 'home_screen.dart';
@@ -13,33 +12,73 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailCtrl    = TextEditingController(text: 'admin@optiflow.pk');
-  final _passCtrl     = TextEditingController(text: 'optiflow123');
-  bool _loading       = false;
-  bool _showPass      = false;
-  bool _showSignup    = false;
-  String _error       = '';
-  final _nameCtrl     = TextEditingController();
-  final _orgCtrl      = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _passCtrl  = TextEditingController();
+  bool _loading    = false;
+  bool _showPass   = false;
+  String _error    = '';
+
+  void _showServerSettings() {
+    final ctrl = TextEditingController(text: ApiService.baseUrl);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Server Configuration'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Enter the backend server base URL. If using a physical phone, enter your computer\'s local network IP address (e.g. http://192.168.1.5:8000).',
+              style: TextStyle(fontSize: 12),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: ctrl,
+              decoration: const InputDecoration(
+                hintText: 'http://127.0.0.1:8000',
+                labelText: 'Server Base URL',
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                ApiService.baseUrl = ctrl.text.trim();
+              });
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Server URL set to: ${ApiService.baseUrl}')),
+              );
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _login() async {
     setState(() { _loading = true; _error = ''; });
     try {
-      // 1. Authenticate with local/remote FastAPI backend first to sync JWT & role
+      // Authenticate with FastAPI backend — gets JWT + role
       await ApiService().login(
         _emailCtrl.text.trim(),
         _passCtrl.text.trim(),
       );
-
-      // 2. Synchronize with Firebase
+      // Optional: also sign into Firebase for any stream-based features
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailCtrl.text.trim(),
           password: _passCtrl.text.trim(),
         );
-      } catch (_) {
-        // Fallback gracefully for pure backend flow if Firebase offline
-      }
+      } catch (_) { /* graceful fallback */ }
 
       if (mounted) {
         Navigator.of(context).pushReplacement(
@@ -48,39 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (e) {
       setState(() => _error = e.toString().replaceAll('Exception: ', ''));
-    } finally {
-      setState(() => _loading = false);
-    }
-  }
-
-  Future<void> _signup() async {
-    if (_nameCtrl.text.isEmpty || _orgCtrl.text.isEmpty) {
-      setState(() => _error = 'Please fill all fields');
-      return;
-    }
-    setState(() { _loading = true; _error = ''; });
-    try {
-      final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailCtrl.text.trim(),
-        password: _passCtrl.text.trim(),
-      );
-      await FirebaseFirestore.instance
-          .collection('organizations')
-          .doc(cred.user!.uid)
-          .set({
-        'name': _orgCtrl.text.trim(),
-        'admin_name': _nameCtrl.text.trim(),
-        'admin_email': _emailCtrl.text.trim(),
-        'org_id': cred.user!.uid,
-        'created_at': FieldValue.serverTimestamp(),
-      });
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      setState(() => _error = e.message ?? 'Signup failed');
     } finally {
       setState(() => _loading = false);
     }
@@ -100,28 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(children: [
-                        const Icon(Icons.hub_outlined, color: AppTheme.primary, size: 20),
-                        const SizedBox(width: 6),
-                        Text('OptiFlow',
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(color: AppTheme.primary)),
-                      ]),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppTheme.outlineVar),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Row(children: [
-                          const Icon(Icons.shield_outlined, size: 12, color: AppTheme.onSurfaceVar),
-                          const SizedBox(width: 4),
-                          Text('ENCRYPTED_CHANNEL',
-                            style: Theme.of(context).textTheme.labelSmall),
-                        ]),
-                      ),
+                      const Icon(Icons.hub_outlined, color: AppTheme.primary, size: 20),
+                      const SizedBox(width: 6),
+                      Text('OptiFlow',
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(color: AppTheme.primary)),
                     ],
                   ),
                 ),
@@ -151,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _showSignup ? 'Secure Access' : 'Secure Access',
+                                    'Secure Access',
                                     style: Theme.of(context).textTheme.headlineLarge,
                                   ),
                                   const SizedBox(height: 4),
@@ -171,28 +161,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  if (_showSignup) ...[
-                                    _label('FULL NAME'),
-                                    const SizedBox(height: 6),
-                                    TextField(
-                                      controller: _nameCtrl,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Enter legal name',
-                                        prefixIcon: Icon(Icons.badge_outlined, size: 18),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    _label('ORGANIZATION'),
-                                    const SizedBox(height: 6),
-                                    TextField(
-                                      controller: _orgCtrl,
-                                      decoration: const InputDecoration(
-                                        hintText: 'Organization name',
-                                        prefixIcon: Icon(Icons.business_outlined, size: 18),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                  ],
                                   _label('OPERATOR_ID'),
                                   const SizedBox(height: 6),
                                   TextField(
@@ -239,15 +207,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   SizedBox(
                                     width: double.infinity,
                                     child: ElevatedButton.icon(
-                                      onPressed: _loading ? null
-                                          : (_showSignup ? _signup : _login),
+                                      onPressed: _loading ? null : _login,
                                       icon: _loading
                                           ? const SizedBox(width: 16, height: 16,
                                               child: CircularProgressIndicator(
                                                 color: Colors.white, strokeWidth: 2))
                                           : const Icon(Icons.arrow_forward, size: 18),
-                                      label: Text(_showSignup
-                                          ? 'Submit Request' : 'Authenticate'),
+                                      label: const Text('Authenticate'),
                                     ),
                                   ),
                                   const SizedBox(height: 16),
@@ -277,44 +243,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                  ),
-                ),
-                // Bottom status
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _statusBadge(context, Icons.shield_outlined,
-                          'FIREWALL_ACTIVE', AppTheme.criticalRed),
-                      _statusBadge(context, Icons.language_outlined,
-                          'IP_WHITELISTED', AppTheme.primary),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(children: [
-                        Container(width: 6, height: 6,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppTheme.success)),
-                        const SizedBox(width: 6),
-                        Text('SYSTEM STATUS: OPTIMAL',
-                          style: Theme.of(context).textTheme.labelSmall),
-                      ]),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text('TERMINAL ID: KRC-09-ADM',
-                          style: Theme.of(context).textTheme.labelSmall),
-                      ),
-                    ],
                   ),
                 ),
               ],

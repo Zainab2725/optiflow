@@ -1,4 +1,6 @@
 import httpx
+import socket
+socket.setdefaulttimeout(1.5)
 import feedparser
 import pandas as pd
 import os
@@ -33,8 +35,9 @@ KEYWORDS_DEFAULT = [
 # ─────────────────────────────────────────
 # SOURCE 1 — Google Sheets Warehouse
 # ─────────────────────────────────────────
-async def fetch_warehouse_csv() -> dict:
-    if not WAREHOUSE_URL or not WAREHOUSE_URL.startswith("http"):
+async def fetch_warehouse_csv(sheet_url: str = None) -> dict:
+    target_url = sheet_url or WAREHOUSE_URL
+    if not target_url or not target_url.startswith("http"):
         return {
             "source": "Google Sheets Warehouse",
             "source_type": "csv",
@@ -42,31 +45,44 @@ async def fetch_warehouse_csv() -> dict:
             "credibility": 0.0,
             "error": "WAREHOUSE_SHEET_URL not configured"
         }
-    async with httpx.AsyncClient(follow_redirects=True, timeout=10) as client:
-        r = await client.get(WAREHOUSE_URL)
-    df = pd.read_csv(StringIO(r.text))
-    df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
     
-    # Map 'qty_in_stock' to 'quantity'
-    if "qty_in_stock" in df.columns:
-        df = df.rename(columns={"qty_in_stock": "quantity"})
+    records = []
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        async with httpx.AsyncClient(follow_redirects=True, timeout=15.0) as client:
+            r = await client.get(target_url, headers=headers)
+        if r.status_code != 200:
+            raise Exception(f"HTTP Status {r.status_code}")
+        df = pd.read_csv(StringIO(r.text))
+        df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
         
-    if "quantity" not in df.columns:
-        # fallback if neither exist
-        df["quantity"] = 0
-        
-    if "unit" not in df.columns:
-        df["unit"] = "Units"
-        
-    if "warehouse" not in df.columns:
-        df["warehouse"] = "Main Warehouse"
+        # Map 'qty_in_stock' to 'quantity'
+        if "qty_in_stock" in df.columns:
+            df = df.rename(columns={"qty_in_stock": "quantity"})
+            
+        if "quantity" not in df.columns:
+            df["quantity"] = 0
+            
+        if "unit" not in df.columns:
+            df["unit"] = "Units"
+            
+        if "warehouse" not in df.columns:
+            df["warehouse"] = "Main Warehouse"
 
-    keep_cols = ["sku", "product_name", "quantity", "unit", "last_updated", "warehouse"]
-    existing_cols = [c for c in keep_cols if c in df.columns]
-    if existing_cols:
-        df = df[existing_cols]
-    df = df.where(pd.notna(df), None)
-    records = df.to_dict(orient="records")
+        keep_cols = ["sku", "product_name", "quantity", "unit", "last_updated", "warehouse"]
+        existing_cols = [c for c in keep_cols if c in df.columns]
+        if existing_cols:
+            df = df[existing_cols]
+        df = df.where(pd.notna(df), None)
+        records = df.to_dict(orient="records")
+    except Exception as e:
+        import traceback
+        print(f"Error fetching Google Sheet warehouse (graceful fallback): {e}")
+        traceback.print_exc()
+        records = []
+
     today = datetime.utcnow().date()
     staleness = False
     for row in records:
@@ -101,13 +117,23 @@ async def fetch_weather_karachi() -> dict:
         "appid": OPENWEATHER_KEY,
         "units": "metric"
     }
-    async with httpx.AsyncClient(timeout=10) as client:
-        r = await client.get(url, params=params)
-    w = r.json()
-    condition = w.get("weather", [{}])[0].get("main", "Clear")
-    rain_mm = w.get("rain", {}).get("1h", 0)
-    temp_c = w.get("main", {}).get("temp", 0)
-    description = w.get("weather", [{}])[0].get("description", "")
+    
+    condition = "Clear"
+    rain_mm = 0
+    temp_c = 28.5
+    description = "Clear sky"
+    
+    try:
+        async with httpx.AsyncClient(timeout=1.5) as client:
+            r = await client.get(url, params=params)
+        w = r.json()
+        condition = w.get("weather", [{}])[0].get("main", "Clear")
+        rain_mm = w.get("rain", {}).get("1h", 0)
+        temp_c = w.get("main", {}).get("temp", 0)
+        description = w.get("weather", [{}])[0].get("description", "")
+    except Exception as e:
+        print(f"Weather fetch failed (graceful fallback): {e}")
+
     logistics_risk = "HIGH" if rain_mm > 5 or condition in [
         "Rain", "Thunderstorm", "Drizzle", "Snow"
     ] else "LOW"
@@ -131,9 +157,14 @@ async def fetch_weather_karachi() -> dict:
 # ─────────────────────────────────────────
 async def fetch_pkr_rate() -> dict:
     url = f"https://v6.exchangerate-api.com/v6/{EXCHANGERATE_KEY}/pair/USD/PKR"
-    async with httpx.AsyncClient(timeout=10) as client:
-        r = await client.get(url)
-    rate = r.json().get("conversion_rate", 279.5)
+    rate = 279.5
+    try:
+        async with httpx.AsyncClient(timeout=1.5) as client:
+            r = await client.get(url)
+        rate = r.json().get("conversion_rate", 279.5)
+    except Exception as e:
+        print(f"PKR rate fetch failed (graceful fallback): {e}")
+        
     return {
         "source": "ExchangeRate-API",
         "source_type": "financial_api",
@@ -264,9 +295,15 @@ async def fetch_pakistan_news(keywords: list = None) -> dict:
         "language": "en",
         "category": "business,health"
     }
-    async with httpx.AsyncClient(timeout=15) as client:
-        r = await client.get("https://newsdata.io/api/1/news", params=params)
-    articles = r.json().get("results", [])
+    
+    articles = []
+    try:
+        async with httpx.AsyncClient(timeout=1.5) as client:
+            r = await client.get("https://newsdata.io/api/1/news", params=params)
+        articles = r.json().get("results", []) or []
+    except Exception as e:
+        print(f"News fetch failed (graceful fallback): {e}")
+        
     return {
         "source": "NewsData.io Pakistan",
         "source_type": "news_api",
