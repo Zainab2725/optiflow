@@ -261,12 +261,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         // ── Dynamic Zone Overview Board ──
         _buildZoneSummaryBoard(zoneIncidentCounts),
 
-        // ── Crisis-Aware Corridor Status Card (AI) ──
-        if (latestResult != null) ...[
-          _buildCrisisCorridorsCard(latestResult),
-        ],
-
-        // ── 8 Sources AI Intelligence Banner ──
+        // Crisis-aware corridor card removed per user request        // ── 8 Sources AI Intelligence Banner ──
         // Risk monitoring card removed per user request
         // ── Severity Summary Cards ──
         Row(children: [

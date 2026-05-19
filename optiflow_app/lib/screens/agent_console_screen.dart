@@ -198,11 +198,11 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF070B19), // Midnight space theme
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0F172A),
+        backgroundColor: const Color(0xFF1D4ED8),
         title: Text(
-          'AI Decision Command Center',
+          'AI Decision Center',
           style: GoogleFonts.hankenGrotesk(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -213,25 +213,19 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.psychology_outlined, color: Color(0xFF38BDF8)),
-            tooltip: 'Load Flood Scenario Preset',
+            icon: const Icon(Icons.lightbulb_outline, color: Colors.white70),
+            tooltip: 'Load Example Scenario',
             onPressed: _loadDemoScenario,
           ),
           IconButton(
-            icon: const Icon(Icons.delete_sweep_outlined, color: Colors.redAccent),
-            tooltip: 'Clear Ingestion Feeds',
+            icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white70),
+            tooltip: 'Clear All Inputs',
             onPressed: _clearInputs,
           ),
         ],
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF0F172A), Color(0xFF070B19)],
-          ),
-        ),
+        color: const Color(0xFFF8FAFF),
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Column(
@@ -270,16 +264,15 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
+          colors: [Color(0xFF1D4ED8), Color(0xFF2563EB)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF1E3A8A).withOpacity(0.3), width: 1),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0052D4).withOpacity(0.1),
-            blurRadius: 10,
+            color: const Color(0xFF1D4ED8).withOpacity(0.25),
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -290,11 +283,10 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF0052D4).withOpacity(0.15),
+              color: Colors.white.withOpacity(0.15),
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFF38BDF8).withOpacity(0.4), width: 1),
             ),
-            child: const Icon(Icons.hub, color: Color(0xFF38BDF8), size: 24),
+            child: const Icon(Icons.hub, color: Colors.white, size: 24),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -302,28 +294,28 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'AI DECISION COMMAND CENTER',
+                  'AI Decision Center',
                   style: GoogleFonts.hankenGrotesk(
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
                     fontSize: 16,
-                    letterSpacing: 0.5,
+                    letterSpacing: 0.3,
                   ),
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Autonomous Multi-Agent Logistics Intelligence System',
-                  style: GoogleFonts.jetBrainsMono(
-                    color: const Color(0xFF38BDF8),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
+                  'Smart Logistics Intelligence — Powered by Gemini AI',
+                  style: GoogleFonts.inter(
+                    color: Colors.white70,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Bypasses conventional static buffers by running three targeted Gemini models in succession. Triggers raw ingestion logic, structured signal parsing, actionable dispatch diverts, and sandbox before-vs-after risk evaluation metrics.',
+                  'Describe what is happening on the ground below. The AI will read it, find risks, make a decision, and simulate the outcome — all in seconds.',
                   style: GoogleFonts.inter(
-                    color: const Color(0xFF94A3B8),
+                    color: Colors.white60,
                     fontSize: 11,
                     height: 1.4,
                   ),
@@ -341,53 +333,72 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F172A).withOpacity(0.7),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFF334155), width: 0.8),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.sensors, color: Color(0xFF38BDF8), size: 16),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1D4ED8).withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Icon(Icons.edit_note_outlined, color: Color(0xFF1D4ED8), size: 16),
+              ),
               const SizedBox(width: 8),
               Text(
-                'LIVE INBOUND TELEMETRY FEEDS',
-                style: GoogleFonts.jetBrainsMono(
-                  color: const Color(0xFF38BDF8),
-                  fontSize: 11,
+                'What is happening right now?',
+                style: GoogleFonts.hankenGrotesk(
+                  color: const Color(0xFF1E293B),
+                  fontSize: 13,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 4),
+          Text(
+            'Fill in any fields that are relevant. You can leave the rest blank.',
+            style: GoogleFonts.inter(color: const Color(0xFF64748B), fontSize: 11),
+          ),
           const SizedBox(height: 14),
           _buildTelemetryInputRow(
             controller: _inputController,
-            label: 'GENERAL COMMAND INPUT (UNSTRUCTURED)',
-            hint: 'Describe active crisis/incident constraints here...',
+            label: 'Situation Description',
+            hint: 'e.g. Flood warning near Saddar. MED-007 stock critically low.',
             maxLines: 2,
           ),
           const SizedBox(height: 12),
           _buildTelemetryInputRow(
             controller: _newsController,
-            label: 'LIVE NEWS TELEMETRY CHANNEL',
-            hint: 'News reports, radio broadcasts, or public statements...',
+            label: 'News / Media Update (optional)',
+            hint: 'e.g. Breaking: Roads blocked due to rainfall...',
             maxLines: 1,
           ),
           const SizedBox(height: 12),
           _buildTelemetryInputRow(
             controller: _weatherController,
-            label: 'WEATHER SENSOR OBSERVATIONS',
-            hint: 'Rain metrics, flood updates, storms...',
+            label: 'Weather Conditions (optional)',
+            hint: 'e.g. Heavy rain, flooding in low areas...',
             maxLines: 1,
           ),
           const SizedBox(height: 12),
           _buildTelemetryInputRow(
             controller: _stockController,
-            label: 'INVENTORY GOOGLE SHEETS LIVE EXTRACT',
-            hint: 'Depot status, inventory item names, quantities...',
+            label: 'Inventory Note (optional)',
+            hint: 'e.g. Depot A: MED-003 at 200 units, below threshold...',
             maxLines: 1,
           ),
         ],
@@ -406,35 +417,34 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
       children: [
         Text(
           label,
-          style: GoogleFonts.jetBrainsMono(
-            color: const Color(0xFF64748B),
-            fontSize: 9,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.2,
+          style: GoogleFonts.inter(
+            color: const Color(0xFF374151),
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 5),
         TextField(
           controller: controller,
           maxLines: maxLines,
-          style: GoogleFonts.inter(color: Colors.white, fontSize: 12),
+          style: GoogleFonts.inter(color: const Color(0xFF1E293B), fontSize: 12),
           decoration: InputDecoration(
             isDense: true,
             filled: true,
-            fillColor: const Color(0xFF070B19),
+            fillColor: const Color(0xFFF8FAFF),
             hintText: hint,
-            hintStyle: GoogleFonts.inter(color: const Color(0xFF475569), fontSize: 12),
+            hintStyle: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 12),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: Color(0xFF334155)),
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: Color(0xFF334155), width: 0.6),
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: Color(0xFF0052D4), width: 1.2),
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFF1D4ED8), width: 1.5),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
@@ -448,15 +458,15 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     return AnimatedBuilder(
       animation: _glowController,
       builder: (context, child) {
-        final glowSize = _isLoading ? 0.0 : _glowController.value * 8.0;
+        final glowSize = _isLoading ? 0.0 : _glowController.value * 6.0;
         return Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0052D4).withOpacity(_isLoading ? 0.1 : 0.4),
+                color: const Color(0xFF1D4ED8).withOpacity(_isLoading ? 0.1 : 0.35),
                 blurRadius: glowSize + 4.0,
-                spreadRadius: glowSize / 3.0,
+                spreadRadius: glowSize / 4.0,
               ),
             ],
           ),
@@ -464,13 +474,11 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
             onPressed: _isLoading ? null : _runAgentWorkflow,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: const Color(0xFF0052D4),
+              backgroundColor: const Color(0xFF1D4ED8),
               foregroundColor: Colors.white,
-              elevation: 4,
-              shadowColor: const Color(0xFF38BDF8).withOpacity(0.5),
+              elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-                side: const BorderSide(color: Color(0xFF38BDF8), width: 0.8),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Row(
@@ -487,22 +495,20 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'EXECUTING DECISION PIPELINE...',
-                    style: GoogleFonts.jetBrainsMono(
+                    'AI is thinking...',
+                    style: GoogleFonts.hankenGrotesk(
                       fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      letterSpacing: 1.0,
+                      fontSize: 14,
                     ),
                   ),
                 ] else ...[
                   const Icon(Icons.flash_on, color: Colors.amber, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    'RUN DECISION AGENT',
+                    'Run Decision Agent',
                     style: GoogleFonts.hankenGrotesk(
                       fontWeight: FontWeight.w900,
-                      fontSize: 14,
-                      letterSpacing: 1.0,
+                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -518,26 +524,26 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
   Widget _buildInteractiveMonospaceTerminal() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFF334155), width: 1.2),
+        color: const Color(0xFF0F172A),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF1D4ED8).withOpacity(0.4), width: 1.2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.6),
+            color: const Color(0xFF1D4ED8).withOpacity(0.08),
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Window chrome header
+          // Header bar
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: const BoxDecoration(
               color: Color(0xFF1E293B),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(9), topRight: Radius.circular(9)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(11), topRight: Radius.circular(11)),
             ),
             child: Row(
               children: [
@@ -546,15 +552,14 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                 Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.amber, shape: BoxShape.circle)),
                 const SizedBox(width: 5),
                 Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle)),
-                const SizedBox(width: 14),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'LIVE TRACE CONSOLE TERMINAL',
-                    style: GoogleFonts.jetBrainsMono(
+                    'Agent Activity Log',
+                    style: GoogleFonts.inter(
                       color: const Color(0xFF94A3B8),
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -562,23 +567,25 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                   const SizedBox(
                     width: 12,
                     height: 12,
-                    child: CircularProgressIndicator(strokeWidth: 1.8, color: Color(0xFF10B981)),
+                    child: CircularProgressIndicator(strokeWidth: 1.8, color: Color(0xFF38BDF8)),
                   ),
+                  const SizedBox(width: 6),
+                  Text('Running...', style: GoogleFonts.inter(color: const Color(0xFF38BDF8), fontSize: 9)),
                 ] else ...[
-                  const Icon(Icons.terminal_outlined, color: Color(0xFF10B981), size: 14),
+                  const Icon(Icons.check_circle_outline, color: Color(0xFF10B981), size: 13),
                 ],
               ],
             ),
           ),
-          // Scrollable terminal content
+          // Log content
           Container(
             height: 180,
             padding: const EdgeInsets.all(12),
             child: _consoleLogs.isEmpty
                 ? Center(
                     child: Text(
-                      'Command execution pipeline idle.\nEnter telemetries above, then trigger RUN DECISION AGENT to observe multi-agent orchestration logs.',
-                      style: GoogleFonts.jetBrainsMono(color: const Color(0xFF475569), fontSize: 11),
+                      'Waiting for you to run the agent.\nFill in the situation above and tap "Run Decision Agent".',
+                      style: GoogleFonts.inter(color: const Color(0xFF475569), fontSize: 11),
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -587,22 +594,18 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                     itemCount: _consoleLogs.length,
                     itemBuilder: (context, index) {
                       final log = _consoleLogs[index];
-                      Color logColor = const Color(0xFF10B981); // Emerald
+                      Color logColor = const Color(0xFF10B981);
                       if (log.startsWith('[ERROR]')) logColor = Colors.redAccent;
-                      if (log.startsWith('[INGESTION]')) logColor = const Color(0xFF38BDF8); // Cyan
-                      if (log.startsWith('[INSIGHTS]')) logColor = const Color(0xFFA78BFA); // Purple
-                      if (log.startsWith('[ORCHESTRATOR]')) logColor = const Color(0xFFFBBF24); // Orange
-                      if (log.startsWith('[SIMULATOR]')) logColor = const Color(0xFF60A5FA); // Sky Blue
-
+                      if (log.startsWith('[INGESTION]')) logColor = const Color(0xFF38BDF8);
+                      if (log.startsWith('[INSIGHTS]')) logColor = const Color(0xFFA78BFA);
+                      if (log.startsWith('[ORCHESTRATOR]')) logColor = const Color(0xFFFBBF24);
+                      if (log.startsWith('[SIMULATOR]')) logColor = const Color(0xFF60A5FA);
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 6.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '➜  ',
-                              style: GoogleFonts.jetBrainsMono(color: const Color(0xFF475569), fontSize: 11),
-                            ),
+                            Text('➜  ', style: GoogleFonts.jetBrainsMono(color: const Color(0xFF475569), fontSize: 11)),
                             Expanded(
                               child: Text(
                                 log,

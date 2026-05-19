@@ -6,7 +6,7 @@ import '../theme.dart';
 import '../services/api_service.dart';
 import '../services/agent_state_provider.dart';
 import 'profile_screen.dart';
-import 'fleet_screen.dart';
+import 'dispatch_screen.dart';
 import 'agent_console_screen.dart';
 import 'stock_screen.dart';
 import 'incidents_screen.dart';
@@ -194,7 +194,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
               'title': 'High Risk Corridor Divert: $zone',
               'description': '$zone zone is exhibiting elevated crisis risk indicators (${score.toStringAsFixed(0)}%). Consider pausing dispatches and establishing supply hub reroutes.',
               'action': 'Optimize Routes',
-              'target': const FleetScreen(),
+              'target': const DispatchScreen(),
             });
           }
         }
@@ -1103,7 +1103,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const FleetScreen()),
+                    MaterialPageRoute(builder: (_) => const DispatchScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

@@ -3,7 +3,7 @@ import '../theme.dart';
 import 'dashboard_screen.dart';
 import 'stock_screen.dart';
 import 'incidents_screen.dart';
-import 'fleet_screen.dart';
+import 'dispatch_screen.dart';
 import 'analytics_screen.dart';
 import 'agent_console_screen.dart';
 
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DashboardScreen(),
     StockScreen(),
     IncidentsScreen(),
-    FleetScreen(),
+    DispatchScreen(),
     AnalyticsScreen(),
     AgentConsoleScreen(),
   ];
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.local_shipping_outlined),
               activeIcon: Icon(Icons.local_shipping),
-              label: 'Fleet',
+              label: 'Dispatch',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.analytics_outlined),
@@ -73,4 +73,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
