@@ -23,8 +23,8 @@ class _FleetScreenState extends State<FleetScreen> {
   String? _selectedZoneRiskDetail;
 
   // Route planner inputs
-  final _originCtrl = TextEditingController(text: 'Hyderabad, Pakistan');
-  final _destCtrl = TextEditingController(text: 'Karachi, Pakistan');
+  final _originCtrl = TextEditingController();
+  final _destCtrl = TextEditingController();
   bool _routeLoading = false;
 
   // Movement dispatch form
@@ -36,11 +36,15 @@ class _FleetScreenState extends State<FleetScreen> {
   final _moveQtyCtrl = TextEditingController();
   List<String> _availableZones = [];
 
+  // Zone incidents from backend
+  List<dynamic> _zoneIncidents = [];
+
   @override
   void initState() {
     super.initState();
     _loadAll();
-    _refreshTimer = Timer.periodic(const Duration(seconds: 10), (_) => _autoRefresh());
+    // Only refresh zone risk on timer — NOT route optimization (that calls Gemini)
+    _refreshTimer = Timer.periodic(const Duration(seconds: 10), (_) => _autoRefreshZones());
   }
 
   @override
@@ -54,17 +58,12 @@ class _FleetScreenState extends State<FleetScreen> {
     super.dispose();
   }
 
-  Future<void> _autoRefresh() async {
+  Future<void> _autoRefreshZones() async {
     try {
       final zoneRes = await _api.getZoneRiskMap();
-      final routeRes = await _api.getRouteOptimization(
-        origin: _originCtrl.text,
-        destination: _destCtrl.text,
-      );
       if (mounted) {
         setState(() {
           _zoneRiskData = zoneRes;
-          _routeData = routeRes;
         });
       }
     } catch (_) {}
@@ -73,7 +72,7 @@ class _FleetScreenState extends State<FleetScreen> {
   Future<void> _loadAll() async {
     setState(() { _loading = true; _error = null; });
     try {
-      // Phase 1: Load zone risk map instantly from host to populate selections and dropdowns
+      // Phase 1: Load zone risk map instantly
       final zoneRes = await _api.getZoneRiskMap();
       final zoneRisk = zoneRes['zone_risk_map'] as Map<String, dynamic>? ?? {};
       final zones = zoneRisk.keys.toList()..sort();
@@ -85,20 +84,33 @@ class _FleetScreenState extends State<FleetScreen> {
           _destZone ??= zones.length > 1 ? zones[1] : (zones.isNotEmpty ? zones.first : 'Clifton');
           _originCtrl.text = _originZone!;
           _destCtrl.text = _destZone!;
-          _loading = false; // Core Fleet UI is ready and interactive!
+          _loading = false;
         });
       }
 
-      // Phase 2: Load heavy route optimization in the background
+      // Phase 2: Load route optimization in background
       try {
-        final routeRes = await _api.getRouteOptimization(origin: _originCtrl.text, destination: _destCtrl.text);
+        final routeRes = await _api.getRouteOptimization(
+          origin: _originCtrl.text,
+          destination: _destCtrl.text,
+        );
         if (mounted) {
-          setState(() {
-            _routeData = routeRes;
-          });
+          setState(() { _routeData = routeRes; });
         }
       } catch (e) {
         debugPrint('Optional background route optimization failed: $e');
+      }
+
+      // Phase 3: Load incidents for zone detail panel
+      try {
+        final incidentRes = await _api.getIncidents();
+        if (mounted) {
+          setState(() {
+            _zoneIncidents = incidentRes['karachi_incidents'] ?? incidentRes['incidents'] ?? [];
+          });
+        }
+      } catch (e) {
+        debugPrint('Incidents load failed: $e');
       }
     } catch (e) {
       if (mounted) {
@@ -137,10 +149,15 @@ class _FleetScreenState extends State<FleetScreen> {
       ));
       return;
     }
+
+    // Save values before clearing controllers
+    final vehicleName = _vehicleCtrl.text.trim();
+    final driverName = _driverCtrl.text.trim();
+
     try {
       final res = await _api.ingestMovement(
-        driverName: _driverCtrl.text.trim(),
-        vehicleId: _vehicleCtrl.text.trim(),
+        driverName: driverName,
+        vehicleId: vehicleName,
         originZone: _originZone ?? 'Unknown',
         destinationZone: _destZone ?? 'Unknown',
         sku: _moveSku ?? 'GENERAL',
@@ -148,7 +165,6 @@ class _FleetScreenState extends State<FleetScreen> {
         status: 'in_transit',
       );
       if (mounted) {
-        // Add to local movements list for display
         final movement = res['movement'] as Map<String, dynamic>? ?? {};
         movement['event_type'] = 'logistics_movement';
         setState(() {
@@ -158,7 +174,7 @@ class _FleetScreenState extends State<FleetScreen> {
           _moveQtyCtrl.clear();
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("✅ Movement dispatched: ${_vehicleCtrl.text.isEmpty ? (res['movement']?['vehicle']) ?? 'Vehicle' : _vehicleCtrl.text} in transit"),
+          content: Text("✅ Unit dispatched: $vehicleName ($driverName) in transit"),
           backgroundColor: AppTheme.success,
         ));
         Navigator.of(context).pop();
@@ -187,20 +203,20 @@ class _FleetScreenState extends State<FleetScreen> {
           title: const Row(children: [
             Icon(Icons.local_shipping_outlined, color: AppTheme.primary),
             SizedBox(width: 8),
-            Text('Log Movement', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text('Dispatch Emergency Unit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           ]),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _label('DRIVER NAME'),
+                _label('DRIVER / OPERATOR NAME'),
                 const SizedBox(height: 6),
                 TextField(controller: _driverCtrl, decoration: const InputDecoration(hintText: 'e.g. Kamran Siddiqui')),
                 const SizedBox(height: 12),
-                _label('VEHICLE ID'),
+                _label('UNIT / VEHICLE ID'),
                 const SizedBox(height: 6),
-                TextField(controller: _vehicleCtrl, decoration: const InputDecoration(hintText: 'e.g. TRUCK-092')),
+                TextField(controller: _vehicleCtrl, decoration: const InputDecoration(hintText: 'e.g. UNIT-092')),
                 const SizedBox(height: 12),
                 _label('ORIGIN ZONE'),
                 const SizedBox(height: 6),
@@ -218,7 +234,7 @@ class _FleetScreenState extends State<FleetScreen> {
                   onChanged: (v) { if (v != null) setDlg(() => _destZone = v); },
                 ),
                 const SizedBox(height: 12),
-                _label('SKU (optional)'),
+                _label('RESOURCE / SKU (optional)'),
                 const SizedBox(height: 6),
                 TextField(
                   onChanged: (v) => _moveSku = v.trim().isEmpty ? null : v.trim(),
@@ -227,8 +243,11 @@ class _FleetScreenState extends State<FleetScreen> {
                 const SizedBox(height: 12),
                 _label('QUANTITY (UNITS)'),
                 const SizedBox(height: 6),
-                TextField(controller: _moveQtyCtrl, keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: 'e.g. 500')),
+                TextField(
+                  controller: _moveQtyCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(hintText: 'e.g. 500'),
+                ),
               ],
             ),
           ),
@@ -264,7 +283,9 @@ class _FleetScreenState extends State<FleetScreen> {
           IconButton(icon: const Icon(Icons.refresh_outlined), onPressed: _loadAll),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ProfileScreen())),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ProfileScreen()),
+            ),
           ),
         ],
       ),
@@ -292,7 +313,7 @@ class _FleetScreenState extends State<FleetScreen> {
                 Icon(Icons.route_outlined, color: Colors.white, size: 18),
                 SizedBox(width: 8),
                 Text(
-                  'Log Movement',
+                  'Dispatch Unit',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -339,12 +360,21 @@ class _FleetScreenState extends State<FleetScreen> {
   }
 
   Widget _buildBody(Map<String, dynamic> zoneRisk, int redZones, int alertZones) {
-    final opt = _routeData['recommended_route'] as Map<String, dynamic>? ?? _routeData['optimized_route'] as Map<String, dynamic>? ?? {};
+    final opt = _routeData['recommended_route'] as Map<String, dynamic>?
+        ?? _routeData['optimized_route'] as Map<String, dynamic>?
+        ?? {};
     final routeAlerts = opt['alerts'] as List<dynamic>? ?? [];
-    final routeSummary = _routeData['decision_summary'] ?? opt['summary'] ?? opt['recommendation'] ?? opt['route'] ?? 'Select origin and destination, then tap Optimize.';
+    final routeSummary = _routeData['decision_summary']
+        ?? opt['summary']
+        ?? opt['recommendation']
+        ?? opt['route']
+        ?? 'Select origin and destination, then tap Optimize.';
 
-    final int? timeMin = (opt['estimated_time_min'] as num?)?.toInt() ?? (opt['normal_time_min'] as num?)?.toInt();
-    final String durationText = timeMin != null ? (timeMin < 60 ? '$timeMin mins' : '${timeMin ~/ 60}h ${timeMin % 60}m') : '--';
+    final int? timeMin = (opt['estimated_time_min'] as num?)?.toInt()
+        ?? (opt['normal_time_min'] as num?)?.toInt();
+    final String durationText = timeMin != null
+        ? (timeMin < 60 ? '$timeMin mins' : '${timeMin ~/ 60}h ${timeMin % 60}m')
+        : '--';
     final double? distance = (opt['distance_km'] as num?)?.toDouble();
     final String distanceText = distance != null ? '${distance.toStringAsFixed(1)} km' : '--';
     final int? score = (opt['score'] as num?)?.toInt();
@@ -353,13 +383,14 @@ class _FleetScreenState extends State<FleetScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       children: [
+
         // ── Live Zone Risk KPIs ──
         Row(children: [
           Expanded(child: _metricTile('RED ALERT ZONES', '$redZones Zones',
-            redZones > 0 ? AppTheme.criticalRed : AppTheme.success)),
+              redZones > 0 ? AppTheme.criticalRed : AppTheme.success)),
           const SizedBox(width: 12),
           Expanded(child: _metricTile('TOTAL ALERT ZONES', '$alertZones Active',
-            alertZones > 0 ? AppTheme.warning : AppTheme.success)),
+              alertZones > 0 ? AppTheme.warning : AppTheme.success)),
         ]),
         const SizedBox(height: 16),
 
@@ -386,7 +417,7 @@ class _FleetScreenState extends State<FleetScreen> {
                   DataColumn(label: Text('Zone Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
                   DataColumn(label: Text('Current Risk', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
                   DataColumn(label: Text('Avg. Daily Incidents', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
-                  DataColumn(label: Text('Last Incident Time', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
+                  DataColumn(label: Text('Last Incident', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
                   DataColumn(label: Text('Operational Status', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11))),
                 ],
                 rows: zoneRisk.entries.map((e) {
@@ -397,18 +428,15 @@ class _FleetScreenState extends State<FleetScreen> {
                   final lastTime = details['last_incident_time'] ?? '3 hrs ago';
                   final opStatus = details['operational_status'] ?? 'Active';
                   final riskPct = details['risk_percent'] ?? 15;
-                  
+
                   final isRed = riskStr == 'RED';
                   final isYellow = riskStr == 'YELLOW';
-                  
                   final Color riskColor = isRed
                       ? AppTheme.criticalRed
                       : isYellow ? AppTheme.warning : AppTheme.success;
-                      
                   final String riskLabel = isRed
                       ? 'Critical ($riskPct%)'
                       : isYellow ? 'Warning ($riskPct%)' : 'Nominal';
-
                   final isOpWarning = opStatus.contains('%');
 
                   return DataRow(
@@ -419,7 +447,6 @@ class _FleetScreenState extends State<FleetScreen> {
                       });
                     },
                     cells: [
-                      // Zone Name
                       DataCell(Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -432,7 +459,6 @@ class _FleetScreenState extends State<FleetScreen> {
                           Text(zone, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
                         ],
                       )),
-                      // Current Risk Badge
                       DataCell(Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
@@ -445,16 +471,14 @@ class _FleetScreenState extends State<FleetScreen> {
                           style: TextStyle(color: riskColor, fontSize: 10, fontWeight: FontWeight.bold),
                         ),
                       )),
-                      // Avg Daily
                       DataCell(Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.people_outline, size: 12, color: Colors.black54),
+                          const Icon(Icons.warning_amber_outlined, size: 12, color: Colors.black54),
                           const SizedBox(width: 4),
                           Text(avgDaily, style: const TextStyle(fontSize: 11, color: Colors.black87)),
                         ],
                       )),
-                      // Last Incident Time
                       DataCell(Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -463,13 +487,16 @@ class _FleetScreenState extends State<FleetScreen> {
                           Text(lastTime, style: const TextStyle(fontSize: 11, color: Colors.black87)),
                         ],
                       )),
-                      // Operational Status
                       DataCell(Container(
-                        padding: isOpWarning ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4) : null,
-                        decoration: isOpWarning ? BoxDecoration(
-                          color: AppTheme.warning.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ) : null,
+                        padding: isOpWarning
+                            ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
+                            : null,
+                        decoration: isOpWarning
+                            ? BoxDecoration(
+                                color: AppTheme.warning.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              )
+                            : null,
                         child: Text(
                           opStatus,
                           style: TextStyle(
@@ -485,115 +512,11 @@ class _FleetScreenState extends State<FleetScreen> {
               ),
             ),
           ),
+
+          // ── Zone Detail Panel (real incidents from backend) ──
           if (_selectedZoneRiskDetail != null) ...[
             const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFF0F1E36), width: 1.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    color: const Color(0xFF0F1E36),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'INCIDENT LOG: ${_selectedZoneRiskDetail!.toUpperCase()} (${(zoneRisk[_selectedZoneRiskDetail!]?['risk'] == 'RED') ? 'Red Zone' : (zoneRisk[_selectedZoneRiskDetail!]?['risk'] == 'YELLOW') ? 'Yellow Zone' : 'Green Zone'})',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close, color: Colors.white, size: 16),
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () {
-                            setState(() {
-                              _selectedZoneRiskDetail = null;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Dynamic Safety Vectors Grid
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _factorCard(
-                                title: 'ROAD INCIDENTS',
-                                value: '${zoneRisk[_selectedZoneRiskDetail]?['total_incidents'] ?? 0} Active',
-                                subtitle: '${zoneRisk[_selectedZoneRiskDetail]?['critical_count'] ?? 0} Crit / ${zoneRisk[_selectedZoneRiskDetail]?['high_count'] ?? 0} High',
-                                icon: Icons.traffic_outlined,
-                                color: (zoneRisk[_selectedZoneRiskDetail]?['total_incidents'] ?? 0) > 0 ? AppTheme.criticalRed : AppTheme.success,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: _factorCard(
-                                title: 'COMPLAINTS',
-                                value: '${zoneRisk[_selectedZoneRiskDetail]?['complaint_count'] ?? 0} Active',
-                                subtitle: 'Shortages & Stockouts',
-                                icon: Icons.storefront_outlined,
-                                color: (zoneRisk[_selectedZoneRiskDetail]?['complaint_count'] ?? 0) > 0 ? AppTheme.warning : AppTheme.success,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: _factorCard(
-                                title: 'LOCAL WEATHER',
-                                value: '${zoneRisk[_selectedZoneRiskDetail]?['weather_desc'] ?? 'Clear sky'}'.toUpperCase(),
-                                subtitle: '${zoneRisk[_selectedZoneRiskDetail]?['weather_risk'] ?? 'LOW'} RISK',
-                                icon: Icons.cloud_outlined,
-                                color: (zoneRisk[_selectedZoneRiskDetail]?['weather_risk'] == 'HIGH') ? AppTheme.criticalRed : AppTheme.success,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        ..._getMockIncidentLogsForZone(_selectedZoneRiskDetail!),
-                        const SizedBox(height: 8),
-                        Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.black12),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: CustomPaint(
-                              painter: MiniMapPainter(),
-                              size: Size.infinite,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildZoneDetailPanel(zoneRisk),
           ],
           const SizedBox(height: 20),
         ],
@@ -627,11 +550,7 @@ class _FleetScreenState extends State<FleetScreen> {
                 ),
                 child: const Text(
                   'Route Planner',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: Colors.black87,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87),
                 ),
               ),
               Padding(
@@ -652,13 +571,8 @@ class _FleetScreenState extends State<FleetScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'ORIGIN WAREHOUSE',
-                                  style: TextStyle(
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black45,
-                                    letterSpacing: 0.5,
-                                  ),
+                                  'ORIGIN ZONE',
+                                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black45, letterSpacing: 0.5),
                                 ),
                                 const SizedBox(height: 2),
                                 Row(
@@ -681,7 +595,6 @@ class _FleetScreenState extends State<FleetScreen> {
                                                 _originCtrl.text = v;
                                                 _originZone = v;
                                               });
-                                              _reoptimizeRoute();
                                             }
                                           },
                                         ),
@@ -709,13 +622,8 @@ class _FleetScreenState extends State<FleetScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'DESTINATION WAREHOUSE',
-                                  style: TextStyle(
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black45,
-                                    letterSpacing: 0.5,
-                                  ),
+                                  'DESTINATION ZONE',
+                                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black45, letterSpacing: 0.5),
                                 ),
                                 const SizedBox(height: 2),
                                 Row(
@@ -738,7 +646,6 @@ class _FleetScreenState extends State<FleetScreen> {
                                                 _destCtrl.text = v;
                                                 _destZone = v;
                                               });
-                                              _reoptimizeRoute();
                                             }
                                           },
                                         ),
@@ -760,9 +667,7 @@ class _FleetScreenState extends State<FleetScreen> {
                         onPressed: _routeLoading ? null : _reoptimizeRoute,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2563EB),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                           elevation: 1,
                         ),
                         child: Row(
@@ -780,11 +685,7 @@ class _FleetScreenState extends State<FleetScreen> {
                             const SizedBox(width: 6),
                             Text(
                               _routeLoading ? 'Optimizing…' : 'Optimize Route with AI',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                             ),
                           ],
                         ),
@@ -822,17 +723,9 @@ class _FleetScreenState extends State<FleetScreen> {
                   children: [
                     const Text(
                       'Analysis Module',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: Colors.black87,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87),
                     ),
-                    Icon(
-                      Icons.settings_input_component_outlined, 
-                      size: 14, 
-                      color: Colors.blue[800]
-                    ),
+                    Icon(Icons.settings_input_component_outlined, size: 14, color: Colors.blue[800]),
                   ],
                 ),
               ),
@@ -861,11 +754,7 @@ class _FleetScreenState extends State<FleetScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.check_circle, 
-                            color: Color(0xFF10B981), 
-                            size: 26
-                          ),
+                          const Icon(Icons.check_circle, color: Color(0xFF10B981), size: 26),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -873,21 +762,14 @@ class _FleetScreenState extends State<FleetScreen> {
                               children: [
                                 const Text(
                                   'AI Route Analysis Complete',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                    color: Colors.black87,
-                                  ),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  routeSummary.toString().isNotEmpty && routeSummary.toString() != 'Route intelligence loading…'
+                                  routeSummary.toString().isNotEmpty
                                       ? routeSummary.toString()
                                       : 'No critical adjustments required. All routes clear.',
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.black54,
-                                  ),
+                                  style: const TextStyle(fontSize: 11, color: Colors.black54),
                                 ),
                               ],
                             ),
@@ -932,10 +814,7 @@ class _FleetScreenState extends State<FleetScreen> {
                                     const SizedBox(width: 4),
                                     const Text('Safety Score', style: TextStyle(fontSize: 9, color: Colors.black54)),
                                     const SizedBox(width: 6),
-                                    Text(
-                                      safetyScoreText,
-                                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black87),
-                                    ),
+                                    Text(safetyScoreText, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black87)),
                                   ],
                                 ),
                               ],
@@ -982,7 +861,7 @@ class _FleetScreenState extends State<FleetScreen> {
           Row(children: [
             const Icon(Icons.swap_horiz, color: AppTheme.primary, size: 16),
             const SizedBox(width: 6),
-            Text('Movements Logged This Session', style: Theme.of(context).textTheme.headlineMedium),
+            Text('Units Dispatched This Session', style: Theme.of(context).textTheme.headlineMedium),
           ]),
           const SizedBox(height: 8),
           Container(
@@ -998,8 +877,8 @@ class _FleetScreenState extends State<FleetScreen> {
               separatorBuilder: (_, __) => const Divider(height: 1),
               itemBuilder: (ctx, idx) {
                 final m = _movements[idx];
-                final driver = m['driver'] ?? m['driver_name'] ?? 'Driver';
-                final vehicle = m['vehicle'] ?? m['vehicle_id'] ?? 'Vehicle';
+                final driver = m['driver'] ?? m['driver_name'] ?? 'Operator';
+                final vehicle = m['vehicle'] ?? m['vehicle_id'] ?? 'Unit';
                 final from = m['from'] ?? m['origin_zone'] ?? '—';
                 final to = m['to'] ?? m['destination_zone'] ?? '—';
                 final sku = m['sku'] ?? 'GENERAL';
@@ -1014,9 +893,9 @@ class _FleetScreenState extends State<FleetScreen> {
                     child: const Icon(Icons.local_shipping_outlined, color: AppTheme.primary, size: 20),
                   ),
                   title: Text('$vehicle · $driver',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                   subtitle: Text('$from → $to  |  SKU: $sku  |  Qty: $qty units',
-                    style: const TextStyle(fontSize: 11)),
+                      style: const TextStyle(fontSize: 11)),
                   trailing: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
@@ -1024,7 +903,7 @@ class _FleetScreenState extends State<FleetScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: const Text('IN TRANSIT',
-                      style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: AppTheme.primary)),
+                        style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: AppTheme.primary)),
                   ),
                 );
               },
@@ -1032,6 +911,196 @@ class _FleetScreenState extends State<FleetScreen> {
           ),
         ],
       ],
+    );
+  }
+
+  // Zone detail panel — uses real backend incidents
+  Widget _buildZoneDetailPanel(Map<String, dynamic> zoneRisk) {
+    final zoneData = zoneRisk[_selectedZoneRiskDetail!] as Map<String, dynamic>? ?? {};
+    final riskStr = zoneData['risk'] ?? 'GREEN';
+    final riskLabel = riskStr == 'RED' ? 'Red Zone' : riskStr == 'YELLOW' ? 'Yellow Zone' : 'Green Zone';
+
+    // Filter real incidents for selected zone
+    final zoneIncidentList = _zoneIncidents
+        .where((i) =>
+            (i['location_zone'] ?? i['zone'] ?? '').toString().toLowerCase() ==
+            _selectedZoneRiskDetail!.toLowerCase())
+        .take(5)
+        .toList();
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFF0F1E36), width: 1.5),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 10, offset: const Offset(0, 4)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            color: const Color(0xFF0F1E36),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'INCIDENT LOG: ${_selectedZoneRiskDetail!.toUpperCase()} ($riskLabel)',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white, size: 16),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: () => setState(() => _selectedZoneRiskDetail = null),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Safety factor cards
+                Row(
+                  children: [
+                    Expanded(
+                      child: _factorCard(
+                        title: 'ROAD INCIDENTS',
+                        value: '${zoneData['total_incidents'] ?? 0} Active',
+                        subtitle: '${zoneData['critical_count'] ?? 0} Crit / ${zoneData['high_count'] ?? 0} High',
+                        icon: Icons.traffic_outlined,
+                        color: (zoneData['total_incidents'] ?? 0) > 0 ? AppTheme.criticalRed : AppTheme.success,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _factorCard(
+                        title: 'COMPLAINTS',
+                        value: '${zoneData['complaint_count'] ?? 0} Active',
+                        subtitle: 'Shortages & Stockouts',
+                        icon: Icons.storefront_outlined,
+                        color: (zoneData['complaint_count'] ?? 0) > 0 ? AppTheme.warning : AppTheme.success,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _factorCard(
+                        title: 'LOCAL WEATHER',
+                        value: '${zoneData['weather_desc'] ?? 'Clear sky'}'.toUpperCase(),
+                        subtitle: '${zoneData['weather_risk'] ?? 'LOW'} RISK',
+                        icon: Icons.cloud_outlined,
+                        color: (zoneData['weather_risk'] == 'HIGH') ? AppTheme.criticalRed : AppTheme.success,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                // Real incidents from backend
+                if (zoneIncidentList.isEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0FDF4),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: Colors.green.shade200),
+                    ),
+                    child: Row(
+                      children: const [
+                        Icon(Icons.check_circle_outline, color: Colors.green, size: 14),
+                        SizedBox(width: 8),
+                        Text(
+                          'No active incidents reported for this zone.',
+                          style: TextStyle(fontSize: 11, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  ...zoneIncidentList.map((incident) {
+                    final severity = (incident['severity'] ?? 'low').toString().toLowerCase();
+                    final isCritical = severity == 'critical';
+                    final isHigh = severity == 'high';
+                    final IconData icon = isCritical
+                        ? Icons.warning
+                        : isHigh
+                            ? Icons.warning_amber_rounded
+                            : Icons.info_outline;
+                    final Color iconColor = isCritical
+                        ? AppTheme.criticalRed
+                        : isHigh
+                            ? AppTheme.warning
+                            : Colors.black45;
+                    final String timeStr = incident['timestamp'] ?? '';
+                    String displayTime = '';
+                    try {
+                      final dt = DateTime.parse(timeStr).toLocal();
+                      final h = dt.hour.toString().padLeft(2, '0');
+                      final m = dt.minute.toString().padLeft(2, '0');
+                      displayTime = '$h:$m';
+                    } catch (_) {
+                      displayTime = timeStr.isNotEmpty ? timeStr.substring(0, min(10, timeStr.length)) : 'Recent';
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.black12, width: 0.5),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(icon, color: iconColor, size: 14),
+                            const SizedBox(width: 8),
+                            Text(
+                              displayTime,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: Colors.black87),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text('|', style: TextStyle(color: Colors.black26, fontSize: 10)),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                incident['message'] ?? 'Incident reported',
+                                style: const TextStyle(fontSize: 10, color: Colors.black87),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: iconColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                severity.toUpperCase(),
+                                style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: iconColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -1075,12 +1144,7 @@ class _FleetScreenState extends State<FleetScreen> {
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 7.5,
-                    fontWeight: FontWeight.bold,
-                    color: color,
-                    letterSpacing: 0.5,
-                  ),
+                  style: TextStyle(fontSize: 7.5, fontWeight: FontWeight.bold, color: color, letterSpacing: 0.5),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1088,33 +1152,16 @@ class _FleetScreenState extends State<FleetScreen> {
             ],
           ),
           const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          Text(value, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black87), maxLines: 1, overflow: TextOverflow.ellipsis),
           const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: const TextStyle(
-              fontSize: 7.5,
-              color: Colors.black54,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          Text(subtitle, style: const TextStyle(fontSize: 7.5, color: Colors.black54), maxLines: 1, overflow: TextOverflow.ellipsis),
         ],
       ),
     );
   }
 
   Widget _label(String text) => Text(text,
-    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.onSurfaceVar, fontSize: 9));
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppTheme.onSurfaceVar, fontSize: 9));
 
   Widget _zoneDropdown({
     required String? value,
@@ -1138,245 +1185,6 @@ class _FleetScreenState extends State<FleetScreen> {
       ),
     );
   }
-
-  List<Widget> _getMockIncidentLogsForZone(String zone) {
-    final List<Map<String, dynamic>> logs = zone.toLowerCase() == 'korangi'
-        ? [
-            {
-              'time': '11:30 AM',
-              'msg': 'Route Obstruction (Korangi Road)',
-              'severity': 'CRITICAL',
-            },
-            {
-              'time': '10:15 AM',
-              'msg': 'Resource Scarcity Alert (Supply Point 4)',
-              'severity': 'WARNING',
-            },
-            {
-              'time': '09:00 AM',
-              'msg': 'Transit Delay (Logistics Hub B)',
-              'severity': 'INFO',
-            },
-            {
-              'time': '09:00 AM',
-              'msg': 'Transit Delay (Logistics Hub L)',
-              'severity': 'INFO',
-            },
-          ]
-        : [
-            {
-              'time': '10:00 AM',
-              'msg': 'Routine Telemetry Active ($zone Zone)',
-              'severity': 'INFO',
-            },
-            {
-              'time': '08:30 AM',
-              'msg': 'Minor Traffic Delay near $zone Depot',
-              'severity': 'INFO',
-            },
-          ];
-
-    return [
-      ...logs.map((l) {
-        final String severity = l['severity'];
-        final IconData icon = severity == 'CRITICAL'
-            ? Icons.warning
-            : severity == 'WARNING' ? Icons.warning_amber_rounded : Icons.access_time;
-        final Color iconColor = severity == 'CRITICAL'
-            ? AppTheme.criticalRed
-            : severity == 'WARNING' ? AppTheme.warning : Colors.black45;
-
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Colors.black12, width: 0.5),
-            ),
-            child: Row(
-              children: [
-                Icon(icon, color: iconColor, size: 14),
-                const SizedBox(width: 8),
-                Text(
-                  l['time']!,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: Colors.black87),
-                ),
-                const SizedBox(width: 4),
-                const Text('|', style: TextStyle(color: Colors.black26, fontSize: 10)),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    l['msg']!,
-                    style: const TextStyle(fontSize: 10, color: Colors.black87),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }),
-      const SizedBox(height: 4),
-      SizedBox(
-        width: double.infinity,
-        height: 28,
-        child: OutlinedButton(
-          onPressed: () {},
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            side: const BorderSide(color: Colors.black26),
-          ),
-          child: const Text('View More Logs', style: TextStyle(fontSize: 10, color: Colors.black87)),
-        ),
-      ),
-    ];
-  }
 }
 
-class MiniMapPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFF3F4F6)
-      ..style = PaintingStyle.fill;
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
-
-    final streetPaint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 4
-      ..style = PaintingStyle.stroke;
-      
-    canvas.drawLine(Offset(0, size.height * 0.3), Offset(size.width, size.height * 0.4), streetPaint);
-    canvas.drawLine(Offset(size.width * 0.3, 0), Offset(size.width * 0.5, size.height), streetPaint);
-    canvas.drawLine(Offset(0, size.height * 0.7), Offset(size.width, size.height * 0.6), streetPaint);
-
-    final waterPaint = Paint()..color = const Color(0xFFE0F2FE);
-    final waterPath = Path()
-      ..moveTo(0, size.height)
-      ..lineTo(size.width * 0.4, size.height)
-      ..quadraticBezierTo(size.width * 0.2, size.height * 0.7, 0, size.height * 0.6)
-      ..close();
-    canvas.drawPath(waterPath, waterPaint);
-
-    const textStyle = TextStyle(
-      color: Colors.black54,
-      fontSize: 8,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 0.5,
-    );
-    final textPainter = TextPainter(
-      text: const TextSpan(text: 'KORANGI', style: textStyle),
-      textDirection: TextDirection.ltr,
-    );
-    textPainter.layout();
-    textPainter.paint(canvas, Offset(size.width * 0.35, size.height * 0.75));
-
-    _drawPin(canvas, Offset(size.width * 0.4, size.height * 0.3), Colors.red);
-    _drawPin(canvas, Offset(size.width * 0.7, size.height * 0.5), Colors.red);
-    _drawPin(canvas, Offset(size.width * 0.5, size.height * 0.6), Colors.red);
-    _drawPin(canvas, Offset(size.width * 0.2, size.height * 0.4), Colors.orange);
-  }
-
-  void _drawPin(Canvas canvas, Offset pos, Color color) {
-    final pinPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-    canvas.drawCircle(pos, 6, pinPaint);
-    
-    final innerPaint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 1.2
-      ..style = PaintingStyle.stroke;
-    canvas.drawLine(pos - const Offset(0, 3), pos + const Offset(0, 1), innerPaint);
-    canvas.drawCircle(pos + const Offset(0, 3), 0.5, Paint()..color = Colors.white);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class MiniMapPreview extends StatelessWidget {
-  const MiniMapPreview({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 38,
-      height: 24,
-      decoration: BoxDecoration(
-        color: const Color(0xFFE0F2FE),
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Colors.black12),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: Stack(
-          children: [
-            Positioned(
-              right: -10,
-              top: -5,
-              child: Container(
-                width: 30,
-                height: 25,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F4F6),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            Positioned(
-              left: -5,
-              bottom: -5,
-              child: Container(
-                width: 25,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F4F6),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-            Center(
-              child: CustomPaint(
-                size: const Size(36, 16),
-                painter: RouteLinePainter(),
-              ),
-            ),
-            const Positioned(
-              left: 4,
-              bottom: 4,
-              child: Icon(Icons.circle, size: 3, color: Colors.blue),
-            ),
-            const Positioned(
-              right: 6,
-              top: 4,
-              child: Icon(Icons.circle, size: 3, color: Colors.red),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RouteLinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blue.withOpacity(0.6)
-      ..strokeWidth = 1.5
-      ..style = PaintingStyle.stroke;
-    
-    final path = Path()
-      ..moveTo(4, size.height - 4)
-      ..quadraticBezierTo(size.width * 0.5, size.height * 0.3, size.width - 6, 4);
-    
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
+int min(int a, int b) => a < b ? a : b;
