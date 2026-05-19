@@ -1,0 +1,6 @@
+[2026-05-19T19:19:28.530502] ingestion completed
+[2026-05-19T19:19:33.669601] insight extraction done
+[2026-05-19T19:19:51.958068] risk evaluated
+[2026-05-19T19:19:51.962519] decision generated
+[2026-05-19T19:19:59.266449] simulation executed
+[2026-05-19T19:19:59.271233] Workflow completed successfully. Action: RESTOCK

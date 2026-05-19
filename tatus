@@ -1,0 +1,205 @@
+warning: in the working copy of 'backend/main.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/run_tests.py', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/backend/backend/data/complaints.json b/backend/backend/data/complaints.json[m
+[1mindex 5f9fe7a..bafa3eb 100644[m
+[1m--- a/backend/backend/data/complaints.json[m
+[1m+++ b/backend/backend/data/complaints.json[m
+[36m@@ -262,5 +262,38 @@[m
+     "id": "825fe783",[m
+     "timestamp": "2026-05-19T15:51:21.999065",[m
+     "status": "open"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    "customer_name": "[ORG-DEMO] Driver Tariq (driver)",[m
+[32m+[m[32m    "sku": "MED-001",[m
+[32m+[m[32m    "product_name": "Zero stock at Korangi supply point, urge...",[m
+[32m+[m[32m    "message": "Zero stock at Korangi supply point, urgent shortage",[m
+[32m+[m[32m    "severity": "critical",[m
+[32m+[m[32m    "location": "Korangi",[m
+[32m+[m[32m    "id": "25d6b238",[m
+[32m+[m[32m    "timestamp": "2026-05-19T19:19:21.610844",[m
+[32m+[m[32m    "status": "open"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    "customer_name": "[ORG-DEMO] Field Worker Asma (operator)",[m
+[32m+[m[32m    "sku": "MED-001",[m
+[32m+[m[32m    "product_name": "Confirmed zero physical stock, patients ...",[m
+[32m+[m[32m    "message": "Confirmed zero physical stock, patients waiting",[m
+[32m+[m[32m    "severity": "critical",[m
+[32m+[m[32m    "location": "Korangi",[m
+[32m+[m[32m    "id": "4bf3dcce",[m
+[32m+[m[32m    "timestamp": "2026-05-19T19:19:21.626530",[m
+[32m+[m[32m    "status": "open"[m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m    "customer_name": "[ORG-DEMO] Supervisor Bilal (operator)",[m
+[32m+[m[32m    "sku": "MED-001",[m
+[32m+[m[32m    "product_name": "Third report - shelves empty despite sys...",[m
+[32m+[m[32m    "message": "Third report - shelves empty despite system showing stock",[m
+[32m+[m[32m    "severity": "critical",[m
+[32m+[m[32m    "location": "Korangi",[m
+[32m+[m[32m    "id": "b6d61165",[m
+[32m+[m[32m    "timestamp": "2026-05-19T19:19:21.642410",[m
+[32m+[m[32m    "status": "open"[m
+   }[m
+ ][m
+\ No newline at end of file[m
+[1mdiff --git a/backend/data/org_incidents.json b/backend/data/org_incidents.json[m
+[1mindex 0b13c54..5a6ec94 100644[m
+[1m--- a/backend/data/org_incidents.json[m
+[1m+++ b/backend/data/org_incidents.json[m
+[36m@@ -1,41 +1,41 @@[m
+ [[m
+   {[m
+[31m-    "reporter_name": "Zainab",[m
+[31m-    "reporter_role": "admin",[m
+[31m-    "location_zone": "Clifton",[m
+[31m-    "sku": "MED-005",[m
+[31m-    "message": "storageeeeeeeeeeeee",[m
+[31m-    "severity": "low",[m
+[31m-    "org_id": "org-7287dfc8",[m
+[31m-    "id": "7985349e",[m
+[31m-    "timestamp": "2026-05-19T09:06:42.719490",[m
+[32m+[m[32m    "reporter_name": "Driver Tariq",[m
+[32m+[m[32m    "reporter_role": "driver",[m
+[32m+[m[32m    "location_zone": "Korangi",[m
+[32m+[m[32m    "sku": "MED-001",[m
+[32m+[m[32m    "message": "Zero stock at Korangi supply point, urgent shortage",[m
+[32m+[m[32m    "severity": "critical",[m
+[32m+[m[32m    "org_id": "org-demo",[m
+[32m+[m[32m    "id": "68cf1510",[m
+[32m+[m[32m    "timestamp": "2026-05-19T19:19:21.608024",[m
+     "resolved": false,[m
+[31m-    "risk_tag": "GREEN"[m
+[32m+[m[32m    "risk_tag": "RED"[m
+   },[m
+   {[m
+[31m-    "reporter_name": "Maryam",[m
+[31m-    "reporter_role": "admin",[m
+[31m-    "location_zone": "Clifton",[m
+[32m+[m[32m    "reporter_name": "Field Worker Asma",[m
+[32m+[m[32m    "reporter_role": "operator",[m
+[32m+[m[32m    "location_zone": "Korangi",[m
+     "sku": "MED-001",[m
+[31m-    "message": "There is shortage of medicines here",[m
+[32m+[m[32m    "message": "Confirmed zero physical stock, patients waiting",[m
+     "severity": "critical",[m
+[31m-    "org_id": "org-8f666b1d",[m
+[31m-    "id": "add230f6",[m
+[31m-    "timestamp": "2026-05-19T15:15:38.996128",[m
+[32m+[m[32m    "org_id": "org-demo",[m
+[32m+[m[32m    "id": "6a6fea89",[m
+[32m+[m[32m    "timestamp": "2026-05-19T19:19:21.623482",[m
+     "resolved": false,[m
+     "risk_tag": "RED"[m
+   },[m
+   {[m
+[31m-    "reporter_name": "Zainab",[m
+[31m-    "reporter_role": "admin",[m
+[32m+[m[32m    "reporter_name": "Supervisor Bilal",[m
+[32m+[m[32m    "reporter_role": "operator",[m
+     "location_zone": "Korangi",[m
+     "sku": "MED-001",[m
+[31m-    "message": "we need 500 medicine urgently",[m
+[31m-    "severity": "high",[m
+[31m-    "org_id": "org-17c0f171",[m
+[31m-    "id": "c13e0304",[m
+[31m-    "timestamp": "2026-05-19T15:51:21.995600",[m
+[32m+[m[32m    "message": "Third report - shelves empty despite system showing stock",[m
+[32m+[m[32m    "severity": "critical",[m
+[32m+[m[32m    "org_id": "org-demo",[m
+[32m+[m[32m    "id": "04ac071d",[m
+[32m+[m[32m    "timestamp": "2026-05-19T19:19:21.639334",[m
+     "resolved": false,[m
+[31m-    "risk_tag": "YELLOW"[m
+[32m+[m[32m    "risk_tag": "RED"[m
+   }[m
+ ][m
+\ No newline at end of file[m
+[1mdiff --git a/backend/data/org_stock.json b/backend/data/org_stock.json[m
+[1mindex 355f2d7..995476d 100644[m
+[1m--- a/backend/data/org_stock.json[m
+[1m+++ b/backend/data/org_stock.json[m
+[36m@@ -1,69 +1,4 @@[m
+ [[m
+[31m-  {[m
+[31m-    "id": "s001",[m
+[31m-    "org_id": "org-demo",[m
+[31m-    "depot_id": "depot-01",[m
+[31m-    "depot_name": "North Relief Hub",[m
+[31m-    "zone": "North Nazimabad",[m
+[31m-    "sku": "RELIEF-001",[m
+[31m-    "item_name": "Clean Water Packets",[m
+[31m-    "quantity": 200,[m
+[31m-    "min_threshold": 1000,[m
+[31m-    "unit": "packets",[m
+[31m-    "last_updated": "2026-05-18T06:00:00"[m
+[31m-  },[m
+[31m-  {[m
+[31m-    "id": "s002",[m
+[31m-    "org_id": "org-demo",[m
+[31m-    "depot_id": "depot-02",[m
+[31m-    "depot_name": "Saddar Emergency Depot",[m
+[31m-    "zone": "Saddar",[m
+[31m-    "sku": "MED-001",[m
+[31m-    "item_name": "Emergency Medical Kits",[m
+[31m-    "quantity": 45,[m
+[31m-    "min_threshold": 200,[m
+[31m-    "unit": "kits",[m
+[31m-    "last_updated": "2026-05-17T18:00:00"[m
+[31m-  },[m
+[31m-  {[m
+[31m-    "id": "s003",[m
+[31m-    "org_id": "org-demo",[m
+[31m-    "depot_id": "depot-03",[m
+[31m-    "depot_name": "Korangi Distribution Center",[m
+[31m-    "zone": "Korangi",[m
+[31m-    "sku": "RELIEF-002",[m
+[31m-    "item_name": "Emergency Food Packs",[m
+[31m-    "quantity": 300,[m
+[31m-    "min_threshold": 800,[m
+[31m-    "unit": "packs",[m
+[31m-    "last_updated": "2026-05-18T07:00:00"[m
+[31m-  },[m
+[31m-  {[m
+[31m-    "id": "s004",[m
+[31m-    "org_id": "org-demo",[m
+[31m-    "depot_id": "depot-04",[m
+[31m-    "depot_name": "SITE Rescue Station",[m
+[31m-    "zone": "SITE Karachi",[m
+[31m-    "sku": "RESCUE-001",[m
+[31m-    "item_name": "Rescue Equipment Sets",[m
+[31m-    "quantity": 12,[m
+[31m-    "min_threshold": 50,[m
+[31m-    "unit": "sets",[m
+[31m-    "last_updated": "2026-05-17T12:00:00"[m
+[31m-  },[m
+[31m-  {[m
+[31m-    "id": "s005",[m
+[31m-    "org_id": "org-demo",[m
+[31m-    "depot_id": "depot-05",[m
+[31m-    "depot_name": "Lyari Flood Response Unit",[m
+[31m-    "zone": "Lyari",[m
+[31m-    "sku": "FLOOD-001",[m
+[31m-    "item_name": "Inflatable Rescue Boats",[m
+[31m-    "quantity": 3,[m
+[31m-    "min_threshold": 15,[m
+[31m-    "unit": "boats",[m
+[31m-    "last_updated": "2026-05-18T05:00:00"[m
+[31m-  },[m
+   {[m
+     "depot_id": "depot-site-01",[m
+     "depot_name": "SITE Industrial Hub",[m
+[36m@@ -72,80 +7,10 @@[m
+     "item_name": "Panadol Extra 500mg",[m
+     "quantity": 150,[m
+     "min_threshold": 500,[m
+[31m-    "org_id": "org-b8f3e58c",[m
+[31m-    "id": "31390a15",[m
+[31m-    "timestamp": "2026-05-17T20:11:25.413551",[m
+[31m-    "threshold_breached": true,[m
+[31m-    "status": "CRITICAL"[m
+[31m-  },[m
+[31m-  {[m
+[31m-    "depot_id": "depot-saddar",[m
+[31m-    "depot_name": "Saddar Depot",[m

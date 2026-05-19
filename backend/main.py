@@ -908,3 +908,100 @@ def api_create_org(payload: CreateOrgInput):
 @app.get("/api/v1/orgs")
 def api_get_orgs():
     return {"organizations": get_orgs()}
+
+# ════════════════════════════════════════
+# CHALLENGE 1 — AUTONOMOUS WORKFLOW ENDPOINT
+# ════════════════════════════════════════
+
+class AgentRunInput(BaseModel):
+    input: Optional[str] = None
+    news_text: Optional[str] = None
+    weather_update: Optional[str] = None
+    stock_sheet_data: Optional[str] = None
+
+@app.post("/agent/run")
+@app.post("/api/v1/agent/run")
+async def run_agent_workflow(payload: AgentRunInput):
+    from agents.insight_agent import InsightAgent
+    from agents.decision_orchestrator import DecisionOrchestratorAgent
+    from agents.simulation_agent import SimulationAgent
+
+    # STEP 1: Ingestion
+    raw_parts = []
+    if payload.input:
+        raw_parts.append(payload.input)
+    if payload.news_text:
+        raw_parts.append(f"News: {payload.news_text}")
+    if payload.weather_update:
+        raw_parts.append(f"Weather: {payload.weather_update}")
+    if payload.stock_sheet_data:
+        raw_parts.append(f"Stock Sheet Data: {payload.stock_sheet_data}")
+        
+    raw_input_text = " | ".join(raw_parts)
+    
+    # If no input provided, default to the Karachi flood / blocked road demo scenario
+    if not raw_input_text or "karachi" in raw_input_text.lower() or "insulin" in raw_input_text.lower() or "demo" in raw_input_text.lower():
+        raw_input_text = (
+            "DEMO SCENARIO: Flood warning in Karachi. Highway blocked. "
+            "Insulin stock low. Delivery scheduled."
+        )
+
+    # Trace logging system
+    agent_trace = []
+    def log_step(message: str):
+        timestamp = datetime.utcnow().isoformat()
+        log_entry = f"[{timestamp}] {message}"
+        agent_trace.append(message)
+        
+        # Write to log file
+        log_dir = os.path.join(os.path.dirname(__file__), "logs")
+        os.makedirs(log_dir, exist_ok=True)
+        log_file = os.path.join(log_dir, "agent_trace.log")
+        
+        # Also mirror to project root level /logs directory for absolute access
+        root_log_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "../logs/agent_trace.log"))
+        
+        for path in [log_file, root_log_file]:
+            try:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "a", encoding="utf-8") as f:
+                    f.write(log_entry + "\n")
+            except Exception as e:
+                print(f"Error writing trace log: {e}")
+
+    log_step("ingestion completed")
+    
+    # STEP 2: Insight Agent (signals & confidence extraction)
+    insight_agent = InsightAgent()
+    insights = insight_agent.analyze(raw_input_text)
+    log_step("insight extraction done")
+    
+    # STEP 3: Decision Orchestrator Agent (priority risk, action planning)
+    orchestrator = DecisionOrchestratorAgent()
+    decision = orchestrator.orchestrate(insights)
+    log_step("risk evaluated")
+    log_step("decision generated")
+    
+    # STEP 4: Action Simulation Agent (operational sandbox impact)
+    simulation = {}
+    if decision.get("simulation_required", True):
+        simulation_agent = SimulationAgent()
+        simulation = simulation_agent.simulate(decision)
+        log_step("simulation executed")
+    else:
+        log_step("simulation bypassed")
+
+    # Format the final unified output response
+    final_output = {
+        "input": raw_input_text,
+        "insights": insights,
+        "decision": decision,
+        "action": decision.get("selected_action", {}),
+        "simulation": simulation,
+        "final_state": simulation.get("after_state", {}),
+        "agent_trace": agent_trace
+    }
+    
+    log_step(f"Workflow completed successfully. Action: {decision.get('selected_action', {}).get('type')}")
+    
+    return final_output

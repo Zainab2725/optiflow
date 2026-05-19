@@ -122,11 +122,21 @@ def run_suite():
     print(f"Movement Ingest Response: {json.dumps(move_data, indent=2)}")
     results["test_7_movement"] = move_data
 
+    # ── TEST 8: Autonomous Workflow ──
+    print("\n[TEST 8] Triggering Autonomous Agentic Workflow (Karachi flood / blocked highway scenario)...")
+    agent_res = client.post("/agent/run", json={
+        "input": "Flood warning in Karachi, M9 motorway highway blocked, insulin stock critical shortage, scheduled dispatch active."
+    })
+    agent_data = agent_res.json()
+    print(f"Agent Workflow Response: {json.dumps(agent_data, indent=2)}")
+    results["test_8_agent_workflow"] = agent_data
+
     # Save to file
     out_path = os.path.join(os.path.dirname(__file__), "data", "test_results.json")
     with open(out_path, "w") as f:
         json.dump(results, f, indent=2)
-    print(f"\n[SUCCESS] All 7 secure tests executed and saved to {out_path}!")
+    print(f"\n[SUCCESS] All 8 secure and autonomous tests executed and saved to {out_path}!")
 
 if __name__ == "__main__":
     run_suite()
+

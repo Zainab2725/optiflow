@@ -88,5 +88,14 @@
     "org_id": "org-17c0f171",
     "org_name": "Karachi Relief",
     "role": "admin"
+  },
+  {
+    "user_id": "usr-test-ahmed",
+    "name": "Ahmed Khan",
+    "email": "ahmed@karachirelief.org",
+    "password": "ngo123",
+    "org_id": "org-demo",
+    "org_name": "Karachi Crisis Response Authority",
+    "role": "admin"
   }
 ]

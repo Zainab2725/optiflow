@@ -72,5 +72,37 @@
     "type": "PHARMA_DISTRIBUTOR",
     "custom_sheet_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8xPlBR5CsIpJHN6JnMBqSkyPpZfdmINuPPo8Pq7NS7L0i-HnC3RAtGrszUU-6BM6eC9Hhq8lhCk9z/pub?gid=0&single=true&output=csv",
     "created_at": "2026-05-19T15:22:08.555395"
+  },
+  {
+    "org_id": "org-9920ed0e",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "custom_sheet_url": null,
+    "created_at": "2026-05-19T19:18:37.414258",
+    "active": true
+  },
+  {
+    "org_id": "org-28c72f7e",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "custom_sheet_url": null,
+    "created_at": "2026-05-19T19:18:37.428692",
+    "active": true
+  },
+  {
+    "org_id": "org-f27e1be6",
+    "name": "Karachi Relief NGO",
+    "org_type": "ngo",
+    "custom_sheet_url": null,
+    "created_at": "2026-05-19T19:19:21.545631",
+    "active": true
+  },
+  {
+    "org_id": "org-8279c346",
+    "name": "City Pharma Distributor",
+    "org_type": "pharma",
+    "custom_sheet_url": null,
+    "created_at": "2026-05-19T19:19:21.561217",
+    "active": true
   }
 ]
