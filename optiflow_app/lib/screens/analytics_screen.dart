@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math' as math;
 import '../theme.dart';
 import '../services/api_service.dart';
+import '../services/agent_state_provider.dart';
 import 'profile_screen.dart';
 import 'fleet_screen.dart';
 import 'agent_console_screen.dart';
@@ -245,6 +247,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<AgentStateProvider>();
+    final latestResult = state.latestResult;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
@@ -278,7 +283,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
                 children: [
                   _buildPredictionBanner(),
                   const SizedBox(height: 16),
-                  _buildStatsSummaryGrid(),
+                  _buildStatsSummaryGrid(latestResult),
                   const SizedBox(height: 16),
                   _buildRecommendationsSection(),
                   const SizedBox(height: 16),
@@ -364,40 +369,66 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildStatsSummaryGrid() {
+  Widget _buildStatsSummaryGrid(Map<String, dynamic>? latestResult) {
     final highestRisk = _getHighestRiskZoneData();
     final criticalStockCount = _getCriticalStockCount();
     final activeIncidentsCount = _incidentsList.length;
+    
+    String aiDelaySavings = 'N/A';
+    String aiRiskReduction = 'N/A';
+    
+    if (latestResult != null) {
+      final metrics = latestResult['simulation']?['impact_metrics'] as Map<String, dynamic>? ?? {};
+      aiDelaySavings = metrics['delay_reduction']?.toString() ?? metrics['eta_improvement']?.toString() ?? 'N/A';
+      aiRiskReduction = metrics['risk_reduction']?.toString() ?? metrics['alternative_route_safety']?.toString() ?? 'N/A';
+    }
 
     return GridView.count(
-      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 1,
+      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: 2.8,
+      childAspectRatio: 2.2,
       children: [
         _buildStatCard(
-          title: 'ACTIVE TELEMETRY INCIDENTS',
+          title: 'TELEMETRY INCIDENTS',
           value: activeIncidentsCount.toString(),
-          subtitle: 'Real-time urban crisis reports',
+          subtitle: 'Real-time urban reports',
           icon: Icons.crisis_alert_outlined,
           color: AppTheme.criticalRed,
         ),
         _buildStatCard(
-          title: 'CRITICAL STOCK SHORTS',
+          title: 'CRITICAL SHORTS',
           value: criticalStockCount.toString(),
-          subtitle: 'SKUs below safety buffer limit',
+          subtitle: 'SKUs below safety buffer',
           icon: Icons.inventory_2_outlined,
           color: AppTheme.warning,
         ),
-        _buildStatCard(
-          title: 'HIGHEST RISK SECTOR',
-          value: highestRisk['zone'],
-          subtitle: 'Crisis Risk Index: ${highestRisk['risk']}',
-          icon: Icons.share_location_outlined,
-          color: AppTheme.primary,
-        ),
+        if (latestResult != null) ...[
+          _buildStatCard(
+            title: 'AI DELAY REDUCTION',
+            value: aiDelaySavings,
+            subtitle: 'Logistics time saved',
+            icon: Icons.timer_outlined,
+            color: AppTheme.successGreen,
+          ),
+          _buildStatCard(
+            title: 'AI RISK REDUCTION',
+            value: aiRiskReduction,
+            subtitle: 'Safety optimization gain',
+            icon: Icons.security_outlined,
+            color: Colors.blueAccent,
+          ),
+        ] else ...[
+          _buildStatCard(
+            title: 'HIGHEST RISK SECTOR',
+            value: highestRisk['zone'],
+            subtitle: 'Crisis Risk Index: ${highestRisk['risk']}',
+            icon: Icons.share_location_outlined,
+            color: AppTheme.primary,
+          ),
+        ],
       ],
     );
   }
