@@ -114,10 +114,10 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     try {
       state.stopAutoRefresh();
       await state.runWorkflow(
-        input: _inputController.text.trim().isEmpty ? null : _inputController.text,
-        newsText: _newsController.text.trim().isEmpty ? null : _newsController.text,
-        weatherUpdate: _weatherController.text.trim().isEmpty ? null : _weatherController.text,
-        stockSheetData: _stockController.text.trim().isEmpty ? null : _stockController.text,
+        input: _inputController.text.trim(),
+        newsText: _newsController.text.trim(),
+        weatherUpdate: _weatherController.text.trim(),
+        stockSheetData: _stockController.text.trim(),
         quiet: true,
       );
       state.startAutoRefresh();

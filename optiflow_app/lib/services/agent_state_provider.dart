@@ -42,10 +42,10 @@ class AgentStateProvider extends ChangeNotifier {
     String? weatherUpdate,
     String? stockSheetData,
   }) {
-    if (input != null) _input = input;
-    if (newsText != null) _newsText = newsText;
-    if (weatherUpdate != null) _weatherUpdate = weatherUpdate;
-    if (stockSheetData != null) _stockSheetData = stockSheetData;
+    if (input != null) _input = input.isEmpty ? null : input;
+    if (newsText != null) _newsText = newsText.isEmpty ? null : newsText;
+    if (weatherUpdate != null) _weatherUpdate = weatherUpdate.isEmpty ? null : weatherUpdate;
+    if (stockSheetData != null) _stockSheetData = stockSheetData.isEmpty ? null : stockSheetData;
   }
 
   Future<void> runWorkflow({
