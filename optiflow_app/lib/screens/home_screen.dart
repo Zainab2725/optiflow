@@ -5,6 +5,7 @@ import 'stock_screen.dart';
 import 'incidents_screen.dart';
 import 'fleet_screen.dart';
 import 'analytics_screen.dart';
+import 'agent_console_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     IncidentsScreen(),
     FleetScreen(),
     AnalyticsScreen(),
+    AgentConsoleScreen(),
   ];
 
   @override
@@ -59,6 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.analytics_outlined),
               activeIcon: Icon(Icons.analytics),
               label: 'Analytics',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.smart_toy_outlined),
+              activeIcon: Icon(Icons.smart_toy),
+              label: 'Agent',
             ),
           ],
         ),

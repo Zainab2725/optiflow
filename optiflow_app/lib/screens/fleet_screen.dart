@@ -360,11 +360,11 @@ class _FleetScreenState extends State<FleetScreen> {
     final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
     final actionType = action['type']?.toString() ?? 'ROUTE_CHANGE';
 
-    final beforeState = simulation['before_state']?.toString() ?? 'Fleet units standard routing Karachi (M9 blocked)';
-    final afterState = simulation['after_state']?.toString() ?? 'Fleet rerouted via Lyari Expressway detour, delivery guaranteed';
+    final beforeState = simulation['before_state']?.toString() ?? 'Awaiting simulation data...';
+    final afterState = simulation['after_state']?.toString() ?? 'Awaiting simulation data...';
     final metrics = simulation['impact_metrics'] as Map<String, dynamic>? ?? {};
-    final delaySavings = metrics['delay_reduction'] ?? metrics['eta_improvement'] ?? '4.5 hours saved';
-    final safetyImprovement = metrics['risk_reduction'] ?? metrics['alternative_route_safety'] ?? '85% risk reduction';
+    final delaySavings = metrics['delay_reduction']?.toString() ?? metrics['eta_improvement']?.toString() ?? 'N/A';
+    final safetyImprovement = metrics['risk_reduction']?.toString() ?? metrics['alternative_route_safety']?.toString() ?? 'N/A';
 
     final isReroute = actionType == 'ROUTE_CHANGE';
 
@@ -434,7 +434,7 @@ class _FleetScreenState extends State<FleetScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            decision['primary_insight'] ?? 'Autonomous rerouting scheduled to bypass flash flood warning zones.',
+            decision['primary_insight'] ?? 'Awaiting AI insights...',
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -513,7 +513,7 @@ class _FleetScreenState extends State<FleetScreen> {
                       const SizedBox(height: 4),
                       Text(
                         delaySavings,
-                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.black),
+                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900),
                       ),
                     ],
                   ),
@@ -538,7 +538,7 @@ class _FleetScreenState extends State<FleetScreen> {
                       const SizedBox(height: 4),
                       Text(
                         safetyImprovement,
-                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.black),
+                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900),
                       ),
                     ],
                   ),

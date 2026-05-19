@@ -79,7 +79,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
       for (var i = 0; i < signals.length; i++) {
         final signalText = signals[i].toString();
         // Skip duplicate signals if already added
-        if (liveKarachiIncidents.any((e) => e.message == signalText)) continue;
+        if (liveKarachiIncidents.any((e) => e.description == signalText)) continue;
 
         String severity = 'HIGH';
         if (signalText.toLowerCase().contains('flood') || signalText.toLowerCase().contains('block') || signalText.toLowerCase().contains('critical')) {
@@ -101,11 +101,15 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         liveKarachiIncidents.insert(0, Incident(
           id: 'ai-signal-$i',
           title: 'AI Operational Alert',
-          message: signalText,
+          description: signalText,
           severity: severity,
           zone: zone,
-          timestamp: DateTime.now().subtract(Duration(minutes: i * 5)).toIso8601String(),
-          reporter: 'Autonomous Safety Agent',
+          status: 'open',
+          riskScore: severity == 'CRITICAL' ? 95 : 85,
+          sku: 'AI-ALRT',
+          reporterName: 'Autonomous Safety Agent',
+          timestamp: DateTime.now().subtract(Duration(minutes: i * 5)),
+          unitsActive: 0,
         ));
       }
     }
@@ -649,8 +653,8 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
     final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
     final params = action['parameters'] as Map<String, dynamic>? ?? {};
     
-    final blockedRoad = params['blocked_road']?.toString() ?? 'M9 Motorway Corridor';
-    final altRoute = params['alternative_route']?.toString() ?? 'Lyari Expressway detour';
+    final blockedRoad = params['blocked_road']?.toString();
+    final altRoute = params['alternative_route']?.toString();
     
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -682,31 +686,23 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
           ),
           const SizedBox(height: 12),
           
-          // Corridor 1: M9 Motorway
-          _buildCorridorRow(
-            name: blockedRoad,
-            status: 'BLOCKED',
-            badgeColor: AppTheme.criticalRed,
-            desc: 'Severe flooding hazard & structural blockage reported.',
-          ),
-          const Divider(height: 16),
+          if (blockedRoad != null) ...[
+            _buildCorridorRow(
+              name: blockedRoad,
+              status: 'BLOCKED / HIGH RISK',
+              badgeColor: AppTheme.criticalRed,
+              desc: 'AI identified severe operational hazard on this corridor.',
+            ),
+            const Divider(height: 16),
+          ],
           
-          // Corridor 2: Lyari Expressway Detour
-          _buildCorridorRow(
-            name: altRoute,
-            status: 'OPTIMIZED DETOUR APPROVED',
-            badgeColor: AppTheme.success,
-            desc: 'Nominal conditions. Re-routed emergency traffic flowing.',
-          ),
-          const Divider(height: 16),
-          
-          // Corridor 3: SITE / Saddar Central Hub
-          _buildCorridorRow(
-            name: 'SITE / Saddar Central Hub',
-            status: 'WARNING / FLOOD-RISK ACTIVE',
-            badgeColor: AppTheme.warning,
-            desc: 'Localized rain accumulation. Nominal transit advised.',
-          ),
+          if (altRoute != null)
+            _buildCorridorRow(
+              name: altRoute,
+              status: 'AI DETOUR APPROVED',
+              badgeColor: AppTheme.successGreen,
+              desc: 'Optimized alternative route. Traffic flowing nominally.',
+            ),
         ],
       ),
     );

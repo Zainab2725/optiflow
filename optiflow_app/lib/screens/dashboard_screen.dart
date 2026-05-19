@@ -233,9 +233,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        decision['primary_insight'] ?? 'Severe logistical hazards require autonomous response.',
+                        decision['primary_insight'] ?? 'Awaiting live agent intelligence...',
                         style: const TextStyle(
-                          color: Colors.white80,
+                          color: Colors.white70,
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                         ),
@@ -433,11 +433,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                _buildActionDetailRow('DISPATCHED ITEM', action['parameters']?['item_name'] ?? 'Insulin Glargine 100 IU'),
-                _buildActionDetailRow('ORDER QUANTITY', '${action['parameters']?['quantity_ordered'] ?? 500} Vials'),
-                _buildActionDetailRow('ROAD BLOCKED', action['parameters']?['blocked_road'] ?? 'M9 Motorway Corridor'),
-                _buildActionDetailRow('AI ALTERNATIVE BYPASS', action['parameters']?['alternative_route'] ?? 'Lyari Expressway detours'),
-                _buildActionDetailRow('TARGET DEPOT', action['parameters']?['target_warehouse'] ?? 'Korangi Relief NGO Depot'),
+                if (action['parameters']?['item_name'] != null)
+                  _buildActionDetailRow('DISPATCHED ITEM', action['parameters']!['item_name'].toString()),
+                if (action['parameters']?['quantity_ordered'] != null)
+                  _buildActionDetailRow('ORDER QUANTITY', '${action['parameters']!['quantity_ordered']} Units'),
+                if (action['parameters']?['blocked_road'] != null)
+                  _buildActionDetailRow('ROAD BLOCKED', action['parameters']!['blocked_road'].toString()),
+                if (action['parameters']?['alternative_route'] != null)
+                  _buildActionDetailRow('AI ALTERNATIVE BYPASS', action['parameters']!['alternative_route'].toString()),
+                if (action['parameters']?['target_warehouse'] != null)
+                  _buildActionDetailRow('TARGET DEPOT', action['parameters']!['target_warehouse'].toString()),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -447,7 +452,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      simulation['impact_metrics']?['eta_improvement'] ?? simulation['impact_metrics']?['delay_reduction'] ?? '4.5 hours saved',
+                      simulation['impact_metrics']?['eta_improvement']?.toString() ?? simulation['impact_metrics']?['delay_reduction']?.toString() ?? 'N/A',
                       style: const TextStyle(color: Color(0xFF4ADE80), fontSize: 11, fontWeight: FontWeight.w900),
                     ),
                   ],

@@ -595,9 +595,9 @@ class _StockScreenState extends State<StockScreen> {
                         final ratio = thresh > 0 ? (qty / thresh).clamp(0.0, 1.0) : 0.0;
                         final isCritical = qty < thresh * 0.5;
 
-                        // Est. Time to Depletion: e.g. < 8h or < 36h
-                        final estTime = isCritical ? 'Est. 8h' : 'Est. 36h';
-                        final riskLabel = isCritical ? 'Very Low Stock' : 'Running Low';
+                        final estHours = qty > 0 ? (qty / 10).ceil() : 0;
+                        final estTime = estHours > 0 ? 'Est. ${estHours}h' : 'Depleted';
+                        final riskLabel = isCritical ? 'Critical Stock' : 'Running Low';
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
