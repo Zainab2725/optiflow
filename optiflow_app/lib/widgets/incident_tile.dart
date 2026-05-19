@@ -29,13 +29,16 @@ class IncidentTile extends StatelessWidget {
   }
 
   String _formattedTimestamp() {
-    final hour = incident.timestamp.hour;
+    final pkTime = incident.timestamp.isUtc 
+       ? incident.timestamp.add(const Duration(hours: 5))
+       : incident.timestamp.toUtc().add(const Duration(hours: 5));
+    final hour = pkTime.hour;
     final period = hour >= 12 ? 'PM' : 'AM';
     final hour12 = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-    final minute = incident.timestamp.minute.toString().padLeft(2, '0');
-    final day = incident.timestamp.day;
+    final minute = pkTime.minute.toString().padLeft(2, '0');
+    final day = pkTime.day;
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    final month = months[incident.timestamp.month - 1];
+    final month = months[pkTime.month - 1];
     return '$month $day, $hour12:$minute $period';
   }
 

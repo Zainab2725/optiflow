@@ -720,19 +720,19 @@ class _StockScreenState extends State<StockScreen> {
                 String statusLabel = 'Nominal';
                 Color statusColor = AppTheme.success;
                 Color statusBg = AppTheme.success.withOpacity(0.12);
-                String estDepletion = '14 Days';
-
                 if (qty < thresh * 0.5) {
                   statusLabel = 'Critical';
                   statusColor = AppTheme.criticalRed;
                   statusBg = AppTheme.criticalRedBg;
-                  estDepletion = '< 1 Day';
                 } else if (qty < thresh) {
                   statusLabel = 'Warning';
                   statusColor = AppTheme.warning;
                   statusBg = AppTheme.warningBg;
-                  estDepletion = '3 Days';
                 }
+                
+                final estHours = qty > 0 ? (qty / 10).ceil() : 0;
+                final estDays = (estHours / 24).floor();
+                String estDepletion = estDays >= 14 ? '14+ Days' : (estDays >= 1 ? '$estDays Days' : '< 1 Day');
 
                 final double pct = thresh > 0 ? (qty / (thresh * 2) * 100).clamp(0.0, 100.0) : 0.0;
                 final String stockLevelStr = '${pct.toInt()}%';
@@ -963,12 +963,9 @@ class _StockScreenState extends State<StockScreen> {
                   final qty = ((a['quantity'] ?? 0) as num).toInt();
                   final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
 
-                  String estDepletion = '14 Days';
-                  if (qty < thresh * 0.5) {
-                    estDepletion = '8h';
-                  } else if (qty < thresh) {
-                    estDepletion = '36h';
-                  }
+                  final estHours = qty > 0 ? (qty / 10).ceil() : 0;
+                  final estDays = (estHours / 24).floor();
+                  String estDepletion = estDays >= 14 ? '14+ Days' : (estDays >= 1 ? '$estDays Days' : '< 1 Day');
 
                   final double pct = thresh > 0 ? (qty / (thresh * 2) * 100).clamp(0.0, 100.0) : 0.0;
 

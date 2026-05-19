@@ -443,19 +443,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   _buildActionDetailRow('AI ALTERNATIVE BYPASS', action['parameters']!['alternative_route'].toString()),
                 if (action['parameters']?['target_warehouse'] != null)
                   _buildActionDetailRow('TARGET DEPOT', action['parameters']!['target_warehouse'].toString()),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'AI DECISION DELAY SAVED:',
-                      style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      simulation['impact_metrics']?['eta_improvement']?.toString() ?? simulation['impact_metrics']?['delay_reduction']?.toString() ?? 'N/A',
-                      style: const TextStyle(color: Color(0xFF4ADE80), fontSize: 11, fontWeight: FontWeight.w900),
-                    ),
-                  ],
+                Builder(
+                  builder: (context) {
+                    final delayStr = simulation['impact_metrics']?['eta_improvement']?.toString() ?? simulation['impact_metrics']?['delay_reduction']?.toString() ?? 'N/A';
+                    if (delayStr == 'N/A' || delayStr == '0' || delayStr == '0%' || delayStr.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'AI DECISION DELAY SAVED:',
+                            style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            delayStr,
+                            style: const TextStyle(color: Color(0xFF4ADE80), fontSize: 11, fontWeight: FontWeight.w900),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -568,31 +578,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 20),
         ],
 
-        // ── Data Source Status Bar ──
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppTheme.successBg,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              color: AppTheme.success.withOpacity(0.3)),
-          ),
-          child: const Row(children: [
-            Icon(
-              Icons.cloud_done_outlined,
-              size: 14,
-              color: AppTheme.success,
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                '8/8 TELEMETRY DATA CHANNELS INGESTING SECURELY',
-                style: TextStyle(color: AppTheme.success, fontSize: 10, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ]),
-        ),
-        const SizedBox(height: 8),
+        // Banner removed per user request
       ],
     );
   }
