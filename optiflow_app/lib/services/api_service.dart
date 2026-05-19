@@ -391,7 +391,7 @@ class ApiService {
     String? stockSheetData,
   }) async {
     try {
-      final String targetInput = input ?? "DEMO SCENARIO: Flood warning in Karachi. Highway blocked. Insulin stock low. Delivery scheduled.";
+      final String targetInput = input ?? "Provide a routine operational status update across all active logistics zones.";
       final res = await http.post(
         Uri.parse('$baseUrl/agent/run'), // Supports both /agent/run and /api/v1/agent/run
         headers: _headers(),

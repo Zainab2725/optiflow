@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
+import '../services/agent_state_provider.dart';
 
 class AgentConsoleScreen extends StatefulWidget {
   const AgentConsoleScreen({super.key});
@@ -39,8 +41,25 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
     
-    // Seed initial demo Karachi flood relief parameters
-    _loadDemoScenario();
+    // Removed _loadDemoScenario() so it doesn't default to static input!
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final state = context.read<AgentStateProvider>();
+    if (_inputController.text.isEmpty && state.currentInput != null) {
+      _inputController.text = state.currentInput!;
+    }
+    if (_newsController.text.isEmpty && state.currentNewsText != null) {
+      _newsController.text = state.currentNewsText!;
+    }
+    if (_weatherController.text.isEmpty && state.currentWeatherUpdate != null) {
+      _weatherController.text = state.currentWeatherUpdate!;
+    }
+    if (_stockController.text.isEmpty && state.currentStockSheetData != null) {
+      _stockController.text = state.currentStockSheetData!;
+    }
   }
 
   @override
@@ -74,6 +93,8 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
 
   Future<void> _runAgentWorkflow() async {
     if (_isLoading) return;
+    final state = context.read<AgentStateProvider>();
+    
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -91,15 +112,21 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     await Future.delayed(const Duration(milliseconds: 300));
 
     try {
-      // Trigger live backend multi-agent workflow
-      final response = await _api.runAgentWorkflow(
+      state.stopAutoRefresh();
+      await state.runWorkflow(
         input: _inputController.text.trim().isEmpty ? null : _inputController.text,
         newsText: _newsController.text.trim().isEmpty ? null : _newsController.text,
         weatherUpdate: _weatherController.text.trim().isEmpty ? null : _weatherController.text,
         stockSheetData: _stockController.text.trim().isEmpty ? null : _stockController.text,
+        quiet: true,
       );
+      state.startAutoRefresh();
 
-      // Extract the structured trace steps returned from our multi-agent engine
+      if (state.errorMessage != null) {
+        throw Exception(state.errorMessage);
+      }
+
+      final response = state.latestResult ?? {};
       final rawTrace = response['agent_trace'] as List<dynamic>? ?? [];
       final List<String> backendTrace = rawTrace.map((e) => e.toString()).toList();
 
