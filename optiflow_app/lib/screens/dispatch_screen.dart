@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
 import '../providers/agent_state_provider.dart';
-import '../widgets/ai_recommendation_card.dart';
 import 'profile_screen.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../widgets/tactical_zone_map.dart';
+
 
 class DispatchScreen extends StatefulWidget {
   const DispatchScreen({super.key});
@@ -361,7 +361,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
     );
   }
 
-  Widget _buildLiveAiFleetSandboxCard(Map<String, dynamic> latestResult) {
+  Widget _buildLiveAiFleetSandboxCard(Map<String, dynamic> latestResult, Map<String, dynamic> zoneRisk) {
     final decision = latestResult['decision'] as Map<String, dynamic>? ?? {};
     final simulation = latestResult['simulation'] as Map<String, dynamic>? ?? {};
     final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
@@ -450,12 +450,16 @@ class _DispatchScreenState extends State<DispatchScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(child: _buildStatePanel('BEFORE', before, const Color(0xFFEF4444))),
-              const SizedBox(width: 12),
-              Expanded(child: _buildStatePanel('AFTER', after, const Color(0xFF10B981))),
-            ],
+          TacticalZoneMap(
+            zoneRisk: zoneRisk,
+            selectedZone: _selectedZoneRiskDetail,
+            onZoneSelected: (zone) {
+              setState(() {
+                _selectedZoneRiskDetail = zone;
+              });
+            },
+            beforeRouteStr: before['route']?.toString(),
+            afterRouteStr: after['route']?.toString(),
           ),
           const SizedBox(height: 16),
           Row(
@@ -467,40 +471,6 @@ class _DispatchScreenState extends State<DispatchScreen> {
               Expanded(child: _buildMetricBox('OPTIMIZATION', optimizationScore, Colors.purpleAccent)),
             ],
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatePanel(String title, Map<String, dynamic> state, Color accentColor) {
-    final routeText = state['route']?.toString() ?? 'Awaiting backend route data';
-    final statusText = state['status']?.toString() ?? 'Awaiting backend status';
-    final stockText = state['stock_level']?.toString() ?? 'Awaiting backend stock data';
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0F172A),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: accentColor.withOpacity(0.4), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: accentColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-            ),
-          ),
-          const SizedBox(height: 10),
-          _buildStateItemCard('Route', routeText, accentColor),
-          const SizedBox(height: 8),
-          _buildStateItemCard('Status', statusText, accentColor),
-          const SizedBox(height: 8),
-          _buildStateItemCard('Stock Level', stockText, accentColor),
         ],
       ),
     );
@@ -525,33 +495,6 @@ class _DispatchScreenState extends State<DispatchScreen> {
           Text(
             value,
             style: TextStyle(color: color, fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStateItemCard(String label, String value, Color accentColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: accentColor.withOpacity(0.18), width: 1),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$label:',
-            style: TextStyle(color: accentColor.withOpacity(0.9), fontSize: 11, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.white70, fontSize: 11),
-            ),
           ),
         ],
       ),
@@ -598,7 +541,33 @@ class _DispatchScreenState extends State<DispatchScreen> {
       children: [
         // ── Live AI Operational Sandbox Card ──
         if (latestResult != null && latestResult['decision'] != null && latestResult['decision']['selected_action'] != null) ...[
-          _buildLiveAiFleetSandboxCard(latestResult),
+          _buildLiveAiFleetSandboxCard(latestResult, zoneRisk),
+          const SizedBox(height: 16),
+        ],
+
+        // ── Karachi Tactical Risk Map (when no AI Detour is active) ──
+        if (latestResult == null || latestResult['decision'] == null || latestResult['decision']['selected_action'] == null) ...[
+          Row(children: [
+            const Icon(Icons.map_outlined, color: AppTheme.primary, size: 16),
+            const SizedBox(width: 6),
+            Text('Karachi Tactical Risk Map', style: Theme.of(context).textTheme.headlineMedium),
+          ]),
+          const SizedBox(height: 8),
+          TacticalZoneMap(
+            zoneRisk: zoneRisk,
+            selectedZone: _selectedZoneRiskDetail,
+            onZoneSelected: (zone) {
+              setState(() {
+                _selectedZoneRiskDetail = zone;
+              });
+            },
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        // ── Zone Detail Panel (when a zone is tapped on the map) ──
+        if (_selectedZoneRiskDetail != null) ...[
+          _buildZoneDetailPanel(zoneRisk),
           const SizedBox(height: 16),
         ],
 
@@ -872,21 +841,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
     );
   }
 
-  Widget _metricTile(String label, String value, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppTheme.outlineVar, width: 0.5),
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.onSurfaceVar)),
-        const SizedBox(height: 4),
-        Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color)),
-      ]),
-    );
-  }
+
 
   Widget _factorCard({
     required String title,

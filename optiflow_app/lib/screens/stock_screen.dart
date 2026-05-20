@@ -1228,21 +1228,21 @@ class _StockScreenState extends State<StockScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFEEF2FF),
+        color: AppTheme.primary.withOpacity(0.06),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFF93C5FD), width: 0.8),
+        border: Border.all(color: AppTheme.primary.withOpacity(0.25), width: 0.8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: const [
-              Icon(Icons.storefront_outlined, color: Color(0xFF2563EB), size: 20),
+              Icon(Icons.storefront_outlined, color: AppTheme.primary, size: 20),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
                   'Available Source Inventory',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1D4ED8)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.primary),
                 ),
               ),
             ],
@@ -1251,7 +1251,7 @@ class _StockScreenState extends State<StockScreen> {
           if (sources.isEmpty)
             const Text(
               'AI has not identified any source warehouses with surplus stock yet.',
-              style: TextStyle(fontSize: 12, color: Color(0xFF475569)),
+              style: TextStyle(fontSize: 12, color: Color(0xFF64748B)),
             )
           else
             ...sources.take(5).map((source) {
@@ -1263,15 +1263,33 @@ class _StockScreenState extends State<StockScreen> {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppTheme.primary.withOpacity(0.15)),
+                      ),
+                      child: const Icon(Icons.warehouse_outlined, size: 12, color: AppTheme.primary),
+                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         '$warehouse → $sku',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF0F172A)),
                       ),
                     ),
-                    Text(
-                      '$quantity units',
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF475569)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppTheme.outlineVar, width: 0.5),
+                      ),
+                      child: Text(
+                        '$quantity units',
+                        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppTheme.primary),
+                      ),
                     ),
                   ],
                 ),
@@ -1286,25 +1304,58 @@ class _StockScreenState extends State<StockScreen> {
     final actions = _redistributionActionsFromResult(latestResult);
     final decision = latestResult['decision'] as Map<String, dynamic>? ?? {};
     final reason = decision['primary_insight']?.toString() ?? decision['summary']?.toString() ?? 'AI has identified redistribution needs based on current stock imbalances.';
+    final riskLevel = decision['risk_level']?.toString().toUpperCase() ?? 'LOW';
+    final isCriticalOrHigh = riskLevel == 'CRITICAL' || riskLevel == 'HIGH';
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7FEE7),
+        color: isCriticalOrHigh ? AppTheme.criticalRedBg : AppTheme.successBg.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFF86EFAC), width: 0.8),
+        border: Border.all(
+          color: isCriticalOrHigh ? AppTheme.criticalRed.withOpacity(0.3) : AppTheme.success.withOpacity(0.3),
+          width: 0.8,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            children: const [
-              Icon(Icons.auto_awesome_mosaic_outlined, color: Color(0xFF15803D), size: 20),
-              SizedBox(width: 10),
+            children: [
+              Icon(
+                Icons.auto_awesome_mosaic_outlined,
+                color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.success,
+                size: 20,
+              ),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   'AI Redistribution Recommendations',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF166534)),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.success,
+                  ),
+                ),
+              ),
+              // Risk level badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isCriticalOrHigh ? AppTheme.criticalRed.withOpacity(0.15) : AppTheme.success.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isCriticalOrHigh ? AppTheme.criticalRed.withOpacity(0.3) : AppTheme.success.withOpacity(0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: Text(
+                  riskLevel,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.success,
+                  ),
                 ),
               ),
             ],
@@ -1312,7 +1363,10 @@ class _StockScreenState extends State<StockScreen> {
           const SizedBox(height: 12),
           Text(
             reason,
-            style: const TextStyle(fontSize: 12, color: Color(0xFF166534)),
+            style: TextStyle(
+              fontSize: 12,
+              color: isCriticalOrHigh ? AppTheme.criticalRed.withOpacity(0.9) : AppTheme.success.withOpacity(0.9),
+            ),
           ),
           const SizedBox(height: 14),
           if (actions.isEmpty)
@@ -1323,11 +1377,82 @@ class _StockScreenState extends State<StockScreen> {
           else
             ...actions.take(3).map((action) {
               final type = action['type']?.toString().toUpperCase() ?? 'REDISTRIBUTE';
-              final from = action['from'] ?? action['source'] ?? 'Unknown source';
-              final to = action['to'] ?? action['destination'] ?? 'Unknown destination';
-              final sku = action['sku'] ?? action['item_name'] ?? 'SKU';
-              final quantity = action['quantity']?.toString() ?? action['units']?.toString() ?? '—';
-              final reasonDetail = action['reason'] ?? action['explanation'] ?? 'Critical shortage detected';
+              final params = action['parameters'] is Map ? action['parameters'] as Map : {};
+
+              // If type is ALERT, render it beautifully as a notification, not a broken transfer card!
+              if (type == 'ALERT') {
+                final alertMsg = params['message'] ?? action['message'] ?? 'Autonomous logistics monitor is running nominal.';
+                return Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: isCriticalOrHigh ? AppTheme.criticalRed.withOpacity(0.2) : AppTheme.success.withOpacity(0.2),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isCriticalOrHigh ? Icons.warning_amber_rounded : Icons.check_circle_outline,
+                        color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.success,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          alertMsg,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.success,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              // Otherwise resolve other parameters safely
+              final from = action['from'] 
+                  ?? action['source'] 
+                  ?? params['from'] 
+                  ?? params['source'] 
+                  ?? params['origin'] 
+                  ?? params['origin_zone'] 
+                  ?? 'Unknown source';
+                  
+              final to = action['to'] 
+                  ?? action['destination'] 
+                  ?? params['to'] 
+                  ?? params['destination'] 
+                  ?? params['target_warehouse'] 
+                  ?? params['destination_zone'] 
+                  ?? 'Unknown destination';
+                  
+              final sku = action['sku'] 
+                  ?? action['item_name'] 
+                  ?? params['sku'] 
+                  ?? params['item_name'] 
+                  ?? params['item'] 
+                  ?? 'SKU';
+                  
+              final quantity = action['quantity']?.toString() 
+                  ?? action['units']?.toString() 
+                  ?? params['quantity']?.toString() 
+                  ?? params['units']?.toString() 
+                  ?? params['quantity_ordered']?.toString() 
+                  ?? '—';
+                  
+              final reasonDetail = action['reason'] 
+                  ?? action['explanation'] 
+                  ?? params['reason'] 
+                  ?? params['explanation'] 
+                  ?? params['priority'] 
+                  ?? 'Critical shortage detected';
 
               return Container(
                 margin: const EdgeInsets.only(top: 10),
@@ -1335,21 +1460,74 @@ class _StockScreenState extends State<StockScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFBBF7D0), width: 0.8),
+                  border: Border.all(
+                    color: isCriticalOrHigh ? AppTheme.criticalRed.withOpacity(0.25) : AppTheme.success.withOpacity(0.25),
+                    width: 0.8,
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '$type: $quantity units of $sku',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF134E4A)),
+                    Row(
+                      children: [
+                        Icon(
+                          type == 'ROUTE_CHANGE' ? Icons.alt_route : Icons.local_shipping_outlined,
+                          color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.primary,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            '$type: $quantity units of $sku',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: isCriticalOrHigh ? AppTheme.criticalRed : AppTheme.primary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 6),
-                    Text('FROM: $from', style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
-                    const SizedBox(height: 2),
-                    Text('TO: $to', style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
                     const SizedBox(height: 8),
-                    Text('Reason: $reasonDetail', style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
+                    Row(
+                      children: [
+                        const Text(
+                          'FROM: ',
+                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF64748B)),
+                        ),
+                        Text(
+                          '$from',
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Text(
+                          'TO:   ',
+                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF64748B)),
+                        ),
+                        Text(
+                          '$to',
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.5),
+                      ),
+                      child: Text(
+                        'Reason: $reasonDetail',
+                        style: const TextStyle(fontSize: 11, color: Color(0xFF475569), fontStyle: FontStyle.italic),
+                      ),
+                    ),
                   ],
                 ),
               );

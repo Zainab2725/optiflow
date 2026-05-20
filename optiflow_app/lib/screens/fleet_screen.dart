@@ -6,6 +6,8 @@ import '../services/api_service.dart';
 import '../providers/agent_state_provider.dart';
 import '../widgets/ai_recommendation_card.dart';
 import 'profile_screen.dart';
+import '../widgets/tactical_zone_map.dart';
+
 
 class FleetScreen extends StatefulWidget {
   const FleetScreen({super.key});
@@ -360,7 +362,7 @@ class _FleetScreenState extends State<FleetScreen> {
     );
   }
 
-  Widget _buildLiveAiFleetSandboxCard(Map<String, dynamic> latestResult) {
+  Widget _buildLiveAiFleetSandboxCard(Map<String, dynamic> latestResult, Map<String, dynamic> zoneRisk) {
     final decision = latestResult['decision'] as Map<String, dynamic>? ?? {};
     final simulation = latestResult['simulation'] as Map<String, dynamic>? ?? {};
     final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
@@ -449,12 +451,16 @@ class _FleetScreenState extends State<FleetScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(child: _buildStatePanel('BEFORE', before, const Color(0xFFEF4444))),
-              const SizedBox(width: 12),
-              Expanded(child: _buildStatePanel('AFTER', after, const Color(0xFF10B981))),
-            ],
+          TacticalZoneMap(
+            zoneRisk: zoneRisk,
+            selectedZone: _selectedZoneRiskDetail,
+            onZoneSelected: (zone) {
+              setState(() {
+                _selectedZoneRiskDetail = zone;
+              });
+            },
+            beforeRouteStr: before['route']?.toString(),
+            afterRouteStr: after['route']?.toString(),
           ),
           const SizedBox(height: 16),
           Row(
@@ -466,40 +472,6 @@ class _FleetScreenState extends State<FleetScreen> {
               Expanded(child: _buildMetricBox('OPTIMIZATION', optimizationScore, Colors.purpleAccent)),
             ],
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatePanel(String title, Map<String, dynamic> state, Color accentColor) {
-    final routeText = state['route']?.toString() ?? 'Awaiting backend route data';
-    final statusText = state['status']?.toString() ?? 'Awaiting backend status';
-    final stockText = state['stock_level']?.toString() ?? 'Awaiting backend stock data';
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0F172A),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: accentColor.withOpacity(0.4), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: accentColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-            ),
-          ),
-          const SizedBox(height: 10),
-          _buildStateItemCard('Route', routeText, accentColor),
-          const SizedBox(height: 8),
-          _buildStateItemCard('Status', statusText, accentColor),
-          const SizedBox(height: 8),
-          _buildStateItemCard('Stock Level', stockText, accentColor),
         ],
       ),
     );
@@ -605,7 +577,7 @@ class _FleetScreenState extends State<FleetScreen> {
 
         // ── Live AI Operational Fleet Detour (Active Sandbox) ──
         if (latestResult != null && latestResult['decision'] != null && latestResult['decision']['selected_action'] != null) ...[
-          _buildLiveAiFleetSandboxCard(latestResult),
+          _buildLiveAiFleetSandboxCard(latestResult, zoneRisk),
           const SizedBox(height: 16),
         ],
 
@@ -627,6 +599,16 @@ class _FleetScreenState extends State<FleetScreen> {
             Text('Live Zone Risk Map', style: Theme.of(context).textTheme.headlineMedium),
           ]),
           const SizedBox(height: 8),
+          TacticalZoneMap(
+            zoneRisk: zoneRisk,
+            selectedZone: _selectedZoneRiskDetail,
+            onZoneSelected: (zone) {
+              setState(() {
+                _selectedZoneRiskDetail = zone;
+              });
+            },
+          ),
+          const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Container(

@@ -207,7 +207,7 @@ class _LiveRouteTrackerState extends State<LiveRouteTracker> with TickerProvider
                   const SizedBox(height: 4),
                   Text(
                     'COORD SECTOR: 24.8607° N, 67.0011° E (KARACHI PORT TO HYDERABAD M9)',
-                    style: GoogleFonts.jetBrainsMono(color: Colors.white50, fontSize: 6.5),
+                    style: GoogleFonts.jetBrainsMono(color: Colors.white.withOpacity(0.5), fontSize: 6.5),
                   ),
                 ],
               ),

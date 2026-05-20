@@ -891,7 +891,7 @@ class _AIConsoleHomeState extends State<AIConsoleHome> with TickerProviderStateM
           Text(
             val,
             style: GoogleFonts.inter(
-              color: Colors.white90,
+              color: Colors.white.withOpacity(0.9),
               fontSize: 11,
               height: 1.3,
             ),
