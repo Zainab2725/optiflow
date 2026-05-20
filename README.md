@@ -544,5 +544,5 @@ docker run -p 8080:8080 --env-file backend/.env optiflow
 
 ---
 
-*Built by Zainab Ali & Team — Karachi Urban Crisis Intelligence 2026*
+*Built by Maryam & Zainab — Karachi Urban Crisis Intelligence 2026*
 *Developed with Google Antigravity*
