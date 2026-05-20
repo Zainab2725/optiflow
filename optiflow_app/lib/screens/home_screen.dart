@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+import '../ai_command_center/ai_console_home.dart';
+import '../live_route/live_route_tracker.dart';
 import 'dashboard_screen.dart';
-import 'stock_screen.dart';
-import 'incidents_screen.dart';
 import 'dispatch_screen.dart';
 import 'analytics_screen.dart';
-import 'agent_console_screen.dart';
+import 'technical_debug_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,12 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
 
   final _screens = const [
+    AIConsoleHome(),
+    LiveRouteTracker(),
     DashboardScreen(),
-    StockScreen(),
-    IncidentsScreen(),
     DispatchScreen(),
     AnalyticsScreen(),
-    AgentConsoleScreen(),
+    TechnicalDebugScreen(),
   ];
 
   @override
@@ -38,24 +38,24 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: (i) => setState(() => _index = i),
           items: const [
             BottomNavigationBarItem(
+              icon: Icon(Icons.rocket_launch_outlined),
+              activeIcon: Icon(Icons.rocket_launch),
+              label: 'Command Hub',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore_outlined),
+              activeIcon: Icon(Icons.explore),
+              label: 'Live Detour',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.space_dashboard_outlined),
               activeIcon: Icon(Icons.space_dashboard),
               label: 'Dashboard',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.inventory_2_outlined),
-              activeIcon: Icon(Icons.inventory_2),
-              label: 'Inventory',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.warning_amber_outlined),
-              activeIcon: Icon(Icons.warning_amber),
-              label: 'Incidents',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.local_shipping_outlined),
               activeIcon: Icon(Icons.local_shipping),
-              label: 'Dispatch',
+              label: 'Fleet',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.analytics_outlined),
@@ -63,9 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Analytics',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.smart_toy_outlined),
-              activeIcon: Icon(Icons.smart_toy),
-              label: 'AI Assistant',
+              icon: Icon(Icons.terminal_outlined),
+              activeIcon: Icon(Icons.terminal),
+              label: 'System Debug',
             ),
           ],
         ),
