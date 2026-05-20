@@ -54,5 +54,19 @@
     "timestamp": "2026-05-19T21:49:44.257322",
     "threshold_breached": false,
     "status": "NORMAL"
+  },
+  {
+    "depot_id": "depot-saddar",
+    "depot_name": "Saddar Depot",
+    "zone": "Saddar",
+    "sku": "MED-007",
+    "item_name": "Ventolin Inhaler",
+    "quantity": 852,
+    "min_threshold": 200,
+    "org_id": "org-ebd6e8c2",
+    "id": "a5835859",
+    "timestamp": "2026-05-20T15:36:23.919460",
+    "threshold_breached": false,
+    "status": "NORMAL"
   }
 ]

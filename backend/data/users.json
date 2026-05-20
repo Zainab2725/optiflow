@@ -106,5 +106,14 @@
     "org_id": "org-17c0f171",
     "org_name": "",
     "role": "field_operator"
+  },
+  {
+    "user_id": "usr-f422a161",
+    "name": "Zainab",
+    "email": "zainab@welfare.com",
+    "password": "Zainab@15",
+    "org_id": "org-ebd6e8c2",
+    "org_name": "Welfare Org",
+    "role": "admin"
   }
 ]

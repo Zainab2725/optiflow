@@ -797,9 +797,9 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
   Widget _buildDecisionPanelSection() {
     final decision = _agentResult?['decision'] as Map<String, dynamic>? ?? {};
     final action = _agentResult?['action'] as Map<String, dynamic>? ?? {};
-    final actionType = action['type']?.toString().toUpperCase() ?? 'ROUTE_CHANGE';
-    final explanation = decision['primary_insight'] ?? 'Critical logistics hazard requiring route modification';
-    final reasoningSteps = List<dynamic>.from(decision['reasoning_steps'] ?? []);
+    final actionType = action['type']?.toString().toUpperCase() ?? decision['selected_action']?.toString().toUpperCase() ?? 'NO ACTION';
+    final explanation = decision['primary_insight']?.toString().trim() ?? decision['summary']?.toString().trim() ?? 'The agent has processed your input and generated a decision.';
+    final reasoningSteps = List<dynamic>.from(decision['reasoning_steps'] ?? decision['reasoning'] ?? []);
 
     Color actionGlowColor = const Color(0xFFFBBF24); // Orange
     if (actionType.contains('DISPATCH') || actionType.contains('RESTOCK')) {
@@ -875,9 +875,10 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
           ),
           const SizedBox(height: 10),
           if (reasoningSteps.isEmpty) ...[
-            _buildTimelineStep(1, "Analyze stock thresholds alongside regional storm maps.", true),
-            _buildTimelineStep(2, "Confirm localized flooding blocking Saddar/Korangi highway bypasses.", true),
-            _buildTimelineStep(3, "Establish dynamic detour via alternative Lyari Expressway corridor.", false),
+            Text(
+              'No detailed reasoning steps were returned by the agent for this input.',
+              style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 12, height: 1.4),
+            ),
           ] else ...[
             for (int i = 0; i < reasoningSteps.length; i++)
               _buildTimelineStep(
@@ -956,9 +957,9 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     final metrics = simulation['impact_metrics'] as Map<String, dynamic>? ?? {};
 
     // Impact metrics parsing
-    final delayStr = metrics['delay_reduction'] ?? metrics['delay_saved_mins'] ?? metrics['eta_improvement'] ?? '85%';
-    final riskStr = metrics['risk_reduction'] ?? metrics['risk_reduction_pct'] ?? 'HIGH';
-    final additionalMetric = metrics['alternative_route_safety'] ?? metrics['stock_replenished_percentage'] ?? '95%';
+    final delayStr = metrics['delay_reduction'] ?? metrics['delay_saved_mins'] ?? metrics['eta_improvement'] ?? 'Not available';
+    final riskStr = metrics['risk_reduction'] ?? metrics['risk_reduction_pct'] ?? metrics['alternative_route_safety'] ?? 'Not available';
+    final additionalMetric = metrics['alternative_route_safety'] ?? metrics['stock_replenished_percentage'] ?? metrics['delivery_confidence'] ?? 'Not available';
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -1076,8 +1077,7 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
             ],
           ),
           
-          // Extra custom metrics displayed dynamically
-          if (metrics.length > 2) ...[
+          if (metrics.isNotEmpty) ...[
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -1100,8 +1100,13 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                 ],
               ),
             ),
+          ] else ...[
+            const SizedBox(height: 10),
+            Text(
+              'No simulation metrics were returned for this input.',
+              style: GoogleFonts.inter(color: const Color(0xFF94A3B8), fontSize: 12, height: 1.4),
+            ),
           ],
-          
           const SizedBox(height: 16),
 
           // Two Side-by-Side simulation boxes
