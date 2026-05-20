@@ -441,12 +441,12 @@ class _DispatchScreenState extends State<DispatchScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            decision['primary_insight'] ?? 'Awaiting AI insights...',
-            style: const TextStyle(
+          const Text(
+            'Sites',
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 13,
+              fontSize: 16,
             ),
           ),
           const SizedBox(height: 16),
@@ -460,16 +460,6 @@ class _DispatchScreenState extends State<DispatchScreen> {
             },
             beforeRouteStr: before['route']?.toString(),
             afterRouteStr: after['route']?.toString(),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(child: _buildMetricBox('DELAY REDUCTION', delaySavings, Colors.green)),
-              const SizedBox(width: 12),
-              Expanded(child: _buildMetricBox('RISK REDUCTION', riskReduction, Colors.blueAccent)),
-              const SizedBox(width: 12),
-              Expanded(child: _buildMetricBox('OPTIMIZATION', optimizationScore, Colors.purpleAccent)),
-            ],
           ),
         ],
       ),
@@ -550,7 +540,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
           Row(children: [
             const Icon(Icons.map_outlined, color: AppTheme.primary, size: 16),
             const SizedBox(width: 6),
-            Text('Karachi Tactical Risk Map', style: Theme.of(context).textTheme.headlineMedium),
+            Text('Sites', style: Theme.of(context).textTheme.headlineMedium),
           ]),
           const SizedBox(height: 8),
           TacticalZoneMap(

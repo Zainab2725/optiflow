@@ -3,6 +3,7 @@ import '../theme.dart';
 import '../ai_command_center/ai_console_home.dart';
 import 'dashboard_screen.dart';
 import 'stock_screen.dart';
+import 'incidents_screen.dart';
 import 'fleet_screen.dart';
 import 'settings_screen.dart';
 
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     AIConsoleHome(),
     DashboardScreen(),
     StockScreen(),
+    IncidentsScreen(),
     FleetScreen(),
     SettingsScreen(),
   ];
@@ -35,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BottomNavigationBar(
           currentIndex: _index,
           onTap: (i) => setState(() => _index = i),
+          type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.rocket_launch_outlined),
@@ -50,6 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.store_outlined),
               activeIcon: Icon(Icons.store),
               label: 'Stock',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.warning_amber_outlined),
+              activeIcon: Icon(Icons.warning),
+              label: 'Incident',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_shipping_outlined),

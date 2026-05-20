@@ -9,6 +9,7 @@ class TacticalZoneMap extends StatefulWidget {
   final Function(String?) onZoneSelected;
   final String? beforeRouteStr;
   final String? afterRouteStr;
+  final bool showAlertsOnly;
 
   const TacticalZoneMap({
     super.key,
@@ -17,6 +18,7 @@ class TacticalZoneMap extends StatefulWidget {
     required this.onZoneSelected,
     this.beforeRouteStr,
     this.afterRouteStr,
+    this.showAlertsOnly = false,
   });
 
   @override
@@ -99,7 +101,6 @@ class _TacticalZoneMapState extends State<TacticalZoneMap> with SingleTickerProv
   }
 
   void _handleTap(TapUpDetails details, BoxConstraints constraints) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final localPosition = details.localPosition;
     
     // Convert tap position to normalized coordinates
@@ -113,6 +114,18 @@ class _TacticalZoneMapState extends State<TacticalZoneMap> with SingleTickerProv
     const double tolerance = 0.08;
 
     _zoneCoords.forEach((zoneName, coord) {
+      if (widget.showAlertsOnly) {
+        final details = widget.zoneRisk[zoneName] != null
+            ? Map<String, dynamic>.from(widget.zoneRisk[zoneName] as Map)
+            : <String, dynamic>{};
+        final riskStr = details['risk']?.toString() ?? 'GREEN';
+        final activeIncidents = details['active_incidents'] ?? 0;
+        final isCriticalOrWarning = riskStr == 'RED' || riskStr == 'YELLOW';
+        final isAlert = activeIncidents > 0;
+        if (!isCriticalOrWarning && !isAlert) {
+          return;
+        }
+      }
       final dx = nx - coord.dx;
       final dy = ny - coord.dy;
       final dist = math.sqrt(dx * dx + dy * dy);
@@ -176,6 +189,7 @@ class _TacticalZoneMapState extends State<TacticalZoneMap> with SingleTickerProv
                           pulseValue: _pulseController.value,
                           zoneCoords: _zoneCoords,
                           standardCorridors: _standardCorridors,
+                          showAlertsOnly: widget.showAlertsOnly,
                         ),
                       );
                     },
@@ -326,6 +340,7 @@ class _ZoneMapPainter extends CustomPainter {
   final double pulseValue;
   final Map<String, Offset> zoneCoords;
   final List<List<String>> standardCorridors;
+  final bool showAlertsOnly;
 
   _ZoneMapPainter({
     required this.zoneRisk,
@@ -335,6 +350,7 @@ class _ZoneMapPainter extends CustomPainter {
     required this.pulseValue,
     required this.zoneCoords,
     required this.standardCorridors,
+    required this.showAlertsOnly,
   });
 
   @override
@@ -405,14 +421,22 @@ class _ZoneMapPainter extends CustomPainter {
 
     // 2. Draw nodes (Zones) with dynamic telemetry
     zoneCoords.forEach((zoneName, coord) {
-      final p = Offset(coord.dx * size.width, coord.dy * size.height);
-      
       final details = zoneRisk[zoneName] != null
           ? Map<String, dynamic>.from(zoneRisk[zoneName] as Map)
           : <String, dynamic>{};
       
       final riskStr = details['risk']?.toString() ?? 'GREEN';
       final activeIncidents = details['active_incidents'] ?? 0;
+
+      if (showAlertsOnly) {
+        final isCriticalOrWarning = riskStr == 'RED' || riskStr == 'YELLOW';
+        final isAlert = activeIncidents > 0;
+        if (!isCriticalOrWarning && !isAlert) {
+          return;
+        }
+      }
+
+      final p = Offset(coord.dx * size.width, coord.dy * size.height);
       final isSelected = selectedZone == zoneName;
 
       // Color mapping
@@ -523,6 +547,7 @@ class _ZoneMapPainter extends CustomPainter {
         oldDelegate.selectedZone != selectedZone ||
         oldDelegate.zoneRisk != zoneRisk ||
         oldDelegate.beforeRoute != beforeRoute ||
-        oldDelegate.afterRoute != afterRoute;
+        oldDelegate.afterRoute != afterRoute ||
+        oldDelegate.showAlertsOnly != showAlertsOnly;
   }
 }

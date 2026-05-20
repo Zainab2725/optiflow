@@ -6,6 +6,7 @@ import '../services/api_service.dart';
 import '../providers/agent_state_provider.dart';
 import '../widgets/incident_tile.dart';
 import '../widgets/resource_matrix.dart';
+import '../widgets/tactical_zone_map.dart';
 import 'report_incident_screen.dart';
 import 'profile_screen.dart';
 
@@ -25,6 +26,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
   String _filter = 'ALL';
   String? _filterZone;
   List<String> _availableZones = [];
+  Map<String, dynamic> _zoneRisk = {};
 
   @override
   void initState() {
@@ -35,6 +37,11 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
   Future<void> _loadData() async {
     setState(() { _loading = true; _error = null; });
     try {
+      final zoneRes = await _api.getZoneRiskMap();
+      final zoneRisk = zoneRes['zone_risk_map'] != null
+          ? Map<String, dynamic>.from(zoneRes['zone_risk_map'] as Map)
+          : <String, dynamic>{};
+
       Map<String, dynamic> data;
       if (ApiService.cachedIncidents != null) {
         data = ApiService.cachedIncidents!;
@@ -63,6 +70,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
 
       if (mounted) {
         setState(() {
+          _zoneRisk = zoneRisk;
           _allIncidents = incidents;
           _karachiIncidents = karachiIncidents;
           _availableZones = zones;
@@ -265,11 +273,25 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         ),
         const SizedBox(height: 16),
 
-        // ── Dynamic Zone Overview Board ──
-        _buildZoneSummaryBoard(zoneIncidentCounts),
+        // ── Sites Map ──
+        Row(children: [
+          const Icon(Icons.map_outlined, color: AppTheme.primary, size: 16),
+          const SizedBox(width: 6),
+          Text('Sites', style: Theme.of(context).textTheme.headlineSmall),
+        ]),
+        const SizedBox(height: 8),
+        TacticalZoneMap(
+          zoneRisk: _zoneRisk,
+          selectedZone: _filterZone,
+          showAlertsOnly: true,
+          onZoneSelected: (zone) {
+            setState(() {
+              _filterZone = zone;
+            });
+          },
+        ),
+        const SizedBox(height: 16),
 
-        // Crisis-aware corridor card removed per user request        // ── 8 Sources AI Intelligence Banner ──
-        // Risk monitoring card removed per user request
         // ── Severity Summary Cards ──
         Row(children: [
           Expanded(child: _summaryCard('CRITICAL', totalCritical, AppTheme.criticalRed)),
