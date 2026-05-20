@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
-import '../services/agent_state_provider.dart';
+import '../providers/agent_state_provider.dart';
 import '../widgets/ai_recommendation_card.dart';
 import 'profile_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DispatchScreen extends StatefulWidget {
   const DispatchScreen({super.key});
@@ -74,8 +75,14 @@ class _DispatchScreenState extends State<DispatchScreen> {
   Future<void> _loadAll() async {
     setState(() { _loading = true; _error = null; });
     try {
-      // Phase 1: Load zone risk map instantly
-      final zoneRes = await _api.getZoneRiskMap();
+      Map<String, dynamic> zoneRes;
+      if (ApiService.cachedZoneRisk != null) {
+        zoneRes = ApiService.cachedZoneRisk!;
+        ApiService.cachedZoneRisk = null; // Clear after use
+      } else {
+        zoneRes = await _api.getZoneRiskMap();
+      }
+
       final zoneRisk = zoneRes['zone_risk_map'] != null
           ? Map<String, dynamic>.from(zoneRes['zone_risk_map'] as Map)
           : <String, dynamic>{};
@@ -209,22 +216,22 @@ class _DispatchScreenState extends State<DispatchScreen> {
           title: const Row(children: [
             Icon(Icons.local_shipping_outlined, color: AppTheme.primary),
             SizedBox(width: 8),
-            Text('Dispatch Emergency Unit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text('Send Shipment', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           ]),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _label('DRIVER / OPERATOR NAME'),
+                _label('Driver Name'),
                 const SizedBox(height: 6),
                 TextField(controller: _driverCtrl, decoration: const InputDecoration(hintText: 'e.g. Kamran Siddiqui')),
                 const SizedBox(height: 12),
-                _label('UNIT / VEHICLE ID'),
+                _label('Vehicle ID'),
                 const SizedBox(height: 6),
                 TextField(controller: _vehicleCtrl, decoration: const InputDecoration(hintText: 'e.g. UNIT-092')),
                 const SizedBox(height: 12),
-                _label('ORIGIN ZONE'),
+                _label('From'),
                 const SizedBox(height: 6),
                 _zoneDropdown(
                   value: _originZone,
@@ -232,7 +239,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
                   onChanged: (v) { if (v != null) setDlg(() => _originZone = v); },
                 ),
                 const SizedBox(height: 12),
-                _label('DESTINATION ZONE'),
+                _label('To'),
                 const SizedBox(height: 6),
                 _zoneDropdown(
                   value: _destZone,
@@ -240,14 +247,14 @@ class _DispatchScreenState extends State<DispatchScreen> {
                   onChanged: (v) { if (v != null) setDlg(() => _destZone = v); },
                 ),
                 const SizedBox(height: 12),
-                _label('RESOURCE / SKU (optional)'),
+                _label('Item Code (optional)'),
                 const SizedBox(height: 6),
                 TextField(
                   onChanged: (v) => _moveSku = v.trim().isEmpty ? null : v.trim(),
                   decoration: const InputDecoration(hintText: 'e.g. MED-001 or leave blank'),
                 ),
                 const SizedBox(height: 12),
-                _label('QUANTITY (UNITS)'),
+                _label('Quantity'),
                 const SizedBox(height: 6),
                 TextField(
                   controller: _moveQtyCtrl,
@@ -293,7 +300,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
           padding: EdgeInsets.all(8),
           child: Icon(Icons.hub_outlined, color: AppTheme.primary, size: 24),
         ),
-        title: const Text('Dispatch & Route Intelligence'),
+        title: const Text('Dispatch & Routes'),
         actions: [
           IconButton(icon: const Icon(Icons.refresh_outlined), onPressed: _loadAll),
           IconButton(
@@ -360,18 +367,19 @@ class _DispatchScreenState extends State<DispatchScreen> {
     final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
     final actionType = action['type']?.toString() ?? 'ROUTE_CHANGE';
 
-    final beforeState = simulation['before_state']?.toString() ?? 'Awaiting simulation data...';
-    final afterState = simulation['after_state']?.toString() ?? 'Awaiting simulation data...';
+    final before = simulation['before_state'] as Map<String, dynamic>? ?? {};
+    final after = simulation['after_state'] as Map<String, dynamic>? ?? {};
     final metrics = simulation['impact_metrics'] as Map<String, dynamic>? ?? {};
     final delaySavings = metrics['delay_reduction']?.toString() ?? metrics['eta_improvement']?.toString() ?? 'N/A';
-    final safetyImprovement = metrics['risk_reduction']?.toString() ?? metrics['alternative_route_safety']?.toString() ?? 'N/A';
+    final riskReduction = metrics['risk_reduction']?.toString() ?? metrics['alternative_route_safety']?.toString() ?? 'N/A';
+    final optimizationScore = metrics['optimization_score']?.toString() ?? _deriveOptimizationScore(metrics);
 
     final isReroute = actionType == 'ROUTE_CHANGE';
 
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF0F172A), Color(0xFF1E3A8A)],
+          colors: [Color(0xFF1D4ED8), Color(0xFF2563EB)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -404,7 +412,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
                   ),
                   const SizedBox(width: 8),
                   const Text(
-                    'LIVE AI OPERATIONS COMMAND',
+                    'AI ROUTE UPDATE',
                     style: TextStyle(
                       color: Colors.greenAccent,
                       fontWeight: FontWeight.bold,
@@ -442,113 +450,126 @@ class _DispatchScreenState extends State<DispatchScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          
-          // Before vs After State
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.black26,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: const [
-                    Icon(Icons.warning_amber_rounded, color: AppTheme.criticalRed, size: 14),
-                    SizedBox(width: 8),
-                    Text(
-                      'PRE-OPTIMIZED STATE',
-                      style: TextStyle(color: Colors.white54, fontSize: 8, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  beforeState,
-                  style: const TextStyle(color: Colors.white70, fontSize: 11),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Icon(Icons.arrow_downward, color: Colors.greenAccent, size: 16),
-                ),
-                Row(
-                  children: const [
-                    Icon(Icons.check_circle_outline, color: Colors.greenAccent, size: 14),
-                    SizedBox(width: 8),
-                    Text(
-                      'POST-OPTIMIZED STATE (AI SANDBOX)',
-                      style: TextStyle(color: Colors.white54, fontSize: 8, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  afterState,
-                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          
-          // Delay savings and safety metrics
           Row(
             children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.green.withOpacity(0.3)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'DELAY SAVED',
-                        style: TextStyle(color: Colors.greenAccent, fontSize: 8, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        delaySavings,
-                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Expanded(child: _buildStatePanel('BEFORE', before, const Color(0xFFEF4444))),
               const SizedBox(width: 12),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.blue.withOpacity(0.3)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'SAFETY METRIC',
-                        style: TextStyle(color: Colors.lightBlueAccent, fontSize: 8, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        safetyImprovement,
-                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w900),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Expanded(child: _buildStatePanel('AFTER', after, const Color(0xFF10B981))),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(child: _buildMetricBox('DELAY REDUCTION', delaySavings, Colors.green)),
+              const SizedBox(width: 12),
+              Expanded(child: _buildMetricBox('RISK REDUCTION', riskReduction, Colors.blueAccent)),
+              const SizedBox(width: 12),
+              Expanded(child: _buildMetricBox('OPTIMIZATION', optimizationScore, Colors.purpleAccent)),
             ],
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildStatePanel(String title, Map<String, dynamic> state, Color accentColor) {
+    final routeText = state['route']?.toString() ?? 'Awaiting backend route data';
+    final statusText = state['status']?.toString() ?? 'Awaiting backend status';
+    final stockText = state['stock_level']?.toString() ?? 'Awaiting backend stock data';
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F172A),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: accentColor.withOpacity(0.4), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: accentColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+            ),
+          ),
+          const SizedBox(height: 10),
+          _buildStateItemCard('Route', routeText, accentColor),
+          const SizedBox(height: 8),
+          _buildStateItemCard('Status', statusText, accentColor),
+          const SizedBox(height: 8),
+          _buildStateItemCard('Stock Level', stockText, accentColor),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetricBox(String label, String value, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withOpacity(0.35), width: 1.2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(color: color.withOpacity(0.85), fontSize: 9, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(color: color, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStateItemCard(String label, String value, Color accentColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: accentColor.withOpacity(0.18), width: 1),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$label:',
+            style: TextStyle(color: accentColor.withOpacity(0.9), fontSize: 11, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.white70, fontSize: 11),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _deriveOptimizationScore(Map<String, dynamic> metrics) {
+    final delayStr = metrics['delay_reduction']?.toString().replaceAll('%', '') ?? '';
+    final riskStr = metrics['risk_reduction']?.toString().toUpperCase() ?? '';
+    double score = 0;
+
+    score += double.tryParse(delayStr) ?? 0;
+    if (riskStr == 'CRITICAL') score += 0;
+    else if (riskStr == 'HIGH') score += 10;
+    else if (riskStr == 'MEDIUM') score += 25;
+    else if (riskStr == 'LOW') score += 40;
+
+    return '${score.clamp(0, 100).toStringAsFixed(0)}%';
   }
 
   Widget _buildError() {
@@ -560,7 +581,7 @@ class _DispatchScreenState extends State<DispatchScreen> {
           children: [
             const Icon(Icons.cloud_off_outlined, color: AppTheme.criticalRed, size: 48),
             const SizedBox(height: 16),
-            Text('Backend Unreachable', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Could not connect to server', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             Text(_error!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar), textAlign: TextAlign.center),
             const SizedBox(height: 24),

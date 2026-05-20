@@ -97,5 +97,14 @@
     "org_id": "org-demo",
     "org_name": "Karachi Crisis Response Authority",
     "role": "admin"
+  },
+  {
+    "user_id": "usr-a27d094f",
+    "name": "maryam",
+    "email": "maryam@gov.com",
+    "password": "welcome123",
+    "org_id": "org-17c0f171",
+    "org_name": "",
+    "role": "field_operator"
   }
 ]

@@ -2,30 +2,30 @@
   "test_1_org_1": {
     "status": "created",
     "org": {
-      "org_id": "org-7af71ade",
+      "org_id": "org-b9f370f9",
       "name": "Karachi Relief NGO",
       "org_type": "ngo",
       "custom_sheet_url": null,
-      "created_at": "2026-05-19T19:37:13.503614",
+      "created_at": "2026-05-19T20:40:10.700402",
       "active": true
     }
   },
   "test_1_org_2": {
     "status": "created",
     "org": {
-      "org_id": "org-2c76e6c1",
+      "org_id": "org-339d2d78",
       "name": "City Pharma Distributor",
       "org_type": "pharma",
       "custom_sheet_url": null,
-      "created_at": "2026-05-19T19:37:13.515807",
+      "created_at": "2026-05-19T20:40:10.710540",
       "active": true
     }
   },
   "test_2_stock": {
     "status": "ingested",
-    "record_id": "55e15b3d",
+    "record_id": "61e9b8ea",
     "event_published": false,
-    "message_id": "LOCAL-193713",
+    "message_id": "LOCAL-204010",
     "rules_evaluated": {
       "stock_threshold_breached": true,
       "current_level": 150,
@@ -36,9 +36,9 @@
   "test_3_incidents": [
     {
       "status": "ingested",
-      "incident_id": "95b3a65b",
+      "incident_id": "78d9f526",
       "event_published": false,
-      "message_id": "LOCAL-193713",
+      "message_id": "LOCAL-204010",
       "rules_evaluated": {
         "location_risk_tagged": "RED",
         "zone": "Korangi",
@@ -47,9 +47,9 @@
     },
     {
       "status": "ingested",
-      "incident_id": "d284043d",
+      "incident_id": "d82b22ec",
       "event_published": false,
-      "message_id": "LOCAL-193713",
+      "message_id": "LOCAL-204010",
       "rules_evaluated": {
         "location_risk_tagged": "RED",
         "zone": "Korangi",
@@ -58,9 +58,9 @@
     },
     {
       "status": "ingested",
-      "incident_id": "a9007d10",
+      "incident_id": "34bacac7",
       "event_published": false,
-      "message_id": "LOCAL-193713",
+      "message_id": "LOCAL-204010",
       "rules_evaluated": {
         "location_risk_tagged": "RED",
         "zone": "Korangi",
@@ -75,7 +75,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "5 hrs ago",
+        "last_incident_time": "14 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -85,7 +85,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "21 hrs ago",
+        "last_incident_time": "11 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -95,7 +95,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "21 hrs ago",
+        "last_incident_time": "23 hrs ago",
         "operational_status": "Standby",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -115,7 +115,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "3 hrs ago",
+        "last_incident_time": "12 hrs ago",
         "operational_status": "Standby",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -125,7 +125,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "19 hrs ago",
+        "last_incident_time": "4 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -135,7 +135,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "23 hrs ago",
+        "last_incident_time": "17 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -145,7 +145,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "6 hrs ago",
+        "last_incident_time": "16 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -155,7 +155,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "15 hrs ago",
+        "last_incident_time": "18 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -165,7 +165,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "7 hrs ago",
+        "last_incident_time": "10 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -175,7 +175,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "14 hrs ago",
+        "last_incident_time": "21 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -185,7 +185,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "6 hrs ago",
+        "last_incident_time": "8 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -199,7 +199,7 @@
       "total_zones": 12,
       "alert_zones": 1
     },
-    "generated_at": "2026-05-19T19:37:15.058968"
+    "generated_at": "2026-05-19T20:40:11.664743"
   },
   "test_5_dashboard": {
     "org_id": "org-demo",
@@ -256,7 +256,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "5 hrs ago",
+        "last_incident_time": "14 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -266,7 +266,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "21 hrs ago",
+        "last_incident_time": "11 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -276,7 +276,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "21 hrs ago",
+        "last_incident_time": "23 hrs ago",
         "operational_status": "Standby",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -296,7 +296,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "3 hrs ago",
+        "last_incident_time": "12 hrs ago",
         "operational_status": "Standby",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -306,7 +306,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "19 hrs ago",
+        "last_incident_time": "4 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -316,7 +316,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "23 hrs ago",
+        "last_incident_time": "17 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -326,7 +326,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "6 hrs ago",
+        "last_incident_time": "16 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -336,7 +336,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "15 hrs ago",
+        "last_incident_time": "18 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -346,7 +346,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "7 hrs ago",
+        "last_incident_time": "10 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -356,7 +356,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "14 hrs ago",
+        "last_incident_time": "21 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -366,7 +366,7 @@
         "active_incidents": 0,
         "critical_incidents": 0,
         "avg_daily_incidents": "0.4/day",
-        "last_incident_time": "6 hrs ago",
+        "last_incident_time": "8 hrs ago",
         "operational_status": "Active",
         "risk_percent": 10,
         "weather_desc": "clear sky"
@@ -381,8 +381,8 @@
         "message": "Third report - shelves empty despite system showing stock",
         "severity": "critical",
         "org_id": "org-demo",
-        "id": "a9007d10",
-        "timestamp": "2026-05-19T19:37:13.576115",
+        "id": "34bacac7",
+        "timestamp": "2026-05-19T20:40:10.762260",
         "resolved": false,
         "risk_tag": "RED"
       },
@@ -394,8 +394,8 @@
         "message": "Confirmed zero physical stock, patients waiting",
         "severity": "critical",
         "org_id": "org-demo",
-        "id": "d284043d",
-        "timestamp": "2026-05-19T19:37:13.562776",
+        "id": "d82b22ec",
+        "timestamp": "2026-05-19T20:40:10.750291",
         "resolved": false,
         "risk_tag": "RED"
       },
@@ -407,24 +407,24 @@
         "message": "Zero stock at Korangi supply point, urgent shortage",
         "severity": "critical",
         "org_id": "org-demo",
-        "id": "95b3a65b",
-        "timestamp": "2026-05-19T19:37:13.549217",
+        "id": "78d9f526",
+        "timestamp": "2026-05-19T20:40:10.737774",
         "resolved": false,
         "risk_tag": "RED"
       }
     ],
     "contradictions": [],
-    "generated_at": "2026-05-19T19:37:17.570864"
+    "generated_at": "2026-05-19T20:40:13.746343"
   },
   "test_6_contradictions": {
     "contradictions": [],
     "total_found": 0,
-    "generated_at": "2026-05-19T19:37:21.018334"
+    "generated_at": "2026-05-19T20:40:15.864303"
   },
   "test_7_movement": {
     "status": "ingested",
     "event_published": false,
-    "message_id": "LOCAL-193721",
+    "message_id": "LOCAL-204015",
     "movement": {
       "event_type": "logistics_movement",
       "org_id": "org-demo",
@@ -435,7 +435,7 @@
       "sku": "MED-001",
       "quantity": 200,
       "status": "in_transit",
-      "timestamp": "2026-05-19T19:37:21.027302"
+      "timestamp": "2026-05-19T20:40:15.872181"
     }
   },
   "test_8_agent_workflow": {
@@ -443,71 +443,79 @@
     "insights": {
       "signals": [
         "flood_risk_high",
-        "highway_blocked",
+        "road_block_detected",
         "stock_insulin_low",
         "delivery_scheduled"
       ],
       "confidence_scores": {
         "flood_risk_high": 0.95,
-        "highway_blocked": 0.9,
+        "road_block_detected": 0.95,
         "stock_insulin_low": 0.95,
-        "delivery_scheduled": 0.9
+        "delivery_scheduled": 0.95
       }
     },
     "decision": {
-      "decision_id": "b3e0c7a8-1b2c-4d5e-6f7a-8b9c0d1e2f3g",
+      "decision_id": "dec-c21b8d30",
       "risk_level": "CRITICAL",
-      "primary_insight": "Critical insulin shortage exacerbated by severe transit disruptions impacting a scheduled delivery.",
+      "primary_insight": "Critical flood hazard in Karachi with key highway blockage and life-saving Insulin stock outage.",
       "reasoning_steps": [
-        "Identify CRITICAL signals: 'stock_insulin_low' indicates an urgent need for medical supplies.",
-        "Identify severe transit impediments: 'flood_risk_high' and 'highway_blocked' confirm that the existing transit route is impassable and unsafe.",
-        "Recognize compounding risks: The combination of critical stock shortage with direct transit blockages for an existing 'delivery_scheduled' creates an extreme operational challenge.",
-        "Prioritize life-saving cargo: Given the critical nature of insulin, ensuring its delivery overrides all minor delays or alternative non-critical actions.",
-        "Determine optimal action: A direct route is impossible, and the cargo is critical. Therefore, rerouting the existing delivery is the most immediate and impactful solution to address both the blockage and the shortage."
+        "Detected flood risk high signal in Karachi zone with high confidence score.",
+        "Identified major highway blockage along planned delivery route.",
+        "Flagged low stock alert for life-critical drug: Insulin.",
+        "Resolved conflict: Route change combined with emergency local restock dispatch is mandatory to avoid medicine stockout during flood."
       ],
       "selected_action": {
         "type": "ROUTE_CHANGE",
         "parameters": {
-          "critical_cargo_type": "insulin",
-          "reason_for_change": "highway_blocked_due_to_flood_risk",
-          "urgency": "CRITICAL",
-          "current_delivery_status": "compromised",
-          "priority_for_simulation": "highest"
+          "sku": "INS-001",
+          "item_name": "Insulin Glargine 100 IU/ml",
+          "blocked_road": "M9 Motorway / Karachi Bypass",
+          "alternative_route": "Lyari Expressway to Korangi Depot bypass",
+          "target_warehouse": "Clifton Depot",
+          "quantity_ordered": 500,
+          "priority": "EMERGENCY_DISPATCH"
         }
       },
-      "simulation_required": true
+      "simulation_required": true,
+      "_fallback_active": true,
+      "_fallback_reason": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 38.303733969s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 38\n}\n]"
     },
     "action": {
       "type": "ROUTE_CHANGE",
       "parameters": {
-        "critical_cargo_type": "insulin",
-        "reason_for_change": "highway_blocked_due_to_flood_risk",
-        "urgency": "CRITICAL",
-        "current_delivery_status": "compromised",
-        "priority_for_simulation": "highest"
+        "sku": "INS-001",
+        "item_name": "Insulin Glargine 100 IU/ml",
+        "blocked_road": "M9 Motorway / Karachi Bypass",
+        "alternative_route": "Lyari Expressway to Korangi Depot bypass",
+        "target_warehouse": "Clifton Depot",
+        "quantity_ordered": 500,
+        "priority": "EMERGENCY_DISPATCH"
       }
     },
     "simulation": {
       "before_state": {
-        "route": "Warehouse A \u2192 Highway 101 \u2192 Hospital Z",
-        "status": "Severely delayed, critical stockout risk for insulin at Hospital Z. Highway 101 is blocked due to flood.",
-        "stock_level": "Hospital Z: Critically low insulin supply (estimated < 2 hours remaining)."
+        "route": "Karachi Port \u2192 M9 Motorway / Karachi Bypass \u2192 Depot Depot",
+        "status": "delayed (blocked by flood hazard)",
+        "stock_level": "low (INS-001 insulin critical warning)"
       },
       "after_state": {
-        "route": "Warehouse A \u2192 Alternate Route 50 \u2192 Hospital Z",
-        "status": "Optimized, critical insulin delivery en-route via alternate route. Estimated arrival within 3 hours.",
-        "stock_level": "Hospital Z: Stockout averted, adequate insulin supply expected upon delivery."
+        "route": "Karachi Port \u2192 Lyari Expressway to Korangi Depot bypass \u2192 Depot Depot",
+        "status": "optimized (emergency dispatch active)",
+        "stock_level": "replenished (+500 units, normalized)"
       },
       "impact_metrics": {
-        "delay_reduction": "Indefinite delay averted, effective 95% reduction in critical delay impact.",
+        "delay_reduction": "85%",
         "risk_reduction": "CRITICAL",
-        "additional_metric": "Life-saving insulin delivery ensured, preventing patient harm."
-      }
+        "alternative_route_safety": "95%",
+        "eta_improvement": "4.5 hours earlier"
+      },
+      "_fallback_active": true,
+      "_fallback_reason": "429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\nPlease retry in 37.798486449s. [links {\n  description: \"Learn more about Gemini API quotas\"\n  url: \"https://ai.google.dev/gemini-api/docs/rate-limits\"\n}\n, violations {\n  quota_metric: \"generativelanguage.googleapis.com/generate_content_free_tier_requests\"\n  quota_id: \"GenerateRequestsPerDayPerProjectPerModel-FreeTier\"\n  quota_dimensions {\n    key: \"model\"\n    value: \"gemini-2.5-flash\"\n  }\n  quota_dimensions {\n    key: \"location\"\n    value: \"global\"\n  }\n  quota_value: 20\n}\n, retry_delay {\n  seconds: 37\n}\n]"
     },
     "final_state": {
-      "route": "Warehouse A \u2192 Alternate Route 50 \u2192 Hospital Z",
-      "status": "Optimized, critical insulin delivery en-route via alternate route. Estimated arrival within 3 hours.",
-      "stock_level": "Hospital Z: Stockout averted, adequate insulin supply expected upon delivery."
+      "route": "Karachi Port \u2192 Lyari Expressway to Korangi Depot bypass \u2192 Depot Depot",
+      "status": "optimized (emergency dispatch active)",
+      "stock_level": "replenished (+500 units, normalized)"
     },
     "agent_trace": [
       "ingestion completed",

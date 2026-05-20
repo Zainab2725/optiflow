@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
-import '../services/agent_state_provider.dart';
+import '../providers/agent_state_provider.dart';
 import '../widgets/kpi_card.dart';
 import '../widgets/incident_tile.dart';
 import '../widgets/sector_load_bar.dart';
@@ -34,7 +34,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _coreError = null;
     });
     try {
-      final dash = await _api.getDashboardData();
+      Map<String, dynamic> dash;
+      if (ApiService.cachedDashboard != null) {
+        dash = ApiService.cachedDashboard!;
+        ApiService.cachedDashboard = null; // Clear after use
+      } else {
+        dash = await _api.getDashboardData();
+      }
+
       if (mounted) {
         setState(() {
           _dashData = dash;
@@ -81,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         title: Row(
           children: [
-            Text(ApiService.currentUser?['org_name'] ?? 'Command Center'),
+            Text(ApiService.currentUser?['org_name'] ?? 'Dashboard'),
             const SizedBox(width: 8),
             if (state.autoRefreshEnabled)
               Container(
@@ -128,7 +135,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             const Icon(Icons.cloud_off_outlined, color: AppTheme.criticalRed, size: 48),
             const SizedBox(height: 16),
-            Text('Could not connect to backend.', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Could not connect to server', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             Text(_coreError ?? '', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar), textAlign: TextAlign.center),
             const SizedBox(height: 24),
@@ -223,7 +230,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'CRITICAL CRISIS THREAT ACTIVE',
+                        'CRITICAL ALERT',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w900,
@@ -253,7 +260,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           margin: const EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [Color(0xFF0F172A), Color(0xFF1E3A8A)],
+              colors: [Color(0xFF1D4ED8), Color(0xFF2563EB)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -294,7 +301,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            '⚡ LAUNCH AI DECISION CONSOLE',
+                            'OPEN AI ASSISTANT',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -305,8 +312,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           const SizedBox(height: 2),
                           Text(
                             state.isLoading
-                                ? 'Agent pipeline executing in background...'
-                                : 'Run Multi-Agent Content-to-Action pipeline live.',
+                                ? 'AI is analyzing your data...'
+                                : 'Get AI-powered insights and recommendations.',
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.7),
                               fontSize: 11,
@@ -338,7 +345,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             const Icon(Icons.bar_chart, color: AppTheme.primary, size: 16),
             const SizedBox(width: 6),
-            Text('Critical Indicators', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Key Metrics', style: Theme.of(context).textTheme.headlineSmall),
           ],
         ),
         const SizedBox(height: 12),
@@ -353,28 +360,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
           childAspectRatio: 1.5,
           children: [
             KpiCard(
-              label: 'SYSTEM STATUS',
+              label: 'HEALTH SCORE',
               value: '${systemHealth.toStringAsFixed(1)}%',
               icon: Icons.monitor_heart_outlined,
               color: systemHealth > 80 ? AppTheme.success : AppTheme.criticalRed,
               barColor: systemHealth > 80 ? AppTheme.success : AppTheme.criticalRed,
             ),
             KpiCard(
-              label: 'TOTAL ITEMS',
+              label: 'STOCK ITEMS',
               value: '$totalStockRecords Items',
               icon: Icons.inventory_2_outlined,
               color: AppTheme.primary,
               barColor: AppTheme.primary,
             ),
             KpiCard(
-              label: 'LOW STOCK SKU',
+              label: 'LOW STOCK',
               value: '$criticalStockCount Items',
               icon: Icons.gpp_maybe_outlined,
               color: criticalStockCount > 0 ? AppTheme.criticalRed : AppTheme.success,
               barColor: criticalStockCount > 0 ? AppTheme.criticalRed : AppTheme.success,
             ),
             KpiCard(
-              label: 'ACTIVE SIGNALS',
+              label: 'ACTIVE ALERTS',
               value: '$activeIncidentsCount',
               icon: Icons.notifications_outlined,
               color: activeIncidentsCount > 3 ? AppTheme.criticalRed : AppTheme.warning,
@@ -404,7 +411,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         const Icon(Icons.flash_on, color: Colors.amber, size: 18),
                         const SizedBox(width: 8),
                         const Text(
-                          'ACTIVE EMERGENCY ACTION',
+                          'ACTIVE RESPONSE',
                           style: TextStyle(
                             color: Colors.amber,
                             fontWeight: FontWeight.bold,
@@ -455,7 +462,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'AI DECISION DELAY SAVED:',
+                            'TIME SAVED:',
                             style: TextStyle(color: Colors.white60, fontSize: 10, fontWeight: FontWeight.bold),
                           ),
                           Text(
@@ -489,7 +496,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'HIGH RISK RED-ZONES DETECTED: ${redZones.map((z) => z.toString().toUpperCase().replaceAll('_', ' ')).join(', ')}',
+                    'HIGH RISK AREAS: ${redZones.map((z) => z.toString().toUpperCase().replaceAll('_', ' ')).join(', ')}',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: AppTheme.criticalRed, fontSize: 11),
                   ),
@@ -515,7 +522,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(children: [
                   const Icon(Icons.map_outlined, size: 16, color: AppTheme.primary),
                   const SizedBox(width: 6),
-                  Text('Active Incidents by Area', style: Theme.of(context).textTheme.headlineSmall),
+                  Text('Incidents by Area', style: Theme.of(context).textTheme.headlineSmall),
                 ]),
                 const SizedBox(height: 16),
                 ...zoneRisk.entries.map((e) {

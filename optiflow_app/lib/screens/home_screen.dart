@@ -40,17 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.space_dashboard_outlined),
               activeIcon: Icon(Icons.space_dashboard),
-              label: 'Command Center',
+              label: 'Dashboard',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.inventory_2_outlined),
               activeIcon: Icon(Icons.inventory_2),
-              label: 'Stock Ledger',
+              label: 'Inventory',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.warning_amber_outlined),
               activeIcon: Icon(Icons.warning_amber),
-              label: 'Risks & Alerts',
+              label: 'Incidents',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_shipping_outlined),
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.smart_toy_outlined),
               activeIcon: Icon(Icons.smart_toy),
-              label: 'Agent',
+              label: 'AI Assistant',
             ),
           ],
         ),

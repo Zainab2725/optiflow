@@ -4,7 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'dart:math' as math;
 import '../theme.dart';
 import '../services/api_service.dart';
-import '../services/agent_state_provider.dart';
+import '../providers/agent_state_provider.dart';
 import 'profile_screen.dart';
 import 'dispatch_screen.dart';
 import 'agent_console_screen.dart';
@@ -111,7 +111,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     }
   }
 
-  String _getDynamicPredictionText() {
+  String _getDynamicPredictionText(Map<String, dynamic>? latestResult) {
+    final decision = latestResult?['decision'] as Map<String, dynamic>? ?? {};
+    final String insight = decision['primary_insight']?.toString() ?? decision['summary']?.toString() ?? '';
+    if (insight.isNotEmpty) {
+      return insight;
+    }
+
     if (_zoneRiskMap.isEmpty) {
       return "Scanning urban crisis vectors across Karachi command network. Monitoring supply chain corridors and field incident reports in real-time.";
     }
@@ -257,13 +263,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
           padding: EdgeInsets.all(8),
           child: Icon(Icons.analytics_outlined, color: AppTheme.primary, size: 24),
         ),
-        title: const Text('Supply Chain Analytics'),
+        title: const Text('Operations Insights'),
         elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.sync_outlined),
             onPressed: _refreshData,
-            tooltip: 'Synchronize Data',
+            tooltip: 'Refresh insights',
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
@@ -281,87 +287,48 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildPredictionBanner(),
+                  _buildScreenHeader(),
                   const SizedBox(height: 16),
-                  _buildStatsSummaryGrid(latestResult),
+                  _buildStatusSummary(latestResult),
                   const SizedBox(height: 16),
-                  _buildRecommendationsSection(),
+                  _buildAiImpactSection(latestResult),
                   const SizedBox(height: 16),
-                  _buildChartsGrid(),
+                  _buildComparisonSection(latestResult),
                   const SizedBox(height: 16),
-                  _buildActiveMovementsPanel(),
+                  _buildDecisionExplanation(latestResult),
                   const SizedBox(height: 24),
-                  _buildFooter(),
                 ],
               ),
             ),
     );
   }
 
-  Widget _buildPredictionBanner() {
+  Widget _buildScreenHeader() {
     return Container(
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF0F2B5C), Color(0xFF1E3A8A)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blue.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.9),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Row(
-        children: [
-          const Icon(Icons.auto_awesome, color: Color(0xFF60A5FA), size: 24),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Autonomous AI Intel Feed',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _getDynamicPredictionText(),
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 12,
-                    height: 1.3,
-                  ),
-                ),
-              ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text(
+            'Operations Insights',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF0F172A),
             ),
           ),
-          const SizedBox(width: 16),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const AgentConsoleScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2563EB),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              minimumSize: Size.zero,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-            ),
-            child: const Text(
-              'DECISION CONSOLE',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, letterSpacing: 0.5),
+          SizedBox(height: 8),
+          Text(
+            'Live AI operational improvements and emergency response analytics',
+            style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF64748B),
+              height: 1.5,
             ),
           ),
         ],
@@ -369,67 +336,92 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildStatsSummaryGrid(Map<String, dynamic>? latestResult) {
-    final highestRisk = _getHighestRiskZoneData();
-    final criticalStockCount = _getCriticalStockCount();
-    final activeIncidentsCount = _incidentsList.length;
-    
-    String aiDelaySavings = 'N/A';
-    String aiRiskReduction = 'N/A';
-    
-    if (latestResult != null) {
-      final metrics = latestResult['simulation']?['impact_metrics'] as Map<String, dynamic>? ?? {};
-      aiDelaySavings = metrics['delay_reduction']?.toString() ?? metrics['eta_improvement']?.toString() ?? 'N/A';
-      aiRiskReduction = metrics['risk_reduction']?.toString() ?? metrics['alternative_route_safety']?.toString() ?? 'N/A';
-    }
+  Widget _buildStatusSummary(Map<String, dynamic>? latestResult) {
+    final String emergencyLevel = _getEmergencyLevel(latestResult);
+    final String aiAction = _getActiveAiAction(latestResult);
+    final String routeStatus = _getCurrentRouteStatus(latestResult);
 
     return GridView.count(
-      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
+      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 1,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: 2.2,
+      childAspectRatio: MediaQuery.of(context).size.width > 600 ? 3 : 5,
       children: [
-        _buildStatCard(
-          title: 'TELEMETRY INCIDENTS',
-          value: activeIncidentsCount.toString(),
-          subtitle: 'Real-time urban reports',
-          icon: Icons.crisis_alert_outlined,
+        _buildStatusCard(
+          title: 'Emergency Level',
+          value: emergencyLevel,
+          icon: Icons.priority_high_outlined,
           color: AppTheme.criticalRed,
         ),
-        _buildStatCard(
-          title: 'CRITICAL SHORTS',
-          value: criticalStockCount.toString(),
-          subtitle: 'SKUs below safety buffer',
-          icon: Icons.inventory_2_outlined,
-          color: AppTheme.warning,
+        _buildStatusCard(
+          title: 'Active AI Action',
+          value: aiAction,
+          icon: Icons.auto_fix_high_outlined,
+          color: AppTheme.primary,
         ),
-        if (latestResult != null) ...[
-          _buildStatCard(
-            title: 'AI DELAY REDUCTION',
-            value: aiDelaySavings,
-            subtitle: 'Logistics time saved',
-            icon: Icons.timer_outlined,
-            color: AppTheme.success,
+        _buildStatusCard(
+          title: 'Route Status',
+          value: routeStatus,
+          icon: Icons.alt_route_outlined,
+          color: const Color(0xFF2563EB),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.9),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 24),
           ),
-          _buildStatCard(
-            title: 'AI RISK REDUCTION',
-            value: aiRiskReduction,
-            subtitle: 'Safety optimization gain',
-            icon: Icons.security_outlined,
-            color: Colors.blueAccent,
-          ),
-        ] else ...[
-          _buildStatCard(
-            title: 'HIGHEST RISK SECTOR',
-            value: highestRisk['zone'],
-            subtitle: 'Crisis Risk Index: ${highestRisk['risk']}',
-            icon: Icons.share_location_outlined,
-            color: AppTheme.primary,
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF64748B),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF0F172A),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-      ],
+      ),
     );
   }
 
@@ -496,6 +488,372 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> with SingleTickerProv
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  String _formatImpactMetric(dynamic metric) {
+    if (metric == null) return 'No update';
+    final text = metric.toString();
+    if (double.tryParse(text) != null && !text.contains('%')) {
+      return '$text%';
+    }
+    return text;
+  }
+
+  Widget _buildAiImpactSection(Map<String, dynamic>? latestResult) {
+    final metrics = latestResult?['simulation']?['impact_metrics'] as Map<String, dynamic>? ?? {};
+    final String delayImproved = _formatImpactMetric(metrics['delay_reduction'] ?? metrics['eta_improvement']);
+    final String riskImproved = _formatImpactMetric(metrics['risk_reduction'] ?? metrics['alternative_route_safety'] ?? metrics['route_safety']);
+    final String deliveryProtected = _formatImpactMetric(metrics['emergency_protected'] ?? metrics['critical_shipments_saved'] ?? metrics['protected_deliveries']);
+    final String stockProtected = _formatImpactMetric(metrics['stockout_prevented'] ?? metrics['inventory_saved'] ?? metrics['stock_protected']);
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.9),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.show_chart_outlined, color: AppTheme.primary, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'AI Impact',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Color(0xFF334155),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            runSpacing: 12,
+            spacing: 12,
+            children: [
+              _buildImpactCard('Delivery Delay Reduced', delayImproved, AppTheme.success),
+              _buildImpactCard('Route Safety Improved', riskImproved, const Color(0xFF2563EB)),
+              _buildImpactCard('Emergency Deliveries Protected', deliveryProtected, AppTheme.warning),
+              _buildImpactCard('Stock Issues Prevented', stockProtected, AppTheme.primary),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImpactCard(String title, String value, Color color) {
+    return Container(
+      width: 170,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.2), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: color.withOpacity(0.9),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComparisonSection(Map<String, dynamic>? latestResult) {
+    final before = latestResult?['simulation']?['before_state'] as Map<String, dynamic>? ?? {};
+    final after = latestResult?['simulation']?['after_state'] as Map<String, dynamic>? ?? {};
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isWide = constraints.maxWidth > 640;
+        return isWide
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: _buildComparisonCard('BEFORE AI', before, const Color(0xFFEF4444))),
+                  const SizedBox(width: 12),
+                  Expanded(child: _buildComparisonCard('AFTER AI', after, const Color(0xFF10B981))),
+                ],
+              )
+            : Column(
+                children: [
+                  _buildComparisonCard('BEFORE AI', before, const Color(0xFFEF4444)),
+                  const SizedBox(height: 12),
+                  _buildComparisonCard('AFTER AI', after, const Color(0xFF10B981)),
+                ],
+              );
+      },
+    );
+  }
+
+  Widget _buildComparisonCard(String title, Map<String, dynamic> state, Color accent) {
+    final String route = state['route']?.toString() ?? 'Unknown route';
+    final String status = state['status']?.toString() ?? state['delivery_status']?.toString() ?? 'Pending';
+    final String stock = state['stock_status']?.toString() ?? state['stock_level']?.toString() ?? 'Unknown';
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.9),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: accent,
+            ),
+          ),
+          const SizedBox(height: 14),
+          _buildComparisonItem('Route', route, accent),
+          const SizedBox(height: 10),
+          _buildComparisonItem('Delivery Status', status, accent),
+          const SizedBox(height: 10),
+          _buildComparisonItem('Stock Status', stock, accent),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComparisonItem(String label, String value, Color accent) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 6,
+          height: 6,
+          margin: const EdgeInsets.only(top: 6),
+          decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF475569)),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: const TextStyle(fontSize: 13, color: Color(0xFF0F172A)),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDecisionExplanation(Map<String, dynamic>? latestResult) {
+    final decision = latestResult?['decision'] as Map<String, dynamic>? ?? {};
+    final String insight = decision['primary_insight']?.toString() ?? decision['summary']?.toString() ?? 'AI has selected the best route using current conditions.';
+    final List<String> steps = _extractReasoningSteps(decision);
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 0.9),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.lightbulb_outline, color: AppTheme.primary, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'AI Decision',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Color(0xFF334155),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            insight,
+            style: const TextStyle(fontSize: 13, height: 1.5, color: Color(0xFF334155)),
+          ),
+          const SizedBox(height: 14),
+          if (steps.isNotEmpty) ...[
+            const Text(
+              'Why this update was made',
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF475569)),
+            ),
+            const SizedBox(height: 10),
+            ...steps.map((step) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('• ', style: TextStyle(fontSize: 12, color: Color(0xFF475569))),
+                      Expanded(
+                        child: Text(
+                          step,
+                          style: const TextStyle(fontSize: 12, color: Color(0xFF475569), height: 1.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+          ] else ...[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Text(
+                'No additional explanation available yet.',
+                style: TextStyle(fontSize: 12, color: Color(0xFF64748B)),
+              ),
+            )
+          ],
+        ],
+      ),
+    );
+  }
+
+  List<String> _extractReasoningSteps(Map<String, dynamic> decision) {
+    final rawSteps = decision['reasoning_steps'] ?? decision['reasoning'] ?? decision['step_summary'] ?? decision['explanation'];
+    if (rawSteps is List) {
+      return rawSteps.map((item) => item.toString()).where((item) => item.isNotEmpty).toList();
+    }
+    if (rawSteps is String) {
+      final cleaned = rawSteps.trim();
+      if (cleaned.contains('\n')) {
+        return cleaned.split('\n').map((item) => item.trim()).where((item) => item.isNotEmpty).toList();
+      }
+      if (cleaned.contains('. ')) {
+        return cleaned.split('. ').map((item) => item.trim()).where((item) => item.isNotEmpty).map((item) => item.endsWith('.') ? item : '$item.').toList();
+      }
+      return cleaned.isEmpty ? [] : [cleaned];
+    }
+    return [];
+  }
+
+  String _getEmergencyLevel(Map<String, dynamic>? latestResult) {
+    final decision = latestResult?['decision'] as Map<String, dynamic>? ?? {};
+    final metrics = latestResult?['simulation']?['impact_metrics'] as Map<String, dynamic>? ?? {};
+
+    final String rawLevel = decision['emergency_level']?.toString() ?? decision['risk_level']?.toString() ?? metrics['emergency_level']?.toString() ?? metrics['risk_level']?.toString() ?? decision['severity']?.toString() ?? '';
+    if (rawLevel.isEmpty) {
+      return 'Normal';
+    }
+    final lower = rawLevel.toLowerCase();
+    if (lower.contains('critical')) return 'CRITICAL';
+    if (lower.contains('high')) return 'HIGH';
+    if (lower.contains('warning') || lower.contains('alert')) return 'ATTENTION';
+    return rawLevel.toUpperCase();
+  }
+
+  String _getActiveAiAction(Map<String, dynamic>? latestResult) {
+    final decision = latestResult?['decision'] as Map<String, dynamic>? ?? {};
+    final action = decision['selected_action'] as Map<String, dynamic>? ?? {};
+    final String rawAction = action['name']?.toString() ?? action['label']?.toString() ?? action['type']?.toString() ?? decision['action']?.toString() ?? '';
+    if (rawAction.isEmpty) {
+      return 'Awaiting AI review';
+    }
+    return rawAction.replaceAll('_', ' ').toUpperCase();
+  }
+
+  String _getCurrentRouteStatus(Map<String, dynamic>? latestResult) {
+    final after = latestResult?['simulation']?['after_state'] as Map<String, dynamic>? ?? {};
+    final String status = after['status']?.toString() ?? after['delivery_status']?.toString() ?? 'Pending';
+    if (status.isEmpty) return 'Pending';
+    return status.replaceAll('_', ' ').toUpperCase();
+  }
+
+
+  Widget _buildSmallMetricCard(String label, String value, Color color) {
+    return Container(
+      width: 150,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withOpacity(0.25), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(color: color.withOpacity(0.8), fontSize: 10, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            value,
+            style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.bold),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStateSnapshot(String title, Map<String, dynamic> state, Color accentColor) {
+    final String route = state['route']?.toString() ?? 'N/A';
+    final String status = state['status']?.toString() ?? 'N/A';
+    final String load = state['load']?.toString() ?? state['stock_level']?.toString() ?? 'N/A';
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: accentColor.withOpacity(0.3), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(color: accentColor, fontWeight: FontWeight.bold, fontSize: 10),
+          ),
+          const SizedBox(height: 10),
+          Text('Route: $route', style: const TextStyle(fontSize: 11, color: Color(0xFF475569))),
+          const SizedBox(height: 8),
+          Text('Status: $status', style: const TextStyle(fontSize: 11, color: Color(0xFF475569))),
+          const SizedBox(height: 8),
+          Text('Load: $load', style: const TextStyle(fontSize: 11, color: Color(0xFF475569))),
         ],
       ),
     );

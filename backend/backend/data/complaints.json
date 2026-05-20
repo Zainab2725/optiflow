@@ -328,5 +328,93 @@
     "id": "d878a616",
     "timestamp": "2026-05-19T19:37:13.578596",
     "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Driver Tariq (driver)",
+    "sku": "MED-001",
+    "product_name": "Zero stock at Korangi supply point, urge...",
+    "message": "Zero stock at Korangi supply point, urgent shortage",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "72a66f88",
+    "timestamp": "2026-05-19T20:10:58.960881",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Field Worker Asma (operator)",
+    "sku": "MED-001",
+    "product_name": "Confirmed zero physical stock, patients ...",
+    "message": "Confirmed zero physical stock, patients waiting",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "eaa5e8e9",
+    "timestamp": "2026-05-19T20:10:58.972555",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Supervisor Bilal (operator)",
+    "sku": "MED-001",
+    "product_name": "Third report - shelves empty despite sys...",
+    "message": "Third report - shelves empty despite system showing stock",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "31db40ff",
+    "timestamp": "2026-05-19T20:10:58.984582",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Driver Tariq (driver)",
+    "sku": "MED-001",
+    "product_name": "Zero stock at Korangi supply point, urge...",
+    "message": "Zero stock at Korangi supply point, urgent shortage",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "aa66471b",
+    "timestamp": "2026-05-19T20:40:10.740366",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Field Worker Asma (operator)",
+    "sku": "MED-001",
+    "product_name": "Confirmed zero physical stock, patients ...",
+    "message": "Confirmed zero physical stock, patients waiting",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "3112b874",
+    "timestamp": "2026-05-19T20:40:10.752411",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-DEMO] Supervisor Bilal (operator)",
+    "sku": "MED-001",
+    "product_name": "Third report - shelves empty despite sys...",
+    "message": "Third report - shelves empty despite system showing stock",
+    "severity": "critical",
+    "location": "Korangi",
+    "id": "c0d095ac",
+    "timestamp": "2026-05-19T20:40:10.764367",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-17C0F171] Zainab (admin)",
+    "sku": "MED-001",
+    "product_name": "there is shortage here...",
+    "message": "there is shortage here",
+    "severity": "high",
+    "location": "Clifton",
+    "id": "c257498b",
+    "timestamp": "2026-05-19T21:26:52.539584",
+    "status": "open"
+  },
+  {
+    "customer_name": "[ORG-17C0F171] Zainab (admin)",
+    "sku": "MED-001",
+    "product_name": "there is shortage of medicine here...",
+    "message": "there is shortage of medicine here",
+    "severity": "critical",
+    "location": "Orangi",
+    "id": "b40733d0",
+    "timestamp": "2026-05-19T21:43:12.605343",
+    "status": "open"
   }
 ]

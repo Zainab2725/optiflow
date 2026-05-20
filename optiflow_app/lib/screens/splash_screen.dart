@@ -122,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen>
                 
                 // Subtitle
                 Text(
-                  'Karachi Crisis Intelligence System',
+                  'Smart Supply Chain Management',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Colors.white.withOpacity(0.9),
                     fontSize: 15,

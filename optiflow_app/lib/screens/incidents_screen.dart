@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../models.dart';
 import '../services/api_service.dart';
-import '../services/agent_state_provider.dart';
+import '../providers/agent_state_provider.dart';
 import '../widgets/incident_tile.dart';
 import '../widgets/resource_matrix.dart';
 import 'report_incident_screen.dart';
@@ -35,7 +35,14 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
   Future<void> _loadData() async {
     setState(() { _loading = true; _error = null; });
     try {
-      final data = await _api.getIncidents(zone: null);
+      Map<String, dynamic> data;
+      if (ApiService.cachedIncidents != null) {
+        data = ApiService.cachedIncidents!;
+        ApiService.cachedIncidents = null; // Clear after use
+      } else {
+        data = await _api.getIncidents(zone: null);
+      }
+
       final listRaw = data['incidents'] as List<dynamic>? ?? [];
       final incidents = listRaw
           .map((e) => Incident.fromMap(Map<String, dynamic>.from(e as Map)))
@@ -152,7 +159,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
           padding: EdgeInsets.all(8),
           child: Icon(Icons.hub_outlined, color: AppTheme.primary, size: 24),
         ),
-        title: const Text('Supply & Safety Alerts'),
+        title: const Text('Incidents'),
         actions: [
           IconButton(icon: const Icon(Icons.refresh_outlined), onPressed: _loadData),
           IconButton(
@@ -205,7 +212,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
           children: [
             const Icon(Icons.cloud_off_outlined, color: AppTheme.criticalRed, size: 48),
             const SizedBox(height: 16),
-            Text('Could not load incidents.', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Could not connect to server', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             Text(_error!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar), textAlign: TextAlign.center),
             const SizedBox(height: 24),

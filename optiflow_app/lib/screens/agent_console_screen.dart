@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../theme.dart';
 import '../services/api_service.dart';
-import '../services/agent_state_provider.dart';
+import '../providers/agent_state_provider.dart';
 
 class AgentConsoleScreen extends StatefulWidget {
   const AgentConsoleScreen({super.key});
@@ -73,16 +74,6 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
     super.dispose();
   }
 
-  void _loadDemoScenario() {
-    _inputController.text =
-        "Karachi Flood Warning. Highway blocked near Saddar/Korangi corridor. Humalog Insulin stock is extremely depleted at Karachi Relief NGO Depot.";
-    _newsController.text =
-        "BREAKING NEWS: Meteorological department issues high-alert urban flood warning in Karachi. Localized monsoon downpour expected to submerge low-lying sectors and highways.";
-    _weatherController.text =
-        "Heavy storm, flood alerts active for South Sindh, highways blocked.";
-    _stockController.text =
-        "DEPOT: Karachi Relief Depot (DEP-NGO-01), Zone: Clifton/Saddar, Item: Humalog Insulin 100 IU, Stock: 85 vials, Threshold: 500 vials.";
-  }
 
   void _clearInputs() {
     _inputController.clear();
@@ -212,11 +203,6 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.lightbulb_outline, color: Colors.white70),
-            tooltip: 'Load Example Scenario',
-            onPressed: _loadDemoScenario,
-          ),
           IconButton(
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white70),
             tooltip: 'Clear All Inputs',
@@ -1204,6 +1190,51 @@ class _AgentConsoleScreenState extends State<AgentConsoleScreen> with SingleTick
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRawJsonPanelSection() {
+    final prettyJson = const JsonEncoder.withIndent('  ').convert(_agentResult ?? {});
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F172A).withOpacity(0.9),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF334155), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.code_outlined, color: Color(0xFF38BDF8), size: 18),
+              const SizedBox(width: 8),
+              Text(
+                'FULL AGENT RESPONSE',
+                style: GoogleFonts.jetBrainsMono(
+                  color: const Color(0xFF38BDF8),
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 180,
+            child: SingleChildScrollView(
+              child: SelectableText(
+                prettyJson,
+                style: GoogleFonts.jetBrainsMono(
+                  color: const Color(0xFF94A3B8),
+                  fontSize: 11,
+                ),
+              ),
+            ),
           ),
         ],
       ),

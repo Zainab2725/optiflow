@@ -10,3 +10,3145 @@
 [2026-05-19T19:37:37.138539] decision generated
 [2026-05-19T19:37:41.837346] simulation executed
 [2026-05-19T19:37:41.841235] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:02:39.214739] ingestion completed
+[2026-05-19T20:02:44.541033] insight extraction done
+[2026-05-19T20:02:59.907146] risk evaluated
+[2026-05-19T20:02:59.912675] decision generated
+[2026-05-19T20:03:04.942565] simulation executed
+[2026-05-19T20:03:04.948296] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:09:50.739620] ingestion completed
+[2026-05-19T20:09:54.957816] insight extraction done
+[2026-05-19T20:10:05.621584] risk evaluated
+[2026-05-19T20:10:05.625868] decision generated
+[2026-05-19T20:10:10.602710] simulation executed
+[2026-05-19T20:10:10.607895] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:11:04.516765] ingestion completed
+[2026-05-19T20:11:09.152168] insight extraction done
+[2026-05-19T20:11:20.080638] risk evaluated
+[2026-05-19T20:11:20.084263] decision generated
+[2026-05-19T20:11:26.763663] simulation executed
+[2026-05-19T20:11:26.767132] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:31:01.319623] ingestion completed
+[2026-05-19T20:31:06.978723] insight extraction done
+[2026-05-19T20:31:19.204454] risk evaluated
+[2026-05-19T20:31:19.210338] decision generated
+[2026-05-19T20:31:23.723751] simulation executed
+[2026-05-19T20:31:23.727497] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:40:15.880903] ingestion completed
+[2026-05-19T20:40:22.405640] insight extraction done
+[2026-05-19T20:40:22.916383] risk evaluated
+[2026-05-19T20:40:22.920109] decision generated
+[2026-05-19T20:40:23.424560] simulation executed
+[2026-05-19T20:40:23.428118] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:49:36.982284] ingestion completed
+[2026-05-19T20:49:41.521984] insight extraction done
+[2026-05-19T20:49:55.459850] risk evaluated
+[2026-05-19T20:49:55.466293] decision generated
+[2026-05-19T20:49:56.540609] simulation executed
+[2026-05-19T20:49:56.546383] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:50:06.813725] ingestion completed
+[2026-05-19T20:50:08.562469] insight extraction done
+[2026-05-19T20:50:09.376623] risk evaluated
+[2026-05-19T20:50:09.382381] decision generated
+[2026-05-19T20:50:10.439545] simulation executed
+[2026-05-19T20:50:10.443465] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:50:15.150033] ingestion completed
+[2026-05-19T20:50:15.704779] insight extraction done
+[2026-05-19T20:50:16.773503] risk evaluated
+[2026-05-19T20:50:16.778792] decision generated
+[2026-05-19T20:50:17.830065] simulation executed
+[2026-05-19T20:50:17.835134] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:50:25.862798] ingestion completed
+[2026-05-19T20:50:26.596023] insight extraction done
+[2026-05-19T20:50:27.925193] risk evaluated
+[2026-05-19T20:50:27.929216] decision generated
+[2026-05-19T20:50:29.002612] simulation executed
+[2026-05-19T20:50:29.006513] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:50:50.860916] ingestion completed
+[2026-05-19T20:50:51.911966] insight extraction done
+[2026-05-19T20:50:52.944040] risk evaluated
+[2026-05-19T20:50:52.949638] decision generated
+[2026-05-19T20:50:53.956245] simulation executed
+[2026-05-19T20:50:53.961289] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:51:21.076141] ingestion completed
+[2026-05-19T20:51:21.694915] insight extraction done
+[2026-05-19T20:51:22.736038] risk evaluated
+[2026-05-19T20:51:22.741634] decision generated
+[2026-05-19T20:51:24.017542] simulation executed
+[2026-05-19T20:51:24.022027] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:51:40.860884] ingestion completed
+[2026-05-19T20:51:41.878305] insight extraction done
+[2026-05-19T20:51:42.892368] risk evaluated
+[2026-05-19T20:51:42.898006] decision generated
+[2026-05-19T20:51:43.906531] simulation executed
+[2026-05-19T20:51:43.910705] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:52:06.054561] ingestion completed
+[2026-05-19T20:52:07.179966] insight extraction done
+[2026-05-19T20:52:08.290804] risk evaluated
+[2026-05-19T20:52:08.296556] decision generated
+[2026-05-19T20:52:08.723420] simulation executed
+[2026-05-19T20:52:08.727298] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:53:07.623824] ingestion completed
+[2026-05-19T20:53:09.053181] insight extraction done
+[2026-05-19T20:53:10.086442] risk evaluated
+[2026-05-19T20:53:10.090480] decision generated
+[2026-05-19T20:53:18.016283] simulation executed
+[2026-05-19T20:53:18.022188] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:53:32.231510] ingestion completed
+[2026-05-19T20:53:33.397670] insight extraction done
+[2026-05-19T20:53:33.856353] risk evaluated
+[2026-05-19T20:53:33.861991] decision generated
+[2026-05-19T20:53:34.925873] simulation executed
+[2026-05-19T20:53:34.930252] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:53:57.236198] ingestion completed
+[2026-05-19T20:53:58.275969] insight extraction done
+[2026-05-19T20:53:59.298304] risk evaluated
+[2026-05-19T20:53:59.304381] decision generated
+[2026-05-19T20:53:59.746763] simulation executed
+[2026-05-19T20:53:59.752385] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:54:22.233927] ingestion completed
+[2026-05-19T20:54:22.658424] insight extraction done
+[2026-05-19T20:54:23.162011] risk evaluated
+[2026-05-19T20:54:23.167053] decision generated
+[2026-05-19T20:54:24.402215] simulation executed
+[2026-05-19T20:54:24.407348] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:54:48.623375] ingestion completed
+[2026-05-19T20:54:52.264598] insight extraction done
+[2026-05-19T20:54:53.287492] risk evaluated
+[2026-05-19T20:54:53.293554] decision generated
+[2026-05-19T20:54:53.883009] simulation executed
+[2026-05-19T20:54:53.887886] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:55:12.233516] ingestion completed
+[2026-05-19T20:55:12.671607] insight extraction done
+[2026-05-19T20:55:13.168882] risk evaluated
+[2026-05-19T20:55:13.173223] decision generated
+[2026-05-19T20:55:13.644060] simulation executed
+[2026-05-19T20:55:13.649152] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:55:37.232667] ingestion completed
+[2026-05-19T20:55:38.340526] insight extraction done
+[2026-05-19T20:55:38.907771] risk evaluated
+[2026-05-19T20:55:38.913338] decision generated
+[2026-05-19T20:55:39.966611] simulation executed
+[2026-05-19T20:55:39.971453] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:56:02.240744] ingestion completed
+[2026-05-19T20:56:02.696400] insight extraction done
+[2026-05-19T20:56:03.735040] risk evaluated
+[2026-05-19T20:56:03.740619] decision generated
+[2026-05-19T20:56:04.753960] simulation executed
+[2026-05-19T20:56:04.759589] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:56:27.234876] ingestion completed
+[2026-05-19T20:56:27.789116] insight extraction done
+[2026-05-19T20:56:28.287548] risk evaluated
+[2026-05-19T20:56:28.292093] decision generated
+[2026-05-19T20:56:28.735422] simulation executed
+[2026-05-19T20:56:28.740885] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:56:52.238795] ingestion completed
+[2026-05-19T20:56:53.289226] insight extraction done
+[2026-05-19T20:56:54.347050] risk evaluated
+[2026-05-19T20:56:54.352328] decision generated
+[2026-05-19T20:56:55.366304] simulation executed
+[2026-05-19T20:56:55.370653] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:57:17.235229] ingestion completed
+[2026-05-19T20:57:17.667435] insight extraction done
+[2026-05-19T20:57:18.690666] risk evaluated
+[2026-05-19T20:57:18.695621] decision generated
+[2026-05-19T20:57:19.906514] simulation executed
+[2026-05-19T20:57:19.916830] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:57:42.233187] ingestion completed
+[2026-05-19T20:57:43.262079] insight extraction done
+[2026-05-19T20:57:44.284863] risk evaluated
+[2026-05-19T20:57:44.290381] decision generated
+[2026-05-19T20:57:44.796177] simulation executed
+[2026-05-19T20:57:44.801593] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:58:07.234183] ingestion completed
+[2026-05-19T20:58:08.265597] insight extraction done
+[2026-05-19T20:58:09.597806] risk evaluated
+[2026-05-19T20:58:09.604335] decision generated
+[2026-05-19T20:58:10.166265] simulation executed
+[2026-05-19T20:58:10.170764] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:58:32.236214] ingestion completed
+[2026-05-19T20:58:32.721968] insight extraction done
+[2026-05-19T20:58:33.743657] risk evaluated
+[2026-05-19T20:58:33.749372] decision generated
+[2026-05-19T20:58:34.772415] simulation executed
+[2026-05-19T20:58:34.778241] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:58:57.230502] ingestion completed
+[2026-05-19T20:58:57.740797] insight extraction done
+[2026-05-19T20:58:58.857708] risk evaluated
+[2026-05-19T20:58:58.862331] decision generated
+[2026-05-19T20:59:00.311755] simulation executed
+[2026-05-19T20:59:00.317493] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:59:22.228361] ingestion completed
+[2026-05-19T20:59:22.728351] insight extraction done
+[2026-05-19T20:59:23.826670] risk evaluated
+[2026-05-19T20:59:23.832510] decision generated
+[2026-05-19T20:59:24.299038] simulation executed
+[2026-05-19T20:59:24.303631] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T20:59:47.333167] ingestion completed
+[2026-05-19T20:59:48.375747] insight extraction done
+[2026-05-19T20:59:48.820849] risk evaluated
+[2026-05-19T20:59:48.824810] decision generated
+[2026-05-19T20:59:49.852771] simulation executed
+[2026-05-19T20:59:49.857125] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:00:12.240525] ingestion completed
+[2026-05-19T21:00:13.295999] insight extraction done
+[2026-05-19T21:00:14.320515] risk evaluated
+[2026-05-19T21:00:14.325129] decision generated
+[2026-05-19T21:00:14.927531] simulation executed
+[2026-05-19T21:00:14.932412] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:00:37.234509] ingestion completed
+[2026-05-19T21:00:37.683256] insight extraction done
+[2026-05-19T21:00:38.123836] risk evaluated
+[2026-05-19T21:00:38.128585] decision generated
+[2026-05-19T21:00:39.192738] simulation executed
+[2026-05-19T21:00:39.197321] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:01:02.236414] ingestion completed
+[2026-05-19T21:01:03.680600] insight extraction done
+[2026-05-19T21:01:04.700295] risk evaluated
+[2026-05-19T21:01:04.704247] decision generated
+[2026-05-19T21:01:05.737781] simulation executed
+[2026-05-19T21:01:05.743134] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:01:27.230181] ingestion completed
+[2026-05-19T21:01:28.256137] insight extraction done
+[2026-05-19T21:01:28.938939] risk evaluated
+[2026-05-19T21:01:28.944910] decision generated
+[2026-05-19T21:01:29.391942] simulation executed
+[2026-05-19T21:01:29.397936] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:01:52.227677] ingestion completed
+[2026-05-19T21:01:53.239228] insight extraction done
+[2026-05-19T21:01:54.259233] risk evaluated
+[2026-05-19T21:01:54.264066] decision generated
+[2026-05-19T21:01:55.300005] simulation executed
+[2026-05-19T21:01:55.305038] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:02:17.243392] ingestion completed
+[2026-05-19T21:02:18.325115] insight extraction done
+[2026-05-19T21:02:18.761968] risk evaluated
+[2026-05-19T21:02:18.767487] decision generated
+[2026-05-19T21:02:19.355439] simulation executed
+[2026-05-19T21:02:19.359433] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:02:42.236907] ingestion completed
+[2026-05-19T21:02:43.621092] insight extraction done
+[2026-05-19T21:02:44.728391] risk evaluated
+[2026-05-19T21:02:44.735300] decision generated
+[2026-05-19T21:02:45.888750] simulation executed
+[2026-05-19T21:02:45.894037] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:03:07.390514] ingestion completed
+[2026-05-19T21:03:07.893671] insight extraction done
+[2026-05-19T21:03:09.016129] risk evaluated
+[2026-05-19T21:03:09.021279] decision generated
+[2026-05-19T21:03:09.756201] simulation executed
+[2026-05-19T21:03:09.761845] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:03:32.227727] ingestion completed
+[2026-05-19T21:03:32.658600] insight extraction done
+[2026-05-19T21:03:33.101045] risk evaluated
+[2026-05-19T21:03:33.105865] decision generated
+[2026-05-19T21:03:34.126276] simulation executed
+[2026-05-19T21:03:34.131020] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:03:57.248384] ingestion completed
+[2026-05-19T21:03:57.770589] insight extraction done
+[2026-05-19T21:03:58.997117] risk evaluated
+[2026-05-19T21:03:59.003382] decision generated
+[2026-05-19T21:03:59.446391] simulation executed
+[2026-05-19T21:03:59.452610] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:04:22.229222] ingestion completed
+[2026-05-19T21:04:22.911732] insight extraction done
+[2026-05-19T21:04:24.123218] risk evaluated
+[2026-05-19T21:04:24.129867] decision generated
+[2026-05-19T21:04:25.176718] simulation executed
+[2026-05-19T21:04:25.182570] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:04:47.239376] ingestion completed
+[2026-05-19T21:04:48.264325] insight extraction done
+[2026-05-19T21:04:48.696820] risk evaluated
+[2026-05-19T21:04:48.702623] decision generated
+[2026-05-19T21:04:49.732312] simulation executed
+[2026-05-19T21:04:49.736793] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:05:12.234534] ingestion completed
+[2026-05-19T21:05:13.255839] insight extraction done
+[2026-05-19T21:05:14.279738] risk evaluated
+[2026-05-19T21:05:14.285672] decision generated
+[2026-05-19T21:05:15.356301] simulation executed
+[2026-05-19T21:05:15.361681] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:05:37.229559] ingestion completed
+[2026-05-19T21:05:38.426668] insight extraction done
+[2026-05-19T21:05:38.855513] risk evaluated
+[2026-05-19T21:05:38.859846] decision generated
+[2026-05-19T21:05:39.870548] simulation executed
+[2026-05-19T21:05:39.875323] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:06:02.229445] ingestion completed
+[2026-05-19T21:06:03.275080] insight extraction done
+[2026-05-19T21:06:03.713727] risk evaluated
+[2026-05-19T21:06:03.718213] decision generated
+[2026-05-19T21:06:04.154330] simulation executed
+[2026-05-19T21:06:04.160247] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:06:27.259195] ingestion completed
+[2026-05-19T21:06:28.258931] insight extraction done
+[2026-05-19T21:06:28.777923] risk evaluated
+[2026-05-19T21:06:28.782205] decision generated
+[2026-05-19T21:06:29.811480] simulation executed
+[2026-05-19T21:06:29.817544] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:06:52.234220] ingestion completed
+[2026-05-19T21:06:53.388432] insight extraction done
+[2026-05-19T21:06:54.416479] risk evaluated
+[2026-05-19T21:06:54.423127] decision generated
+[2026-05-19T21:06:54.929872] simulation executed
+[2026-05-19T21:06:54.935386] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:07:17.235819] ingestion completed
+[2026-05-19T21:07:17.686099] insight extraction done
+[2026-05-19T21:07:18.915224] risk evaluated
+[2026-05-19T21:07:18.919771] decision generated
+[2026-05-19T21:07:19.392598] simulation executed
+[2026-05-19T21:07:19.396377] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:07:42.232273] ingestion completed
+[2026-05-19T21:07:42.787500] insight extraction done
+[2026-05-19T21:07:43.892976] risk evaluated
+[2026-05-19T21:07:43.898345] decision generated
+[2026-05-19T21:07:44.390373] simulation executed
+[2026-05-19T21:07:44.394774] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:08:07.234237] ingestion completed
+[2026-05-19T21:08:07.739890] insight extraction done
+[2026-05-19T21:08:08.765658] risk evaluated
+[2026-05-19T21:08:08.770621] decision generated
+[2026-05-19T21:08:09.284681] simulation executed
+[2026-05-19T21:08:09.289405] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:08:32.226619] ingestion completed
+[2026-05-19T21:08:33.392771] insight extraction done
+[2026-05-19T21:08:33.947475] risk evaluated
+[2026-05-19T21:08:33.952465] decision generated
+[2026-05-19T21:08:35.329070] simulation executed
+[2026-05-19T21:08:35.334366] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:08:57.239486] ingestion completed
+[2026-05-19T21:08:58.430844] insight extraction done
+[2026-05-19T21:08:59.441451] risk evaluated
+[2026-05-19T21:08:59.447049] decision generated
+[2026-05-19T21:09:00.172022] simulation executed
+[2026-05-19T21:09:00.178054] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:09:22.233292] ingestion completed
+[2026-05-19T21:09:23.794290] insight extraction done
+[2026-05-19T21:09:25.464417] risk evaluated
+[2026-05-19T21:09:25.468777] decision generated
+[2026-05-19T21:09:26.495421] simulation executed
+[2026-05-19T21:09:26.501672] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:09:47.229538] ingestion completed
+[2026-05-19T21:09:48.282511] insight extraction done
+[2026-05-19T21:09:49.333890] risk evaluated
+[2026-05-19T21:09:49.338096] decision generated
+[2026-05-19T21:09:50.360364] simulation executed
+[2026-05-19T21:09:50.365139] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:10:12.230540] ingestion completed
+[2026-05-19T21:10:13.590117] insight extraction done
+[2026-05-19T21:10:14.616145] risk evaluated
+[2026-05-19T21:10:14.620141] decision generated
+[2026-05-19T21:10:15.651459] simulation executed
+[2026-05-19T21:10:15.655204] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:10:37.241159] ingestion completed
+[2026-05-19T21:10:37.728588] insight extraction done
+[2026-05-19T21:10:38.327969] risk evaluated
+[2026-05-19T21:10:38.333914] decision generated
+[2026-05-19T21:10:39.218330] simulation executed
+[2026-05-19T21:10:39.222805] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:11:02.238658] ingestion completed
+[2026-05-19T21:11:03.271046] insight extraction done
+[2026-05-19T21:11:03.876774] risk evaluated
+[2026-05-19T21:11:03.881720] decision generated
+[2026-05-19T21:11:04.394184] simulation executed
+[2026-05-19T21:11:04.400348] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:11:27.228902] ingestion completed
+[2026-05-19T21:11:28.455970] insight extraction done
+[2026-05-19T21:11:29.538758] risk evaluated
+[2026-05-19T21:11:29.543894] decision generated
+[2026-05-19T21:11:30.016863] simulation executed
+[2026-05-19T21:11:30.022581] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:11:52.233508] ingestion completed
+[2026-05-19T21:11:52.731741] insight extraction done
+[2026-05-19T21:11:53.294549] risk evaluated
+[2026-05-19T21:11:53.298898] decision generated
+[2026-05-19T21:11:54.371416] simulation executed
+[2026-05-19T21:11:54.375736] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:12:17.229048] ingestion completed
+[2026-05-19T21:12:18.241291] insight extraction done
+[2026-05-19T21:12:19.357049] risk evaluated
+[2026-05-19T21:12:19.361603] decision generated
+[2026-05-19T21:12:20.372482] simulation executed
+[2026-05-19T21:12:20.378823] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:12:42.234034] ingestion completed
+[2026-05-19T21:12:42.680115] insight extraction done
+[2026-05-19T21:12:43.720248] risk evaluated
+[2026-05-19T21:12:43.726189] decision generated
+[2026-05-19T21:12:44.161617] simulation executed
+[2026-05-19T21:12:44.165732] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:13:07.237812] ingestion completed
+[2026-05-19T21:13:08.243990] insight extraction done
+[2026-05-19T21:13:08.696593] risk evaluated
+[2026-05-19T21:13:08.700162] decision generated
+[2026-05-19T21:13:09.128908] simulation executed
+[2026-05-19T21:13:09.132881] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:13:32.250008] ingestion completed
+[2026-05-19T21:13:33.395883] insight extraction done
+[2026-05-19T21:13:34.425612] risk evaluated
+[2026-05-19T21:13:34.430596] decision generated
+[2026-05-19T21:13:34.872442] simulation executed
+[2026-05-19T21:13:34.877271] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:13:34.888747] ingestion completed
+[2026-05-19T21:13:35.925710] insight extraction done
+[2026-05-19T21:13:36.954975] risk evaluated
+[2026-05-19T21:13:36.959742] decision generated
+[2026-05-19T21:13:37.922364] simulation executed
+[2026-05-19T21:13:37.927500] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:13:37.935429] ingestion completed
+[2026-05-19T21:13:39.022865] insight extraction done
+[2026-05-19T21:13:40.148608] risk evaluated
+[2026-05-19T21:13:40.152636] decision generated
+[2026-05-19T21:13:41.162008] simulation executed
+[2026-05-19T21:13:41.167204] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:14:00.353779] ingestion completed
+[2026-05-19T21:14:00.858332] insight extraction done
+[2026-05-19T21:14:01.403288] risk evaluated
+[2026-05-19T21:14:01.407774] decision generated
+[2026-05-19T21:14:02.266892] simulation executed
+[2026-05-19T21:14:02.272377] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:14:22.669670] ingestion completed
+[2026-05-19T21:14:23.542070] insight extraction done
+[2026-05-19T21:14:24.520639] risk evaluated
+[2026-05-19T21:14:24.524449] decision generated
+[2026-05-19T21:14:25.611283] simulation executed
+[2026-05-19T21:14:25.615400] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:14:47.237683] ingestion completed
+[2026-05-19T21:14:47.654534] insight extraction done
+[2026-05-19T21:14:48.296161] risk evaluated
+[2026-05-19T21:14:48.300525] decision generated
+[2026-05-19T21:14:49.886516] simulation executed
+[2026-05-19T21:14:49.891586] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:17:15.873421] ingestion completed
+[2026-05-19T21:17:17.415253] insight extraction done
+[2026-05-19T21:17:17.856067] risk evaluated
+[2026-05-19T21:17:17.861943] decision generated
+[2026-05-19T21:17:19.086180] simulation executed
+[2026-05-19T21:17:19.090320] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:17:41.108940] ingestion completed
+[2026-05-19T21:17:44.797402] insight extraction done
+[2026-05-19T21:17:45.921231] risk evaluated
+[2026-05-19T21:17:45.925966] decision generated
+[2026-05-19T21:17:46.947046] simulation executed
+[2026-05-19T21:17:46.951852] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:18:06.578893] ingestion completed
+[2026-05-19T21:18:07.637734] insight extraction done
+[2026-05-19T21:18:08.657904] risk evaluated
+[2026-05-19T21:18:08.662779] decision generated
+[2026-05-19T21:18:09.689893] simulation executed
+[2026-05-19T21:18:09.696172] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:18:30.602146] ingestion completed
+[2026-05-19T21:18:31.111421] insight extraction done
+[2026-05-19T21:18:32.314067] risk evaluated
+[2026-05-19T21:18:32.318921] decision generated
+[2026-05-19T21:18:33.541982] simulation executed
+[2026-05-19T21:18:33.547488] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:18:55.286105] ingestion completed
+[2026-05-19T21:18:56.377574] insight extraction done
+[2026-05-19T21:18:57.399944] risk evaluated
+[2026-05-19T21:18:57.405027] decision generated
+[2026-05-19T21:18:58.438457] simulation executed
+[2026-05-19T21:18:58.444187] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:19:20.266995] ingestion completed
+[2026-05-19T21:19:20.858344] insight extraction done
+[2026-05-19T21:19:21.877711] risk evaluated
+[2026-05-19T21:19:21.883298] decision generated
+[2026-05-19T21:19:22.902320] simulation executed
+[2026-05-19T21:19:22.907904] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:19:45.299937] ingestion completed
+[2026-05-19T21:19:46.316673] insight extraction done
+[2026-05-19T21:19:47.389755] risk evaluated
+[2026-05-19T21:19:47.393821] decision generated
+[2026-05-19T21:19:48.418873] simulation executed
+[2026-05-19T21:19:48.423959] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:20:10.269571] ingestion completed
+[2026-05-19T21:20:11.331005] insight extraction done
+[2026-05-19T21:20:11.788827] risk evaluated
+[2026-05-19T21:20:11.793497] decision generated
+[2026-05-19T21:20:12.231925] simulation executed
+[2026-05-19T21:20:12.237862] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:20:35.286552] ingestion completed
+[2026-05-19T21:20:36.694475] insight extraction done
+[2026-05-19T21:20:37.190234] risk evaluated
+[2026-05-19T21:20:37.195155] decision generated
+[2026-05-19T21:20:38.212229] simulation executed
+[2026-05-19T21:20:38.217685] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:21:00.268263] ingestion completed
+[2026-05-19T21:21:01.108901] insight extraction done
+[2026-05-19T21:21:02.115765] risk evaluated
+[2026-05-19T21:21:02.123102] decision generated
+[2026-05-19T21:21:03.458894] simulation executed
+[2026-05-19T21:21:03.465027] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:21:10.948901] ingestion completed
+[2026-05-19T21:21:11.382195] insight extraction done
+[2026-05-19T21:21:12.501952] risk evaluated
+[2026-05-19T21:21:12.508375] decision generated
+[2026-05-19T21:21:13.826044] simulation executed
+[2026-05-19T21:21:13.831800] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:21:25.269145] ingestion completed
+[2026-05-19T21:21:26.584446] insight extraction done
+[2026-05-19T21:21:27.898663] risk evaluated
+[2026-05-19T21:21:27.904660] decision generated
+[2026-05-19T21:21:28.359947] simulation executed
+[2026-05-19T21:21:28.366338] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:21:50.268865] ingestion completed
+[2026-05-19T21:21:50.716612] insight extraction done
+[2026-05-19T21:21:51.209193] risk evaluated
+[2026-05-19T21:21:51.215591] decision generated
+[2026-05-19T21:21:52.289913] simulation executed
+[2026-05-19T21:21:52.296536] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:22:15.272013] ingestion completed
+[2026-05-19T21:22:16.396964] insight extraction done
+[2026-05-19T21:22:17.704551] risk evaluated
+[2026-05-19T21:22:17.710624] decision generated
+[2026-05-19T21:22:18.160606] simulation executed
+[2026-05-19T21:22:18.166053] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:22:40.280404] ingestion completed
+[2026-05-19T21:22:40.851972] insight extraction done
+[2026-05-19T21:22:41.564944] risk evaluated
+[2026-05-19T21:22:41.571178] decision generated
+[2026-05-19T21:22:42.628761] simulation executed
+[2026-05-19T21:22:42.636351] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:23:05.300263] ingestion completed
+[2026-05-19T21:23:06.460112] insight extraction done
+[2026-05-19T21:23:08.008825] risk evaluated
+[2026-05-19T21:23:08.015380] decision generated
+[2026-05-19T21:23:08.516038] simulation executed
+[2026-05-19T21:23:08.522381] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:23:30.298254] ingestion completed
+[2026-05-19T21:23:30.738990] insight extraction done
+[2026-05-19T21:23:31.750351] risk evaluated
+[2026-05-19T21:23:31.756480] decision generated
+[2026-05-19T21:23:33.062786] simulation executed
+[2026-05-19T21:23:33.068882] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:23:33.079182] ingestion completed
+[2026-05-19T21:23:34.231056] insight extraction done
+[2026-05-19T21:23:35.595209] risk evaluated
+[2026-05-19T21:23:35.601487] decision generated
+[2026-05-19T21:23:36.046493] simulation executed
+[2026-05-19T21:23:36.052891] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:23:55.297107] ingestion completed
+[2026-05-19T21:23:55.763547] insight extraction done
+[2026-05-19T21:23:56.187412] risk evaluated
+[2026-05-19T21:23:56.191911] decision generated
+[2026-05-19T21:23:56.660756] simulation executed
+[2026-05-19T21:23:56.665327] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:24:20.274082] ingestion completed
+[2026-05-19T21:24:21.303353] insight extraction done
+[2026-05-19T21:24:22.390987] risk evaluated
+[2026-05-19T21:24:22.396266] decision generated
+[2026-05-19T21:24:22.907180] simulation executed
+[2026-05-19T21:24:22.912577] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:24:45.279020] ingestion completed
+[2026-05-19T21:24:46.550553] insight extraction done
+[2026-05-19T21:24:47.613403] risk evaluated
+[2026-05-19T21:24:47.619281] decision generated
+[2026-05-19T21:24:48.346679] simulation executed
+[2026-05-19T21:24:48.351714] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:24:57.335048] ingestion completed
+[2026-05-19T21:24:57.775880] insight extraction done
+[2026-05-19T21:24:58.221040] risk evaluated
+[2026-05-19T21:24:58.226629] decision generated
+[2026-05-19T21:24:58.719277] simulation executed
+[2026-05-19T21:24:58.725939] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:25:10.273164] ingestion completed
+[2026-05-19T21:25:10.700198] insight extraction done
+[2026-05-19T21:25:12.082918] risk evaluated
+[2026-05-19T21:25:12.087134] decision generated
+[2026-05-19T21:25:12.584253] simulation executed
+[2026-05-19T21:25:12.589111] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:25:35.277470] ingestion completed
+[2026-05-19T21:25:36.863293] insight extraction done
+[2026-05-19T21:25:37.316194] risk evaluated
+[2026-05-19T21:25:37.321538] decision generated
+[2026-05-19T21:25:37.755308] simulation executed
+[2026-05-19T21:25:37.762785] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:26:00.307502] ingestion completed
+[2026-05-19T21:26:01.404693] insight extraction done
+[2026-05-19T21:26:02.497716] risk evaluated
+[2026-05-19T21:26:02.504923] decision generated
+[2026-05-19T21:26:03.551841] simulation executed
+[2026-05-19T21:26:03.556891] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:26:25.294335] ingestion completed
+[2026-05-19T21:26:25.898411] insight extraction done
+[2026-05-19T21:26:27.964498] risk evaluated
+[2026-05-19T21:26:27.971376] decision generated
+[2026-05-19T21:26:29.329386] simulation executed
+[2026-05-19T21:26:29.336147] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:26:50.277846] ingestion completed
+[2026-05-19T21:26:50.987403] insight extraction done
+[2026-05-19T21:26:52.012314] risk evaluated
+[2026-05-19T21:26:52.019826] decision generated
+[2026-05-19T21:26:52.469889] simulation executed
+[2026-05-19T21:26:52.475391] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:27:15.300794] ingestion completed
+[2026-05-19T21:27:16.330456] insight extraction done
+[2026-05-19T21:27:17.307471] risk evaluated
+[2026-05-19T21:27:17.313728] decision generated
+[2026-05-19T21:27:18.451322] simulation executed
+[2026-05-19T21:27:18.457282] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:27:40.290884] ingestion completed
+[2026-05-19T21:27:41.615127] insight extraction done
+[2026-05-19T21:27:42.329486] risk evaluated
+[2026-05-19T21:27:42.334670] decision generated
+[2026-05-19T21:27:42.781777] simulation executed
+[2026-05-19T21:27:42.789220] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:28:05.301784] ingestion completed
+[2026-05-19T21:28:05.824045] insight extraction done
+[2026-05-19T21:28:06.327465] risk evaluated
+[2026-05-19T21:28:06.334036] decision generated
+[2026-05-19T21:28:07.609665] simulation executed
+[2026-05-19T21:28:07.615094] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:28:30.270069] ingestion completed
+[2026-05-19T21:28:30.730126] insight extraction done
+[2026-05-19T21:28:31.225449] risk evaluated
+[2026-05-19T21:28:31.230347] decision generated
+[2026-05-19T21:28:31.677685] simulation executed
+[2026-05-19T21:28:31.683653] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:28:55.271873] ingestion completed
+[2026-05-19T21:28:56.591974] insight extraction done
+[2026-05-19T21:28:57.684145] risk evaluated
+[2026-05-19T21:28:57.690412] decision generated
+[2026-05-19T21:28:58.713277] simulation executed
+[2026-05-19T21:28:58.719920] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:29:20.276246] ingestion completed
+[2026-05-19T21:29:21.370919] insight extraction done
+[2026-05-19T21:29:22.181195] risk evaluated
+[2026-05-19T21:29:22.186606] decision generated
+[2026-05-19T21:29:22.624902] simulation executed
+[2026-05-19T21:29:22.630535] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:29:45.279937] ingestion completed
+[2026-05-19T21:29:46.293249] insight extraction done
+[2026-05-19T21:29:46.827177] risk evaluated
+[2026-05-19T21:29:46.833478] decision generated
+[2026-05-19T21:29:47.355958] simulation executed
+[2026-05-19T21:29:47.361779] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:30:10.282138] ingestion completed
+[2026-05-19T21:30:11.547361] insight extraction done
+[2026-05-19T21:30:12.013547] risk evaluated
+[2026-05-19T21:30:12.019558] decision generated
+[2026-05-19T21:30:12.783051] simulation executed
+[2026-05-19T21:30:12.789753] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:30:35.276829] ingestion completed
+[2026-05-19T21:30:35.742482] insight extraction done
+[2026-05-19T21:30:36.170921] risk evaluated
+[2026-05-19T21:30:36.176839] decision generated
+[2026-05-19T21:30:37.240967] simulation executed
+[2026-05-19T21:30:37.246436] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:31:00.302659] ingestion completed
+[2026-05-19T21:31:01.340685] insight extraction done
+[2026-05-19T21:31:02.090369] risk evaluated
+[2026-05-19T21:31:02.095714] decision generated
+[2026-05-19T21:31:03.141029] simulation executed
+[2026-05-19T21:31:03.147919] Workflow completed successfully. Action: ROUTE_CHANGE
+[2026-05-19T21:31:10.329737] ingestion completed
+[2026-05-19T21:31:11.389341] insight extraction done
+[2026-05-19T21:31:12.034161] risk evaluated
+[2026-05-19T21:31:12.039423] decision generated
+[2026-05-19T21:31:13.084150] simulation executed
+[2026-05-19T21:31:13.090352] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:31:38.147164] ingestion completed
+[2026-05-19T21:31:39.201072] insight extraction done
+[2026-05-19T21:31:40.224720] risk evaluated
+[2026-05-19T21:31:40.265427] decision generated
+[2026-05-19T21:31:41.097425] simulation executed
+[2026-05-19T21:31:41.102662] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:32:03.197426] ingestion completed
+[2026-05-19T21:32:04.616837] insight extraction done
+[2026-05-19T21:32:05.778545] risk evaluated
+[2026-05-19T21:32:05.785157] decision generated
+[2026-05-19T21:32:06.615503] simulation executed
+[2026-05-19T21:32:06.621108] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:32:28.145884] ingestion completed
+[2026-05-19T21:32:28.617575] insight extraction done
+[2026-05-19T21:32:29.207877] risk evaluated
+[2026-05-19T21:32:29.213722] decision generated
+[2026-05-19T21:32:30.218033] simulation executed
+[2026-05-19T21:32:30.224214] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:32:53.149449] ingestion completed
+[2026-05-19T21:32:54.523095] insight extraction done
+[2026-05-19T21:32:54.993933] risk evaluated
+[2026-05-19T21:32:54.999614] decision generated
+[2026-05-19T21:32:56.054386] simulation executed
+[2026-05-19T21:32:56.059435] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:33:18.514604] ingestion completed
+[2026-05-19T21:33:19.579876] insight extraction done
+[2026-05-19T21:33:20.615067] risk evaluated
+[2026-05-19T21:33:20.621557] decision generated
+[2026-05-19T21:33:21.866089] simulation executed
+[2026-05-19T21:33:21.871044] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:33:43.172646] ingestion completed
+[2026-05-19T21:33:44.261161] insight extraction done
+[2026-05-19T21:33:45.659257] risk evaluated
+[2026-05-19T21:33:45.665209] decision generated
+[2026-05-19T21:33:46.443938] simulation executed
+[2026-05-19T21:33:46.448810] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:33:46.458166] ingestion completed
+[2026-05-19T21:33:47.495664] insight extraction done
+[2026-05-19T21:33:48.539486] risk evaluated
+[2026-05-19T21:33:48.545043] decision generated
+[2026-05-19T21:33:49.694736] simulation executed
+[2026-05-19T21:33:49.714800] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:34:14.917501] ingestion completed
+[2026-05-19T21:34:15.443934] insight extraction done
+[2026-05-19T21:34:16.514783] risk evaluated
+[2026-05-19T21:34:16.523037] decision generated
+[2026-05-19T21:34:17.013360] simulation executed
+[2026-05-19T21:34:17.018347] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:34:39.818154] ingestion completed
+[2026-05-19T21:34:40.306878] insight extraction done
+[2026-05-19T21:34:41.564674] risk evaluated
+[2026-05-19T21:34:41.653329] decision generated
+[2026-05-19T21:34:44.516371] simulation executed
+[2026-05-19T21:34:44.521649] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:35:04.814349] ingestion completed
+[2026-05-19T21:35:05.264295] insight extraction done
+[2026-05-19T21:35:06.346853] risk evaluated
+[2026-05-19T21:35:06.353116] decision generated
+[2026-05-19T21:35:06.839882] simulation executed
+[2026-05-19T21:35:06.846583] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:35:29.810330] ingestion completed
+[2026-05-19T21:35:30.859078] insight extraction done
+[2026-05-19T21:35:31.366913] risk evaluated
+[2026-05-19T21:35:31.372528] decision generated
+[2026-05-19T21:35:31.805429] simulation executed
+[2026-05-19T21:35:31.811067] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:35:54.809265] ingestion completed
+[2026-05-19T21:35:56.095716] insight extraction done
+[2026-05-19T21:35:58.985985] risk evaluated
+[2026-05-19T21:35:58.990423] decision generated
+[2026-05-19T21:35:59.709408] simulation executed
+[2026-05-19T21:35:59.716236] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:36:19.814278] ingestion completed
+[2026-05-19T21:36:20.278338] insight extraction done
+[2026-05-19T21:36:21.576514] risk evaluated
+[2026-05-19T21:36:21.583910] decision generated
+[2026-05-19T21:36:22.657706] simulation executed
+[2026-05-19T21:36:22.662920] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:36:44.816422] ingestion completed
+[2026-05-19T21:36:45.838118] insight extraction done
+[2026-05-19T21:36:46.562142] risk evaluated
+[2026-05-19T21:36:46.567580] decision generated
+[2026-05-19T21:36:46.995440] simulation executed
+[2026-05-19T21:36:47.001043] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:37:09.863339] ingestion completed
+[2026-05-19T21:37:11.198019] insight extraction done
+[2026-05-19T21:37:12.225441] risk evaluated
+[2026-05-19T21:37:12.232520] decision generated
+[2026-05-19T21:37:13.251536] simulation executed
+[2026-05-19T21:37:13.258647] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:37:32.560002] ingestion completed
+[2026-05-19T21:37:33.777811] insight extraction done
+[2026-05-19T21:37:34.254821] risk evaluated
+[2026-05-19T21:37:34.261793] decision generated
+[2026-05-19T21:37:35.381840] simulation executed
+[2026-05-19T21:37:35.388721] Workflow completed successfully. Action: RESTOCK
+[2026-05-19T21:39:28.580293] ingestion completed
+[2026-05-19T21:39:29.759023] insight extraction done
+[2026-05-19T21:39:31.432816] risk evaluated
+[2026-05-19T21:39:31.439137] decision generated
+[2026-05-19T21:39:33.351416] simulation executed
+[2026-05-19T21:39:33.357357] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:39:54.671850] ingestion completed
+[2026-05-19T21:39:58.977079] insight extraction done
+[2026-05-19T21:39:59.806065] risk evaluated
+[2026-05-19T21:39:59.811630] decision generated
+[2026-05-19T21:40:00.851560] simulation executed
+[2026-05-19T21:40:01.025890] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:40:11.422302] ingestion completed
+[2026-05-19T21:40:12.612802] insight extraction done
+[2026-05-19T21:40:14.219435] risk evaluated
+[2026-05-19T21:40:14.224409] decision generated
+[2026-05-19T21:40:15.374176] simulation executed
+[2026-05-19T21:40:15.379333] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:40:40.430466] ingestion completed
+[2026-05-19T21:40:41.802101] insight extraction done
+[2026-05-19T21:40:43.798073] risk evaluated
+[2026-05-19T21:40:43.803497] decision generated
+[2026-05-19T21:40:44.921463] simulation executed
+[2026-05-19T21:40:44.927353] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:40:50.254049] ingestion completed
+[2026-05-19T21:40:52.243576] insight extraction done
+[2026-05-19T21:40:53.704846] risk evaluated
+[2026-05-19T21:40:53.709843] decision generated
+[2026-05-19T21:40:54.171676] simulation executed
+[2026-05-19T21:40:54.177086] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:41:19.234640] ingestion completed
+[2026-05-19T21:41:19.830907] insight extraction done
+[2026-05-19T21:41:20.674206] risk evaluated
+[2026-05-19T21:41:20.680284] decision generated
+[2026-05-19T21:41:21.714681] simulation executed
+[2026-05-19T21:41:21.805959] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:41:44.237977] ingestion completed
+[2026-05-19T21:41:45.633804] insight extraction done
+[2026-05-19T21:41:46.866660] risk evaluated
+[2026-05-19T21:41:46.872682] decision generated
+[2026-05-19T21:41:47.401168] simulation executed
+[2026-05-19T21:41:47.407352] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:42:09.237775] ingestion completed
+[2026-05-19T21:42:10.902518] insight extraction done
+[2026-05-19T21:42:12.838204] risk evaluated
+[2026-05-19T21:42:12.844484] decision generated
+[2026-05-19T21:42:13.979312] simulation executed
+[2026-05-19T21:42:13.984201] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:42:36.595370] ingestion completed
+[2026-05-19T21:42:37.159316] insight extraction done
+[2026-05-19T21:42:38.213196] risk evaluated
+[2026-05-19T21:42:38.219864] decision generated
+[2026-05-19T21:42:39.155655] simulation executed
+[2026-05-19T21:42:39.162381] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:42:59.233467] ingestion completed
+[2026-05-19T21:43:00.243769] insight extraction done
+[2026-05-19T21:43:00.728042] risk evaluated
+[2026-05-19T21:43:00.734809] decision generated
+[2026-05-19T21:43:01.876842] simulation executed
+[2026-05-19T21:43:01.882630] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:43:25.985893] ingestion completed
+[2026-05-19T21:43:30.002271] insight extraction done
+[2026-05-19T21:43:31.596616] risk evaluated
+[2026-05-19T21:43:31.602301] decision generated
+[2026-05-19T21:43:32.631970] simulation executed
+[2026-05-19T21:43:32.637056] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:43:52.001475] ingestion completed
+[2026-05-19T21:43:53.142122] insight extraction done
+[2026-05-19T21:43:54.375918] risk evaluated
+[2026-05-19T21:43:54.600956] decision generated
+[2026-05-19T21:43:55.970397] simulation executed
+[2026-05-19T21:43:55.992935] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:43:57.890086] ingestion completed
+[2026-05-19T21:43:58.404449] insight extraction done
+[2026-05-19T21:43:59.957717] risk evaluated
+[2026-05-19T21:43:59.963891] decision generated
+[2026-05-19T21:44:01.024329] simulation executed
+[2026-05-19T21:44:01.029187] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:44:01.859771] ingestion completed
+[2026-05-19T21:44:02.916649] insight extraction done
+[2026-05-19T21:44:03.380639] risk evaluated
+[2026-05-19T21:44:03.386467] decision generated
+[2026-05-19T21:44:03.869092] simulation executed
+[2026-05-19T21:44:03.875305] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:44:03.892588] ingestion completed
+[2026-05-19T21:44:04.409686] insight extraction done
+[2026-05-19T21:44:04.884060] risk evaluated
+[2026-05-19T21:44:04.890037] decision generated
+[2026-05-19T21:44:06.202446] simulation executed
+[2026-05-19T21:44:06.207531] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:44:06.216630] ingestion completed
+[2026-05-19T21:44:07.198515] insight extraction done
+[2026-05-19T21:44:07.703389] risk evaluated
+[2026-05-19T21:44:07.709641] decision generated
+[2026-05-19T21:44:08.136465] simulation executed
+[2026-05-19T21:44:08.141406] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:44:08.152750] ingestion completed
+[2026-05-19T21:44:08.631752] insight extraction done
+[2026-05-19T21:44:10.002388] risk evaluated
+[2026-05-19T21:44:10.008441] decision generated
+[2026-05-19T21:44:11.604371] simulation executed
+[2026-05-19T21:44:11.609909] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:44:14.237318] ingestion completed
+[2026-05-19T21:44:15.823961] insight extraction done
+[2026-05-19T21:44:17.675908] risk evaluated
+[2026-05-19T21:44:17.681711] decision generated
+[2026-05-19T21:44:18.698606] simulation executed
+[2026-05-19T21:44:18.705318] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:44:39.563139] ingestion completed
+[2026-05-19T21:44:40.679985] insight extraction done
+[2026-05-19T21:44:42.049401] risk evaluated
+[2026-05-19T21:44:42.055579] decision generated
+[2026-05-19T21:44:43.436513] simulation executed
+[2026-05-19T21:44:43.442627] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:45:09.143659] ingestion completed
+[2026-05-19T21:45:10.972391] insight extraction done
+[2026-05-19T21:45:11.704170] risk evaluated
+[2026-05-19T21:45:11.708640] decision generated
+[2026-05-19T21:45:12.514687] simulation executed
+[2026-05-19T21:45:12.520771] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:45:29.267829] ingestion completed
+[2026-05-19T21:45:29.975248] insight extraction done
+[2026-05-19T21:45:30.405299] risk evaluated
+[2026-05-19T21:45:30.410907] decision generated
+[2026-05-19T21:45:31.147352] simulation executed
+[2026-05-19T21:45:31.152821] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:45:31.161996] ingestion completed
+[2026-05-19T21:45:32.226170] insight extraction done
+[2026-05-19T21:45:33.502908] risk evaluated
+[2026-05-19T21:45:33.507584] decision generated
+[2026-05-19T21:45:34.192040] simulation executed
+[2026-05-19T21:45:34.198221] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:45:59.284765] ingestion completed
+[2026-05-19T21:46:00.726805] insight extraction done
+[2026-05-19T21:46:01.851605] risk evaluated
+[2026-05-19T21:46:01.857208] decision generated
+[2026-05-19T21:46:02.548649] simulation executed
+[2026-05-19T21:46:02.554711] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:46:24.302264] ingestion completed
+[2026-05-19T21:46:27.336486] insight extraction done
+[2026-05-19T21:46:29.162751] risk evaluated
+[2026-05-19T21:46:29.172342] decision generated
+[2026-05-19T21:46:30.672135] simulation executed
+[2026-05-19T21:46:30.678085] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:46:49.260658] ingestion completed
+[2026-05-19T21:46:50.300699] insight extraction done
+[2026-05-19T21:46:50.766573] risk evaluated
+[2026-05-19T21:46:50.770778] decision generated
+[2026-05-19T21:46:52.158678] simulation executed
+[2026-05-19T21:46:52.164044] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:47:14.341998] ingestion completed
+[2026-05-19T21:47:14.836768] insight extraction done
+[2026-05-19T21:47:16.406611] risk evaluated
+[2026-05-19T21:47:16.413004] decision generated
+[2026-05-19T21:47:16.938391] simulation executed
+[2026-05-19T21:47:16.944843] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:47:39.264359] ingestion completed
+[2026-05-19T21:47:40.516615] insight extraction done
+[2026-05-19T21:47:41.185364] risk evaluated
+[2026-05-19T21:47:41.191428] decision generated
+[2026-05-19T21:47:42.023740] simulation executed
+[2026-05-19T21:47:42.031482] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:48:04.319882] ingestion completed
+[2026-05-19T21:48:05.728249] insight extraction done
+[2026-05-19T21:48:06.582265] risk evaluated
+[2026-05-19T21:48:06.587755] decision generated
+[2026-05-19T21:48:07.101393] simulation executed
+[2026-05-19T21:48:07.107244] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:48:29.282261] ingestion completed
+[2026-05-19T21:48:29.999851] insight extraction done
+[2026-05-19T21:48:30.801769] risk evaluated
+[2026-05-19T21:48:30.807814] decision generated
+[2026-05-19T21:48:31.346718] simulation executed
+[2026-05-19T21:48:31.352444] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:48:54.267992] ingestion completed
+[2026-05-19T21:48:55.578249] insight extraction done
+[2026-05-19T21:48:56.750069] risk evaluated
+[2026-05-19T21:48:56.755213] decision generated
+[2026-05-19T21:48:58.018028] simulation executed
+[2026-05-19T21:48:58.023119] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:49:20.181778] ingestion completed
+[2026-05-19T21:49:20.933654] insight extraction done
+[2026-05-19T21:49:21.359288] risk evaluated
+[2026-05-19T21:49:21.364857] decision generated
+[2026-05-19T21:49:22.471993] simulation executed
+[2026-05-19T21:49:22.477153] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:49:44.397944] ingestion completed
+[2026-05-19T21:49:44.890854] insight extraction done
+[2026-05-19T21:49:45.921948] risk evaluated
+[2026-05-19T21:49:45.927389] decision generated
+[2026-05-19T21:49:46.993160] simulation executed
+[2026-05-19T21:49:46.998274] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:50:09.264040] ingestion completed
+[2026-05-19T21:50:10.864391] insight extraction done
+[2026-05-19T21:50:11.958856] risk evaluated
+[2026-05-19T21:50:11.972319] decision generated
+[2026-05-19T21:50:12.692728] simulation executed
+[2026-05-19T21:50:12.698354] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:50:34.267272] ingestion completed
+[2026-05-19T21:50:35.793127] insight extraction done
+[2026-05-19T21:50:36.824062] risk evaluated
+[2026-05-19T21:50:36.830054] decision generated
+[2026-05-19T21:50:37.918316] simulation executed
+[2026-05-19T21:50:37.924956] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:50:59.265769] ingestion completed
+[2026-05-19T21:50:59.934436] insight extraction done
+[2026-05-19T21:51:00.969690] risk evaluated
+[2026-05-19T21:51:00.975480] decision generated
+[2026-05-19T21:51:02.161056] simulation executed
+[2026-05-19T21:51:02.166356] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:51:24.266433] ingestion completed
+[2026-05-19T21:51:25.393219] insight extraction done
+[2026-05-19T21:51:25.820745] risk evaluated
+[2026-05-19T21:51:25.827028] decision generated
+[2026-05-19T21:51:26.863996] simulation executed
+[2026-05-19T21:51:26.871709] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:51:49.273500] ingestion completed
+[2026-05-19T21:51:49.745885] insight extraction done
+[2026-05-19T21:51:50.468207] risk evaluated
+[2026-05-19T21:51:50.472818] decision generated
+[2026-05-19T21:51:51.733953] simulation executed
+[2026-05-19T21:51:51.739418] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:52:14.427198] ingestion completed
+[2026-05-19T21:52:15.465667] insight extraction done
+[2026-05-19T21:52:16.683668] risk evaluated
+[2026-05-19T21:52:16.689561] decision generated
+[2026-05-19T21:52:17.785316] simulation executed
+[2026-05-19T21:52:17.791358] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:52:39.270415] ingestion completed
+[2026-05-19T21:52:40.040592] insight extraction done
+[2026-05-19T21:52:41.377304] risk evaluated
+[2026-05-19T21:52:41.384023] decision generated
+[2026-05-19T21:52:42.416161] simulation executed
+[2026-05-19T21:52:42.422491] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:53:04.281138] ingestion completed
+[2026-05-19T21:53:05.836913] insight extraction done
+[2026-05-19T21:53:06.553828] risk evaluated
+[2026-05-19T21:53:06.591832] decision generated
+[2026-05-19T21:53:07.899191] simulation executed
+[2026-05-19T21:53:08.124572] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:53:29.270281] ingestion completed
+[2026-05-19T21:53:30.064195] insight extraction done
+[2026-05-19T21:53:30.702116] risk evaluated
+[2026-05-19T21:53:30.707799] decision generated
+[2026-05-19T21:53:31.152034] simulation executed
+[2026-05-19T21:53:31.157493] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:53:54.271724] ingestion completed
+[2026-05-19T21:53:55.694228] insight extraction done
+[2026-05-19T21:53:56.470806] risk evaluated
+[2026-05-19T21:53:56.476520] decision generated
+[2026-05-19T21:53:57.764868] simulation executed
+[2026-05-19T21:53:57.794447] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:54:19.377567] ingestion completed
+[2026-05-19T21:54:20.040368] insight extraction done
+[2026-05-19T21:54:21.174759] risk evaluated
+[2026-05-19T21:54:21.180766] decision generated
+[2026-05-19T21:54:21.659225] simulation executed
+[2026-05-19T21:54:21.665281] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:54:44.295276] ingestion completed
+[2026-05-19T21:54:45.409168] insight extraction done
+[2026-05-19T21:54:46.715054] risk evaluated
+[2026-05-19T21:54:46.720071] decision generated
+[2026-05-19T21:54:47.822050] simulation executed
+[2026-05-19T21:54:47.828131] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:55:09.270097] ingestion completed
+[2026-05-19T21:55:09.732833] insight extraction done
+[2026-05-19T21:55:10.834646] risk evaluated
+[2026-05-19T21:55:10.840369] decision generated
+[2026-05-19T21:55:11.263281] simulation executed
+[2026-05-19T21:55:11.269634] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:55:34.263885] ingestion completed
+[2026-05-19T21:55:34.767234] insight extraction done
+[2026-05-19T21:55:35.794133] risk evaluated
+[2026-05-19T21:55:35.799506] decision generated
+[2026-05-19T21:55:36.812547] simulation executed
+[2026-05-19T21:55:36.818377] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:55:59.275871] ingestion completed
+[2026-05-19T21:56:00.340664] insight extraction done
+[2026-05-19T21:56:01.367876] risk evaluated
+[2026-05-19T21:56:01.376243] decision generated
+[2026-05-19T21:56:02.762877] simulation executed
+[2026-05-19T21:56:02.768837] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:56:24.262000] ingestion completed
+[2026-05-19T21:56:25.013245] insight extraction done
+[2026-05-19T21:56:26.217398] risk evaluated
+[2026-05-19T21:56:26.222435] decision generated
+[2026-05-19T21:56:27.236631] simulation executed
+[2026-05-19T21:56:27.243078] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:56:49.275657] ingestion completed
+[2026-05-19T21:56:50.598257] insight extraction done
+[2026-05-19T21:56:51.620367] risk evaluated
+[2026-05-19T21:56:51.626690] decision generated
+[2026-05-19T21:56:52.640674] simulation executed
+[2026-05-19T21:56:52.648855] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:57:14.264291] ingestion completed
+[2026-05-19T21:57:15.294662] insight extraction done
+[2026-05-19T21:57:16.418612] risk evaluated
+[2026-05-19T21:57:16.422836] decision generated
+[2026-05-19T21:57:17.458626] simulation executed
+[2026-05-19T21:57:17.519257] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:57:44.320914] ingestion completed
+[2026-05-19T21:57:45.358618] insight extraction done
+[2026-05-19T21:57:46.493565] risk evaluated
+[2026-05-19T21:57:46.499194] decision generated
+[2026-05-19T21:57:47.856588] simulation executed
+[2026-05-19T21:57:47.862991] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:57:51.824792] ingestion completed
+[2026-05-19T21:57:52.251568] insight extraction done
+[2026-05-19T21:57:52.686770] risk evaluated
+[2026-05-19T21:57:52.692705] decision generated
+[2026-05-19T21:57:53.786880] simulation executed
+[2026-05-19T21:57:53.793327] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:58:01.496924] ingestion completed
+[2026-05-19T21:58:02.527475] insight extraction done
+[2026-05-19T21:58:03.583261] risk evaluated
+[2026-05-19T21:58:03.590069] decision generated
+[2026-05-19T21:58:04.681345] simulation executed
+[2026-05-19T21:58:04.687513] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:58:04.699281] ingestion completed
+[2026-05-19T21:58:05.885243] insight extraction done
+[2026-05-19T21:58:06.614584] risk evaluated
+[2026-05-19T21:58:06.620509] decision generated
+[2026-05-19T21:58:07.312714] simulation executed
+[2026-05-19T21:58:07.317749] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:58:07.327280] ingestion completed
+[2026-05-19T21:58:08.346869] insight extraction done
+[2026-05-19T21:58:08.778424] risk evaluated
+[2026-05-19T21:58:08.784475] decision generated
+[2026-05-19T21:58:09.240764] simulation executed
+[2026-05-19T21:58:09.246641] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:58:50.863020] ingestion completed
+[2026-05-19T21:58:51.760582] insight extraction done
+[2026-05-19T21:58:52.787214] risk evaluated
+[2026-05-19T21:58:52.792842] decision generated
+[2026-05-19T21:58:53.824836] simulation executed
+[2026-05-19T21:58:53.830625] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:59:18.283521] ingestion completed
+[2026-05-19T21:59:19.085628] insight extraction done
+[2026-05-19T21:59:20.044769] risk evaluated
+[2026-05-19T21:59:20.175346] decision generated
+[2026-05-19T21:59:21.941643] simulation executed
+[2026-05-19T21:59:21.946752] Workflow completed successfully. Action: ALERT
+[2026-05-19T21:59:40.790467] ingestion completed
+[2026-05-19T21:59:41.807623] insight extraction done
+[2026-05-19T21:59:42.757352] risk evaluated
+[2026-05-19T21:59:42.767593] decision generated
+[2026-05-19T21:59:43.257339] simulation executed
+[2026-05-19T21:59:43.263146] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:02:08.073560] ingestion completed
+[2026-05-19T22:02:08.867533] insight extraction done
+[2026-05-19T22:02:10.049371] risk evaluated
+[2026-05-19T22:02:10.054358] decision generated
+[2026-05-19T22:02:11.450296] simulation executed
+[2026-05-19T22:02:11.456422] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:02:34.874040] ingestion completed
+[2026-05-19T22:02:36.919735] insight extraction done
+[2026-05-19T22:02:37.957340] risk evaluated
+[2026-05-19T22:02:37.965457] decision generated
+[2026-05-19T22:02:38.711361] simulation executed
+[2026-05-19T22:02:38.718272] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:02:57.331083] ingestion completed
+[2026-05-19T22:02:58.909652] insight extraction done
+[2026-05-19T22:03:00.619257] risk evaluated
+[2026-05-19T22:03:00.624437] decision generated
+[2026-05-19T22:03:01.245564] simulation executed
+[2026-05-19T22:03:01.252335] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:03:23.924387] ingestion completed
+[2026-05-19T22:03:25.195835] insight extraction done
+[2026-05-19T22:03:26.246057] risk evaluated
+[2026-05-19T22:03:26.252551] decision generated
+[2026-05-19T22:03:27.368781] simulation executed
+[2026-05-19T22:03:27.373715] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:03:51.438245] ingestion completed
+[2026-05-19T22:03:53.055810] insight extraction done
+[2026-05-19T22:03:54.277373] risk evaluated
+[2026-05-19T22:03:54.282431] decision generated
+[2026-05-19T22:03:55.742473] simulation executed
+[2026-05-19T22:03:55.749930] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:04:46.882776] ingestion completed
+[2026-05-19T22:04:47.794092] insight extraction done
+[2026-05-19T22:04:49.128746] risk evaluated
+[2026-05-19T22:04:49.134976] decision generated
+[2026-05-19T22:04:50.197206] simulation executed
+[2026-05-19T22:04:50.204150] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:04:56.232980] ingestion completed
+[2026-05-19T22:04:57.413085] insight extraction done
+[2026-05-19T22:04:58.303916] risk evaluated
+[2026-05-19T22:04:58.308972] decision generated
+[2026-05-19T22:04:59.711054] simulation executed
+[2026-05-19T22:04:59.717487] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:05:02.333802] ingestion completed
+[2026-05-19T22:05:03.754796] insight extraction done
+[2026-05-19T22:05:04.221010] risk evaluated
+[2026-05-19T22:05:04.227379] decision generated
+[2026-05-19T22:05:05.482507] simulation executed
+[2026-05-19T22:05:05.489610] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:05:27.365126] ingestion completed
+[2026-05-19T22:05:28.461969] insight extraction done
+[2026-05-19T22:05:29.547462] risk evaluated
+[2026-05-19T22:05:29.551567] decision generated
+[2026-05-19T22:05:30.636749] simulation executed
+[2026-05-19T22:05:30.641898] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:05:52.354970] ingestion completed
+[2026-05-19T22:05:53.766374] insight extraction done
+[2026-05-19T22:05:54.214614] risk evaluated
+[2026-05-19T22:05:54.219411] decision generated
+[2026-05-19T22:05:55.275093] simulation executed
+[2026-05-19T22:05:55.281683] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:06:17.347174] ingestion completed
+[2026-05-19T22:06:18.688861] insight extraction done
+[2026-05-19T22:06:19.613556] risk evaluated
+[2026-05-19T22:06:19.619200] decision generated
+[2026-05-19T22:06:21.025423] simulation executed
+[2026-05-19T22:06:21.031176] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:06:42.333166] ingestion completed
+[2026-05-19T22:06:43.878755] insight extraction done
+[2026-05-19T22:06:44.460364] risk evaluated
+[2026-05-19T22:06:44.469019] decision generated
+[2026-05-19T22:06:45.614961] simulation executed
+[2026-05-19T22:06:45.620086] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:07:07.326879] ingestion completed
+[2026-05-19T22:07:08.635132] insight extraction done
+[2026-05-19T22:07:09.381360] risk evaluated
+[2026-05-19T22:07:09.386643] decision generated
+[2026-05-19T22:07:10.604303] simulation executed
+[2026-05-19T22:07:10.608501] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:07:32.344821] ingestion completed
+[2026-05-19T22:07:33.813622] insight extraction done
+[2026-05-19T22:07:34.259276] risk evaluated
+[2026-05-19T22:07:34.263724] decision generated
+[2026-05-19T22:07:35.308006] simulation executed
+[2026-05-19T22:07:35.313709] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:07:57.380666] ingestion completed
+[2026-05-19T22:07:58.004447] insight extraction done
+[2026-05-19T22:07:59.491860] risk evaluated
+[2026-05-19T22:07:59.498620] decision generated
+[2026-05-19T22:08:01.386675] simulation executed
+[2026-05-19T22:08:01.391682] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:08:22.327458] ingestion completed
+[2026-05-19T22:08:23.107821] insight extraction done
+[2026-05-19T22:08:24.324148] risk evaluated
+[2026-05-19T22:08:24.330399] decision generated
+[2026-05-19T22:08:25.690404] simulation executed
+[2026-05-19T22:08:25.696016] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:08:47.339759] ingestion completed
+[2026-05-19T22:08:48.516486] insight extraction done
+[2026-05-19T22:08:48.958623] risk evaluated
+[2026-05-19T22:08:48.963965] decision generated
+[2026-05-19T22:08:49.979930] simulation executed
+[2026-05-19T22:08:49.984032] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:09:12.337657] ingestion completed
+[2026-05-19T22:09:13.782939] insight extraction done
+[2026-05-19T22:09:14.718148] risk evaluated
+[2026-05-19T22:09:14.722226] decision generated
+[2026-05-19T22:09:15.548664] simulation executed
+[2026-05-19T22:09:15.553291] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:09:37.335774] ingestion completed
+[2026-05-19T22:09:38.762369] insight extraction done
+[2026-05-19T22:09:40.512332] risk evaluated
+[2026-05-19T22:09:40.516490] decision generated
+[2026-05-19T22:09:41.646824] simulation executed
+[2026-05-19T22:09:41.651397] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:10:02.332651] ingestion completed
+[2026-05-19T22:10:03.168726] insight extraction done
+[2026-05-19T22:10:04.059948] risk evaluated
+[2026-05-19T22:10:04.068021] decision generated
+[2026-05-19T22:10:05.042066] simulation executed
+[2026-05-19T22:10:05.048054] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:10:27.337852] ingestion completed
+[2026-05-19T22:10:28.010974] insight extraction done
+[2026-05-19T22:10:28.445876] risk evaluated
+[2026-05-19T22:10:28.452040] decision generated
+[2026-05-19T22:10:29.610261] simulation executed
+[2026-05-19T22:10:29.615515] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:10:52.338636] ingestion completed
+[2026-05-19T22:10:52.878719] insight extraction done
+[2026-05-19T22:10:53.534033] risk evaluated
+[2026-05-19T22:10:53.539451] decision generated
+[2026-05-19T22:10:54.846553] simulation executed
+[2026-05-19T22:10:54.852463] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:11:17.325526] ingestion completed
+[2026-05-19T22:11:18.132332] insight extraction done
+[2026-05-19T22:11:18.848992] risk evaluated
+[2026-05-19T22:11:18.854773] decision generated
+[2026-05-19T22:11:19.866732] simulation executed
+[2026-05-19T22:11:19.870976] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:11:42.380874] ingestion completed
+[2026-05-19T22:11:42.912751] insight extraction done
+[2026-05-19T22:11:43.348528] risk evaluated
+[2026-05-19T22:11:43.355038] decision generated
+[2026-05-19T22:11:43.782185] simulation executed
+[2026-05-19T22:11:43.788127] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:12:07.333679] ingestion completed
+[2026-05-19T22:12:08.689941] insight extraction done
+[2026-05-19T22:12:09.323122] risk evaluated
+[2026-05-19T22:12:09.327961] decision generated
+[2026-05-19T22:12:09.959717] simulation executed
+[2026-05-19T22:12:09.966802] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:12:32.336725] ingestion completed
+[2026-05-19T22:12:33.482083] insight extraction done
+[2026-05-19T22:12:34.728986] risk evaluated
+[2026-05-19T22:12:34.733745] decision generated
+[2026-05-19T22:12:35.444068] simulation executed
+[2026-05-19T22:12:35.448596] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:12:57.337483] ingestion completed
+[2026-05-19T22:12:58.562668] insight extraction done
+[2026-05-19T22:12:59.665784] risk evaluated
+[2026-05-19T22:12:59.671725] decision generated
+[2026-05-19T22:13:00.841488] simulation executed
+[2026-05-19T22:13:00.847050] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:13:22.334590] ingestion completed
+[2026-05-19T22:13:24.025951] insight extraction done
+[2026-05-19T22:13:24.706612] risk evaluated
+[2026-05-19T22:13:24.712952] decision generated
+[2026-05-19T22:13:26.241397] simulation executed
+[2026-05-19T22:13:26.247584] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:13:47.330614] ingestion completed
+[2026-05-19T22:13:48.047115] insight extraction done
+[2026-05-19T22:13:59.974882] risk evaluated
+[2026-05-19T22:13:59.980593] decision generated
+[2026-05-19T22:14:02.151952] simulation executed
+[2026-05-19T22:14:02.157393] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:14:12.326194] ingestion completed
+[2026-05-19T22:14:12.936223] insight extraction done
+[2026-05-19T22:14:14.841478] risk evaluated
+[2026-05-19T22:14:14.846386] decision generated
+[2026-05-19T22:14:15.445430] simulation executed
+[2026-05-19T22:14:15.451040] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:14:37.337808] ingestion completed
+[2026-05-19T22:14:38.216983] insight extraction done
+[2026-05-19T22:14:39.831283] risk evaluated
+[2026-05-19T22:14:39.839164] decision generated
+[2026-05-19T22:14:40.768814] simulation executed
+[2026-05-19T22:14:40.774533] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:15:02.338888] ingestion completed
+[2026-05-19T22:15:03.394434] insight extraction done
+[2026-05-19T22:15:04.918865] risk evaluated
+[2026-05-19T22:15:04.922955] decision generated
+[2026-05-19T22:15:05.607964] simulation executed
+[2026-05-19T22:15:05.613500] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:15:27.337790] ingestion completed
+[2026-05-19T22:15:28.905078] insight extraction done
+[2026-05-19T22:15:30.351630] risk evaluated
+[2026-05-19T22:15:30.356623] decision generated
+[2026-05-19T22:15:32.074033] simulation executed
+[2026-05-19T22:15:32.079030] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:15:52.332034] ingestion completed
+[2026-05-19T22:15:53.793484] insight extraction done
+[2026-05-19T22:15:54.872907] risk evaluated
+[2026-05-19T22:15:54.877529] decision generated
+[2026-05-19T22:15:55.894555] simulation executed
+[2026-05-19T22:15:55.899725] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:16:17.340476] ingestion completed
+[2026-05-19T22:16:19.214758] insight extraction done
+[2026-05-19T22:16:20.728269] risk evaluated
+[2026-05-19T22:16:20.733260] decision generated
+[2026-05-19T22:16:21.222500] simulation executed
+[2026-05-19T22:16:21.228419] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:16:42.325612] ingestion completed
+[2026-05-19T22:16:44.624190] insight extraction done
+[2026-05-19T22:16:45.895254] risk evaluated
+[2026-05-19T22:16:45.899539] decision generated
+[2026-05-19T22:16:47.237041] simulation executed
+[2026-05-19T22:16:47.243025] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:17:07.336290] ingestion completed
+[2026-05-19T22:17:07.956905] insight extraction done
+[2026-05-19T22:17:08.752282] risk evaluated
+[2026-05-19T22:17:08.760266] decision generated
+[2026-05-19T22:17:09.975541] simulation executed
+[2026-05-19T22:17:09.981202] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:17:32.324814] ingestion completed
+[2026-05-19T22:17:33.031606] insight extraction done
+[2026-05-19T22:17:34.215899] risk evaluated
+[2026-05-19T22:17:34.221824] decision generated
+[2026-05-19T22:17:36.442696] simulation executed
+[2026-05-19T22:17:36.448445] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:17:57.335118] ingestion completed
+[2026-05-19T22:17:58.528720] insight extraction done
+[2026-05-19T22:17:59.743433] risk evaluated
+[2026-05-19T22:17:59.748028] decision generated
+[2026-05-19T22:18:00.773425] simulation executed
+[2026-05-19T22:18:00.778283] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:18:22.331818] ingestion completed
+[2026-05-19T22:18:23.703188] insight extraction done
+[2026-05-19T22:18:24.455549] risk evaluated
+[2026-05-19T22:18:24.461953] decision generated
+[2026-05-19T22:18:25.853127] simulation executed
+[2026-05-19T22:18:25.858827] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:18:47.333409] ingestion completed
+[2026-05-19T22:18:49.023192] insight extraction done
+[2026-05-19T22:18:50.092964] risk evaluated
+[2026-05-19T22:18:50.097379] decision generated
+[2026-05-19T22:18:50.591698] simulation executed
+[2026-05-19T22:18:50.596558] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:19:12.338103] ingestion completed
+[2026-05-19T22:19:13.278297] insight extraction done
+[2026-05-19T22:19:14.110280] risk evaluated
+[2026-05-19T22:19:14.116266] decision generated
+[2026-05-19T22:19:15.509022] simulation executed
+[2026-05-19T22:19:15.513963] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:19:37.330771] ingestion completed
+[2026-05-19T22:19:37.966913] insight extraction done
+[2026-05-19T22:19:39.304047] risk evaluated
+[2026-05-19T22:19:39.310289] decision generated
+[2026-05-19T22:19:40.706763] simulation executed
+[2026-05-19T22:19:40.711795] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:20:02.333194] ingestion completed
+[2026-05-19T22:20:03.159943] insight extraction done
+[2026-05-19T22:20:03.877250] risk evaluated
+[2026-05-19T22:20:03.882555] decision generated
+[2026-05-19T22:20:04.954954] simulation executed
+[2026-05-19T22:20:04.962659] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:20:27.331394] ingestion completed
+[2026-05-19T22:20:28.231031] insight extraction done
+[2026-05-19T22:20:29.343188] risk evaluated
+[2026-05-19T22:20:29.347865] decision generated
+[2026-05-19T22:20:30.830131] simulation executed
+[2026-05-19T22:20:30.834961] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:20:52.326203] ingestion completed
+[2026-05-19T22:20:52.769993] insight extraction done
+[2026-05-19T22:20:53.795636] risk evaluated
+[2026-05-19T22:20:53.801646] decision generated
+[2026-05-19T22:20:54.244100] simulation executed
+[2026-05-19T22:20:54.248803] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:21:17.330144] ingestion completed
+[2026-05-19T22:21:18.820101] insight extraction done
+[2026-05-19T22:21:19.745300] risk evaluated
+[2026-05-19T22:21:19.751520] decision generated
+[2026-05-19T22:21:20.375992] simulation executed
+[2026-05-19T22:21:20.382233] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:21:42.814733] ingestion completed
+[2026-05-19T22:21:43.351152] insight extraction done
+[2026-05-19T22:21:44.214801] risk evaluated
+[2026-05-19T22:21:44.221246] decision generated
+[2026-05-19T22:21:44.951025] simulation executed
+[2026-05-19T22:21:44.957640] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:22:07.331445] ingestion completed
+[2026-05-19T22:22:07.882651] insight extraction done
+[2026-05-19T22:22:09.796878] risk evaluated
+[2026-05-19T22:22:09.801818] decision generated
+[2026-05-19T22:22:11.150425] simulation executed
+[2026-05-19T22:22:11.156708] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:22:34.596286] ingestion completed
+[2026-05-19T22:22:35.346363] insight extraction done
+[2026-05-19T22:22:36.447704] risk evaluated
+[2026-05-19T22:22:36.453550] decision generated
+[2026-05-19T22:22:37.468112] simulation executed
+[2026-05-19T22:22:37.473099] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:23:07.733326] ingestion completed
+[2026-05-19T22:23:08.991237] insight extraction done
+[2026-05-19T22:23:10.146540] risk evaluated
+[2026-05-19T22:23:10.151413] decision generated
+[2026-05-19T22:23:11.258414] simulation executed
+[2026-05-19T22:23:11.264046] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:23:24.115044] ingestion completed
+[2026-05-19T22:23:24.716248] insight extraction done
+[2026-05-19T22:23:25.355626] risk evaluated
+[2026-05-19T22:23:25.363608] decision generated
+[2026-05-19T22:23:26.429316] simulation executed
+[2026-05-19T22:23:26.433926] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:23:53.446623] ingestion completed
+[2026-05-19T22:23:57.555271] insight extraction done
+[2026-05-19T22:24:02.195388] risk evaluated
+[2026-05-19T22:24:02.427596] decision generated
+[2026-05-19T22:24:04.392069] simulation executed
+[2026-05-19T22:24:04.398720] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:24:25.323274] ingestion completed
+[2026-05-19T22:24:26.847070] insight extraction done
+[2026-05-19T22:24:27.779572] risk evaluated
+[2026-05-19T22:24:27.945389] decision generated
+[2026-05-19T22:24:28.575348] simulation executed
+[2026-05-19T22:24:28.581679] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:24:39.862955] ingestion completed
+[2026-05-19T22:24:41.739222] insight extraction done
+[2026-05-19T22:24:42.786970] risk evaluated
+[2026-05-19T22:24:42.792690] decision generated
+[2026-05-19T22:24:43.232713] simulation executed
+[2026-05-19T22:24:43.239221] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:25:02.358996] ingestion completed
+[2026-05-19T22:25:03.174124] insight extraction done
+[2026-05-19T22:25:04.150027] risk evaluated
+[2026-05-19T22:25:04.155562] decision generated
+[2026-05-19T22:25:05.482999] simulation executed
+[2026-05-19T22:25:05.489041] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:25:27.330170] ingestion completed
+[2026-05-19T22:25:28.203179] insight extraction done
+[2026-05-19T22:25:28.825430] risk evaluated
+[2026-05-19T22:25:28.833525] decision generated
+[2026-05-19T22:25:30.194736] simulation executed
+[2026-05-19T22:25:30.201343] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:25:52.326137] ingestion completed
+[2026-05-19T22:25:53.475463] insight extraction done
+[2026-05-19T22:25:54.383126] risk evaluated
+[2026-05-19T22:25:54.389475] decision generated
+[2026-05-19T22:25:55.527148] simulation executed
+[2026-05-19T22:25:55.532975] Workflow completed successfully. Action: ALERT
+[2026-05-19T22:26:17.335991] ingestion completed
+[2026-05-19T22:26:18.709214] insight extraction done
+[2026-05-19T22:26:20.161920] risk evaluated
+[2026-05-19T22:26:20.168468] decision generated
+[2026-05-19T22:26:21.195000] simulation executed
+[2026-05-19T22:26:21.217897] Workflow completed successfully. Action: ALERT
+[2026-05-20T07:56:12.686941] ingestion completed
+[2026-05-20T07:56:25.358563] insight extraction done
+[2026-05-20T07:56:45.963770] risk evaluated
+[2026-05-20T07:56:45.969706] decision generated
+[2026-05-20T07:57:13.785883] simulation executed
+[2026-05-20T07:57:13.790869] Workflow completed successfully. Action: ALERT
+[2026-05-20T07:57:14.495063] ingestion completed
+[2026-05-20T07:57:23.791378] insight extraction done
+[2026-05-20T07:57:45.296384] risk evaluated
+[2026-05-20T07:57:45.302850] decision generated
+[2026-05-20T07:57:58.174714] simulation executed
+[2026-05-20T07:57:58.180125] Workflow completed successfully. Action: DELAY
+[2026-05-20T07:57:58.976933] ingestion completed
+[2026-05-20T07:58:08.963793] insight extraction done
+[2026-05-20T07:58:21.864371] risk evaluated
+[2026-05-20T07:58:21.870806] decision generated
+[2026-05-20T07:58:32.330587] simulation executed
+[2026-05-20T07:58:32.336655] Workflow completed successfully. Action: ALERT
+[2026-05-20T07:58:37.521692] ingestion completed
+[2026-05-20T07:58:47.144301] insight extraction done
+[2026-05-20T07:59:05.650258] risk evaluated
+[2026-05-20T07:59:05.655298] decision generated
+[2026-05-20T07:59:05.660859] simulation bypassed
+[2026-05-20T07:59:05.665333] Workflow completed successfully. Action: ALERT
+[2026-05-20T07:59:05.759753] ingestion completed
+[2026-05-20T07:59:17.010023] insight extraction done
+[2026-05-20T07:59:35.743307] risk evaluated
+[2026-05-20T07:59:35.752533] decision generated
+[2026-05-20T07:59:42.750861] simulation executed
+[2026-05-20T07:59:42.756344] Workflow completed successfully. Action: ALERT
+[2026-05-20T07:59:42.778513] ingestion completed
+[2026-05-20T07:59:48.347512] insight extraction done
+[2026-05-20T08:00:02.592568] risk evaluated
+[2026-05-20T08:00:02.597417] decision generated
+[2026-05-20T08:00:03.979008] simulation executed
+[2026-05-20T08:00:03.983719] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:00:04.028131] ingestion completed
+[2026-05-20T08:00:14.389189] insight extraction done
+[2026-05-20T08:00:15.363997] risk evaluated
+[2026-05-20T08:00:15.368627] decision generated
+[2026-05-20T08:00:24.335481] simulation executed
+[2026-05-20T08:00:24.340383] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:00:25.123304] ingestion completed
+[2026-05-20T08:00:26.552261] insight extraction done
+[2026-05-20T08:00:27.662231] risk evaluated
+[2026-05-20T08:00:27.668762] decision generated
+[2026-05-20T08:00:28.360207] simulation executed
+[2026-05-20T08:00:28.366781] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:00:28.381174] ingestion completed
+[2026-05-20T08:00:32.368282] insight extraction done
+[2026-05-20T08:00:33.523952] risk evaluated
+[2026-05-20T08:00:33.529967] decision generated
+[2026-05-20T08:00:34.870289] simulation executed
+[2026-05-20T08:00:34.876256] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:00:34.913790] ingestion completed
+[2026-05-20T08:00:37.017073] insight extraction done
+[2026-05-20T08:00:38.268537] risk evaluated
+[2026-05-20T08:00:38.274212] decision generated
+[2026-05-20T08:00:39.377034] simulation executed
+[2026-05-20T08:00:39.383273] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:00:39.391193] ingestion completed
+[2026-05-20T08:00:40.466518] insight extraction done
+[2026-05-20T08:00:41.253403] risk evaluated
+[2026-05-20T08:00:41.258853] decision generated
+[2026-05-20T08:00:41.755219] simulation executed
+[2026-05-20T08:00:41.761196] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:00:46.868496] ingestion completed
+[2026-05-20T08:00:47.351572] insight extraction done
+[2026-05-20T08:00:48.485318] risk evaluated
+[2026-05-20T08:00:48.498752] decision generated
+[2026-05-20T08:00:49.190613] simulation executed
+[2026-05-20T08:00:49.196450] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:01:11.868780] ingestion completed
+[2026-05-20T08:01:12.516505] insight extraction done
+[2026-05-20T08:01:13.659127] risk evaluated
+[2026-05-20T08:01:13.665369] decision generated
+[2026-05-20T08:01:17.287235] simulation executed
+[2026-05-20T08:01:17.291558] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:01:36.871116] ingestion completed
+[2026-05-20T08:01:37.328000] insight extraction done
+[2026-05-20T08:01:37.924490] risk evaluated
+[2026-05-20T08:01:37.931072] decision generated
+[2026-05-20T08:01:39.101514] simulation executed
+[2026-05-20T08:01:39.106472] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:02:01.882096] ingestion completed
+[2026-05-20T08:02:03.814374] insight extraction done
+[2026-05-20T08:02:04.648868] risk evaluated
+[2026-05-20T08:02:04.654048] decision generated
+[2026-05-20T08:02:05.130567] simulation executed
+[2026-05-20T08:02:05.135898] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:02:26.868904] ingestion completed
+[2026-05-20T08:02:27.531027] insight extraction done
+[2026-05-20T08:02:28.003010] risk evaluated
+[2026-05-20T08:02:28.007738] decision generated
+[2026-05-20T08:02:29.057161] simulation executed
+[2026-05-20T08:02:29.068294] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:02:51.870469] ingestion completed
+[2026-05-20T08:02:53.776197] insight extraction done
+[2026-05-20T08:02:55.344651] risk evaluated
+[2026-05-20T08:02:55.349687] decision generated
+[2026-05-20T08:02:56.869198] simulation executed
+[2026-05-20T08:02:56.874012] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:03:16.872533] ingestion completed
+[2026-05-20T08:03:18.602985] insight extraction done
+[2026-05-20T08:03:19.840230] risk evaluated
+[2026-05-20T08:03:19.848537] decision generated
+[2026-05-20T08:03:21.037086] simulation executed
+[2026-05-20T08:03:21.042378] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:03:41.866802] ingestion completed
+[2026-05-20T08:03:43.698541] insight extraction done
+[2026-05-20T08:03:44.846531] risk evaluated
+[2026-05-20T08:03:44.852564] decision generated
+[2026-05-20T08:03:46.239408] simulation executed
+[2026-05-20T08:03:46.245228] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:04:06.872252] ingestion completed
+[2026-05-20T08:04:07.927738] insight extraction done
+[2026-05-20T08:04:10.110391] risk evaluated
+[2026-05-20T08:04:10.115081] decision generated
+[2026-05-20T08:04:10.774247] simulation executed
+[2026-05-20T08:04:10.779067] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:04:31.877041] ingestion completed
+[2026-05-20T08:04:33.434223] insight extraction done
+[2026-05-20T08:04:34.243756] risk evaluated
+[2026-05-20T08:04:34.249668] decision generated
+[2026-05-20T08:04:35.921696] simulation executed
+[2026-05-20T08:04:35.933102] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:04:56.876927] ingestion completed
+[2026-05-20T08:04:59.224686] insight extraction done
+[2026-05-20T08:05:00.826224] risk evaluated
+[2026-05-20T08:05:00.831456] decision generated
+[2026-05-20T08:05:01.887604] simulation executed
+[2026-05-20T08:05:01.893816] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:05:21.875331] ingestion completed
+[2026-05-20T08:05:23.606448] insight extraction done
+[2026-05-20T08:05:24.970302] risk evaluated
+[2026-05-20T08:05:24.976079] decision generated
+[2026-05-20T08:05:26.622176] simulation executed
+[2026-05-20T08:05:26.627470] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:05:46.874110] ingestion completed
+[2026-05-20T08:05:47.885462] insight extraction done
+[2026-05-20T08:05:48.907042] risk evaluated
+[2026-05-20T08:05:48.911918] decision generated
+[2026-05-20T08:05:49.954232] simulation executed
+[2026-05-20T08:05:49.958748] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:06:11.872843] ingestion completed
+[2026-05-20T08:06:13.894610] insight extraction done
+[2026-05-20T08:06:14.910930] risk evaluated
+[2026-05-20T08:06:14.917004] decision generated
+[2026-05-20T08:06:15.429280] simulation executed
+[2026-05-20T08:06:15.434346] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:06:36.877871] ingestion completed
+[2026-05-20T08:06:38.655455] insight extraction done
+[2026-05-20T08:06:40.026477] risk evaluated
+[2026-05-20T08:06:40.031665] decision generated
+[2026-05-20T08:06:40.831242] simulation executed
+[2026-05-20T08:06:40.835510] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:07:06.489127] ingestion completed
+[2026-05-20T08:07:07.800924] insight extraction done
+[2026-05-20T08:07:08.888821] risk evaluated
+[2026-05-20T08:07:08.893880] decision generated
+[2026-05-20T08:07:09.492062] simulation executed
+[2026-05-20T08:07:09.496831] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:07:26.867050] ingestion completed
+[2026-05-20T08:07:27.580655] insight extraction done
+[2026-05-20T08:07:28.152558] risk evaluated
+[2026-05-20T08:07:28.347548] decision generated
+[2026-05-20T08:07:29.587909] simulation executed
+[2026-05-20T08:07:29.593546] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:07:55.478095] ingestion completed
+[2026-05-20T08:08:04.394327] insight extraction done
+[2026-05-20T08:08:22.605122] risk evaluated
+[2026-05-20T08:08:22.610993] decision generated
+[2026-05-20T08:08:22.616261] simulation bypassed
+[2026-05-20T08:08:22.621146] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:08:22.662712] ingestion completed
+[2026-05-20T08:08:23.545253] insight extraction done
+[2026-05-20T08:08:25.225464] risk evaluated
+[2026-05-20T08:08:25.231069] decision generated
+[2026-05-20T08:08:26.003840] simulation executed
+[2026-05-20T08:08:26.011080] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:08:41.877328] ingestion completed
+[2026-05-20T08:08:43.691696] insight extraction done
+[2026-05-20T08:08:45.360218] risk evaluated
+[2026-05-20T08:08:45.365976] decision generated
+[2026-05-20T08:08:46.387341] simulation executed
+[2026-05-20T08:08:46.393368] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:09:06.873192] ingestion completed
+[2026-05-20T08:09:07.674876] insight extraction done
+[2026-05-20T08:09:08.132843] risk evaluated
+[2026-05-20T08:09:08.140184] decision generated
+[2026-05-20T08:09:09.268237] simulation executed
+[2026-05-20T08:09:09.273966] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:09:31.882336] ingestion completed
+[2026-05-20T08:09:32.988351] insight extraction done
+[2026-05-20T08:09:39.092502] risk evaluated
+[2026-05-20T08:09:39.098286] decision generated
+[2026-05-20T08:09:41.640787] simulation executed
+[2026-05-20T08:09:41.646348] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:09:56.873030] ingestion completed
+[2026-05-20T08:10:00.756107] insight extraction done
+[2026-05-20T08:10:04.825811] risk evaluated
+[2026-05-20T08:10:04.831262] decision generated
+[2026-05-20T08:10:06.050981] simulation executed
+[2026-05-20T08:10:06.056339] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:10:21.869611] ingestion completed
+[2026-05-20T08:10:23.447106] insight extraction done
+[2026-05-20T08:10:24.585877] risk evaluated
+[2026-05-20T08:10:24.591768] decision generated
+[2026-05-20T08:10:25.828745] simulation executed
+[2026-05-20T08:10:25.835242] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:10:46.867165] ingestion completed
+[2026-05-20T08:10:50.469554] insight extraction done
+[2026-05-20T08:10:51.705007] risk evaluated
+[2026-05-20T08:10:51.710720] decision generated
+[2026-05-20T08:10:52.767721] simulation executed
+[2026-05-20T08:10:52.773564] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:11:11.867784] ingestion completed
+[2026-05-20T08:11:13.641769] insight extraction done
+[2026-05-20T08:11:15.658813] risk evaluated
+[2026-05-20T08:11:15.664727] decision generated
+[2026-05-20T08:11:19.556461] simulation executed
+[2026-05-20T08:11:19.561688] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:11:36.867650] ingestion completed
+[2026-05-20T08:11:39.368131] insight extraction done
+[2026-05-20T08:11:41.635034] risk evaluated
+[2026-05-20T08:11:41.639077] decision generated
+[2026-05-20T08:11:43.438771] simulation executed
+[2026-05-20T08:11:43.444587] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:12:01.877327] ingestion completed
+[2026-05-20T08:12:03.606487] insight extraction done
+[2026-05-20T08:12:05.133009] risk evaluated
+[2026-05-20T08:12:05.137050] decision generated
+[2026-05-20T08:12:07.854151] simulation executed
+[2026-05-20T08:12:07.860628] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:12:26.875545] ingestion completed
+[2026-05-20T08:12:28.870811] insight extraction done
+[2026-05-20T08:12:32.179110] risk evaluated
+[2026-05-20T08:12:32.184523] decision generated
+[2026-05-20T08:12:33.294615] simulation executed
+[2026-05-20T08:12:33.301865] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:12:51.882071] ingestion completed
+[2026-05-20T08:12:53.954284] insight extraction done
+[2026-05-20T08:12:56.836002] risk evaluated
+[2026-05-20T08:12:56.840202] decision generated
+[2026-05-20T08:12:58.731015] simulation executed
+[2026-05-20T08:12:58.736020] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:13:16.866328] ingestion completed
+[2026-05-20T08:13:18.450850] insight extraction done
+[2026-05-20T08:13:20.308018] risk evaluated
+[2026-05-20T08:13:20.312413] decision generated
+[2026-05-20T08:13:23.519064] simulation executed
+[2026-05-20T08:13:23.525771] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:13:41.878928] ingestion completed
+[2026-05-20T08:13:43.991673] insight extraction done
+[2026-05-20T08:13:46.195983] risk evaluated
+[2026-05-20T08:13:46.200711] decision generated
+[2026-05-20T08:13:48.448766] simulation executed
+[2026-05-20T08:13:48.454937] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:14:06.878018] ingestion completed
+[2026-05-20T08:14:09.044767] insight extraction done
+[2026-05-20T08:14:11.270590] risk evaluated
+[2026-05-20T08:14:11.275252] decision generated
+[2026-05-20T08:14:14.665099] simulation executed
+[2026-05-20T08:14:14.670741] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:14:31.877945] ingestion completed
+[2026-05-20T08:14:34.773131] insight extraction done
+[2026-05-20T08:14:36.664648] risk evaluated
+[2026-05-20T08:14:36.669757] decision generated
+[2026-05-20T08:14:37.432326] simulation executed
+[2026-05-20T08:14:37.437088] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:14:56.872639] ingestion completed
+[2026-05-20T08:15:08.277901] insight extraction done
+[2026-05-20T08:15:08.762918] risk evaluated
+[2026-05-20T08:15:08.768584] decision generated
+[2026-05-20T08:15:12.530647] simulation executed
+[2026-05-20T08:15:12.547356] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:15:21.870073] ingestion completed
+[2026-05-20T08:15:26.559493] insight extraction done
+[2026-05-20T08:15:30.666829] risk evaluated
+[2026-05-20T08:15:30.673066] decision generated
+[2026-05-20T08:15:40.183515] simulation executed
+[2026-05-20T08:15:40.188995] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:15:46.876600] ingestion completed
+[2026-05-20T08:16:28.826708] insight extraction done
+[2026-05-20T08:16:31.401200] risk evaluated
+[2026-05-20T08:16:31.408207] decision generated
+[2026-05-20T08:16:32.010782] simulation executed
+[2026-05-20T08:16:32.015515] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:16:32.024626] ingestion completed
+[2026-05-20T08:16:33.780529] insight extraction done
+[2026-05-20T08:16:34.998177] risk evaluated
+[2026-05-20T08:16:35.003735] decision generated
+[2026-05-20T08:16:37.365370] simulation executed
+[2026-05-20T08:16:37.369883] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:16:37.382122] ingestion completed
+[2026-05-20T08:16:38.494812] insight extraction done
+[2026-05-20T08:16:39.073537] risk evaluated
+[2026-05-20T08:16:39.079870] decision generated
+[2026-05-20T08:16:39.659243] simulation executed
+[2026-05-20T08:16:39.663998] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:17:01.878007] ingestion completed
+[2026-05-20T08:17:05.736032] insight extraction done
+[2026-05-20T08:17:09.749792] risk evaluated
+[2026-05-20T08:17:09.755536] decision generated
+[2026-05-20T08:17:12.170414] simulation executed
+[2026-05-20T08:17:12.176184] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:17:26.873104] ingestion completed
+[2026-05-20T08:17:29.620506] insight extraction done
+[2026-05-20T08:17:32.272234] risk evaluated
+[2026-05-20T08:17:32.279171] decision generated
+[2026-05-20T08:17:34.223236] simulation executed
+[2026-05-20T08:17:34.227570] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:17:51.872774] ingestion completed
+[2026-05-20T08:17:54.644192] insight extraction done
+[2026-05-20T08:17:55.896446] risk evaluated
+[2026-05-20T08:17:55.901768] decision generated
+[2026-05-20T08:17:57.507442] simulation executed
+[2026-05-20T08:17:57.513142] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:18:16.869430] ingestion completed
+[2026-05-20T08:18:19.082358] insight extraction done
+[2026-05-20T08:18:19.792842] risk evaluated
+[2026-05-20T08:18:19.798876] decision generated
+[2026-05-20T08:18:21.296832] simulation executed
+[2026-05-20T08:18:21.302451] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:18:41.874768] ingestion completed
+[2026-05-20T08:18:48.294409] insight extraction done
+[2026-05-20T08:18:52.671472] risk evaluated
+[2026-05-20T08:18:52.677663] decision generated
+[2026-05-20T08:19:00.970910] simulation executed
+[2026-05-20T08:19:00.976112] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:19:06.868721] ingestion completed
+[2026-05-20T08:19:16.547271] insight extraction done
+[2026-05-20T08:19:20.403536] risk evaluated
+[2026-05-20T08:19:20.407165] decision generated
+[2026-05-20T08:20:41.321195] simulation executed
+[2026-05-20T08:20:41.326404] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:20:41.335790] ingestion completed
+[2026-05-20T08:20:42.716064] insight extraction done
+[2026-05-20T08:20:50.257659] risk evaluated
+[2026-05-20T08:20:50.261772] decision generated
+[2026-05-20T08:20:51.020424] simulation executed
+[2026-05-20T08:20:51.024965] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:20:51.031299] ingestion completed
+[2026-05-20T08:20:52.310655] insight extraction done
+[2026-05-20T08:20:53.395425] risk evaluated
+[2026-05-20T08:20:53.400176] decision generated
+[2026-05-20T08:20:55.179015] simulation executed
+[2026-05-20T08:20:55.182977] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:20:55.193891] ingestion completed
+[2026-05-20T08:20:56.052654] insight extraction done
+[2026-05-20T08:20:59.201468] risk evaluated
+[2026-05-20T08:20:59.206415] decision generated
+[2026-05-20T08:21:02.441302] simulation executed
+[2026-05-20T08:21:02.446233] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:21:11.859444] ingestion completed
+[2026-05-20T08:21:17.743419] insight extraction done
+[2026-05-20T08:21:22.286648] risk evaluated
+[2026-05-20T08:21:22.291905] decision generated
+[2026-05-20T08:21:23.581791] simulation executed
+[2026-05-20T08:21:23.586439] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:21:36.847996] ingestion completed
+[2026-05-20T08:21:38.893243] insight extraction done
+[2026-05-20T08:21:53.869797] risk evaluated
+[2026-05-20T08:21:53.875944] decision generated
+[2026-05-20T08:21:55.017836] simulation executed
+[2026-05-20T08:21:55.024375] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:22:01.858540] ingestion completed
+[2026-05-20T08:22:09.797328] insight extraction done
+[2026-05-20T08:22:11.435470] risk evaluated
+[2026-05-20T08:22:11.440868] decision generated
+[2026-05-20T08:22:13.200043] simulation executed
+[2026-05-20T08:22:13.205526] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:22:26.853256] ingestion completed
+[2026-05-20T08:22:29.531853] insight extraction done
+[2026-05-20T08:22:43.087027] risk evaluated
+[2026-05-20T08:22:43.092065] decision generated
+[2026-05-20T08:22:47.075698] simulation executed
+[2026-05-20T08:22:47.082244] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:22:51.858716] ingestion completed
+[2026-05-20T08:22:53.921908] insight extraction done
+[2026-05-20T08:22:58.034123] risk evaluated
+[2026-05-20T08:22:58.039585] decision generated
+[2026-05-20T08:23:00.459602] simulation executed
+[2026-05-20T08:23:00.464345] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:23:16.849075] ingestion completed
+[2026-05-20T08:23:19.267827] insight extraction done
+[2026-05-20T08:23:22.294253] risk evaluated
+[2026-05-20T08:23:22.300464] decision generated
+[2026-05-20T08:23:27.877465] simulation executed
+[2026-05-20T08:23:27.882169] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:23:41.853808] ingestion completed
+[2026-05-20T08:23:46.649149] insight extraction done
+[2026-05-20T08:23:48.272082] risk evaluated
+[2026-05-20T08:23:48.278731] decision generated
+[2026-05-20T08:23:50.040160] simulation executed
+[2026-05-20T08:23:50.045637] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:24:06.854646] ingestion completed
+[2026-05-20T08:24:09.208236] insight extraction done
+[2026-05-20T08:24:21.778450] risk evaluated
+[2026-05-20T08:24:21.783631] decision generated
+[2026-05-20T08:24:29.927283] simulation executed
+[2026-05-20T08:24:29.933695] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:24:31.855429] ingestion completed
+[2026-05-20T08:24:33.506974] insight extraction done
+[2026-05-20T08:24:34.017699] risk evaluated
+[2026-05-20T08:24:34.023875] decision generated
+[2026-05-20T08:24:34.685050] simulation executed
+[2026-05-20T08:24:34.690308] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:24:56.860315] ingestion completed
+[2026-05-20T08:24:58.981450] insight extraction done
+[2026-05-20T08:25:01.712127] risk evaluated
+[2026-05-20T08:25:01.716397] decision generated
+[2026-05-20T08:25:03.885377] simulation executed
+[2026-05-20T08:25:03.889796] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:25:21.857592] ingestion completed
+[2026-05-20T08:25:23.710373] insight extraction done
+[2026-05-20T08:25:25.760291] risk evaluated
+[2026-05-20T08:25:25.766184] decision generated
+[2026-05-20T08:25:33.382488] simulation executed
+[2026-05-20T08:25:33.387694] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:25:46.848705] ingestion completed
+[2026-05-20T08:25:49.930768] insight extraction done
+[2026-05-20T08:25:56.157661] risk evaluated
+[2026-05-20T08:25:56.162436] decision generated
+[2026-05-20T08:25:59.471905] simulation executed
+[2026-05-20T08:25:59.476838] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:26:11.852304] ingestion completed
+[2026-05-20T08:26:13.528046] insight extraction done
+[2026-05-20T08:26:15.494927] risk evaluated
+[2026-05-20T08:26:15.501167] decision generated
+[2026-05-20T08:26:17.095537] simulation executed
+[2026-05-20T08:26:17.101686] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:26:36.850035] ingestion completed
+[2026-05-20T08:26:40.858466] insight extraction done
+[2026-05-20T08:26:41.402914] risk evaluated
+[2026-05-20T08:26:41.407097] decision generated
+[2026-05-20T08:26:42.462758] simulation executed
+[2026-05-20T08:26:42.467653] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:27:01.863930] ingestion completed
+[2026-05-20T08:27:04.004510] insight extraction done
+[2026-05-20T08:27:07.469235] risk evaluated
+[2026-05-20T08:27:07.475359] decision generated
+[2026-05-20T08:27:09.026220] simulation executed
+[2026-05-20T08:27:09.032324] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:27:26.858814] ingestion completed
+[2026-05-20T08:27:28.289178] insight extraction done
+[2026-05-20T08:27:30.028320] risk evaluated
+[2026-05-20T08:27:30.032805] decision generated
+[2026-05-20T08:27:36.149010] simulation executed
+[2026-05-20T08:27:36.154626] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:27:51.857807] ingestion completed
+[2026-05-20T08:27:57.082968] insight extraction done
+[2026-05-20T08:27:59.036178] risk evaluated
+[2026-05-20T08:27:59.041396] decision generated
+[2026-05-20T08:28:00.921032] simulation executed
+[2026-05-20T08:28:00.927764] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:28:16.846671] ingestion completed
+[2026-05-20T08:28:19.559629] insight extraction done
+[2026-05-20T08:28:23.505203] risk evaluated
+[2026-05-20T08:28:23.511043] decision generated
+[2026-05-20T08:28:27.238989] simulation executed
+[2026-05-20T08:28:27.244932] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:28:41.852381] ingestion completed
+[2026-05-20T08:28:43.024424] insight extraction done
+[2026-05-20T08:28:44.288471] risk evaluated
+[2026-05-20T08:28:44.294927] decision generated
+[2026-05-20T08:28:45.000644] simulation executed
+[2026-05-20T08:28:45.006314] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:29:06.847358] ingestion completed
+[2026-05-20T08:29:10.588188] insight extraction done
+[2026-05-20T08:29:12.580525] risk evaluated
+[2026-05-20T08:29:12.585357] decision generated
+[2026-05-20T08:29:14.256432] simulation executed
+[2026-05-20T08:29:14.263382] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:29:31.861529] ingestion completed
+[2026-05-20T08:29:33.740745] insight extraction done
+[2026-05-20T08:29:36.721734] risk evaluated
+[2026-05-20T08:29:36.729573] decision generated
+[2026-05-20T08:29:37.558514] simulation executed
+[2026-05-20T08:29:37.563206] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:29:56.853662] ingestion completed
+[2026-05-20T08:29:58.446882] insight extraction done
+[2026-05-20T08:30:01.007065] risk evaluated
+[2026-05-20T08:30:01.015673] decision generated
+[2026-05-20T08:30:03.661583] simulation executed
+[2026-05-20T08:30:03.668490] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:30:21.847242] ingestion completed
+[2026-05-20T08:30:24.221892] insight extraction done
+[2026-05-20T08:30:25.468038] risk evaluated
+[2026-05-20T08:30:25.472588] decision generated
+[2026-05-20T08:30:26.069798] simulation executed
+[2026-05-20T08:30:26.075393] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:30:46.861634] ingestion completed
+[2026-05-20T08:30:48.935869] insight extraction done
+[2026-05-20T08:30:51.122265] risk evaluated
+[2026-05-20T08:30:51.128176] decision generated
+[2026-05-20T08:30:54.372112] simulation executed
+[2026-05-20T08:30:54.377206] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:31:11.854974] ingestion completed
+[2026-05-20T08:31:14.410382] insight extraction done
+[2026-05-20T08:31:16.070679] risk evaluated
+[2026-05-20T08:31:16.076626] decision generated
+[2026-05-20T08:31:17.187694] simulation executed
+[2026-05-20T08:31:17.193403] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:31:36.852713] ingestion completed
+[2026-05-20T08:31:38.357639] insight extraction done
+[2026-05-20T08:31:39.459624] risk evaluated
+[2026-05-20T08:31:39.464285] decision generated
+[2026-05-20T08:31:40.556082] simulation executed
+[2026-05-20T08:31:40.561872] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:32:01.849955] ingestion completed
+[2026-05-20T08:32:04.239193] insight extraction done
+[2026-05-20T08:32:05.850035] risk evaluated
+[2026-05-20T08:32:05.854626] decision generated
+[2026-05-20T08:32:06.357562] simulation executed
+[2026-05-20T08:32:06.363430] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:32:26.854309] ingestion completed
+[2026-05-20T08:32:31.771848] insight extraction done
+[2026-05-20T08:32:32.309632] risk evaluated
+[2026-05-20T08:32:32.314730] decision generated
+[2026-05-20T08:32:33.486421] simulation executed
+[2026-05-20T08:32:33.492482] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:32:51.854117] ingestion completed
+[2026-05-20T08:32:52.895187] insight extraction done
+[2026-05-20T08:32:53.966154] risk evaluated
+[2026-05-20T08:32:53.972218] decision generated
+[2026-05-20T08:32:55.013829] simulation executed
+[2026-05-20T08:32:55.018573] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:33:16.858470] ingestion completed
+[2026-05-20T08:33:18.406434] insight extraction done
+[2026-05-20T08:33:19.277045] risk evaluated
+[2026-05-20T08:33:19.282915] decision generated
+[2026-05-20T08:33:19.755762] simulation executed
+[2026-05-20T08:33:19.760516] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:33:41.850162] ingestion completed
+[2026-05-20T08:33:44.630851] insight extraction done
+[2026-05-20T08:33:47.602504] risk evaluated
+[2026-05-20T08:33:47.608690] decision generated
+[2026-05-20T08:33:50.937272] simulation executed
+[2026-05-20T08:33:50.942843] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:34:06.849682] ingestion completed
+[2026-05-20T08:34:08.024152] insight extraction done
+[2026-05-20T08:34:08.606641] risk evaluated
+[2026-05-20T08:34:08.613322] decision generated
+[2026-05-20T08:34:10.024431] simulation executed
+[2026-05-20T08:34:10.029733] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:34:31.852591] ingestion completed
+[2026-05-20T08:34:37.362700] insight extraction done
+[2026-05-20T08:34:38.935251] risk evaluated
+[2026-05-20T08:34:38.941949] decision generated
+[2026-05-20T08:34:39.856147] simulation executed
+[2026-05-20T08:34:39.862579] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:34:56.847456] ingestion completed
+[2026-05-20T08:34:57.778375] insight extraction done
+[2026-05-20T08:35:00.100776] risk evaluated
+[2026-05-20T08:35:00.106592] decision generated
+[2026-05-20T08:35:01.547667] simulation executed
+[2026-05-20T08:35:01.554219] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:35:21.852577] ingestion completed
+[2026-05-20T08:35:24.776799] insight extraction done
+[2026-05-20T08:35:26.566029] risk evaluated
+[2026-05-20T08:35:26.571782] decision generated
+[2026-05-20T08:35:27.685219] simulation executed
+[2026-05-20T08:35:27.690451] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:35:46.858706] ingestion completed
+[2026-05-20T08:35:49.165692] insight extraction done
+[2026-05-20T08:35:50.237856] risk evaluated
+[2026-05-20T08:35:50.242899] decision generated
+[2026-05-20T08:35:51.650639] simulation executed
+[2026-05-20T08:35:51.656656] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:36:11.888148] ingestion completed
+[2026-05-20T08:36:13.619102] insight extraction done
+[2026-05-20T08:36:14.669537] risk evaluated
+[2026-05-20T08:36:14.675459] decision generated
+[2026-05-20T08:36:16.241012] simulation executed
+[2026-05-20T08:36:16.247810] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:36:36.859529] ingestion completed
+[2026-05-20T08:36:39.212069] insight extraction done
+[2026-05-20T08:36:42.510523] risk evaluated
+[2026-05-20T08:36:42.515586] decision generated
+[2026-05-20T08:36:45.662376] simulation executed
+[2026-05-20T08:36:45.666451] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:38:21.788115] ingestion completed
+[2026-05-20T08:38:23.311315] insight extraction done
+[2026-05-20T08:38:24.348311] risk evaluated
+[2026-05-20T08:38:24.354738] decision generated
+[2026-05-20T08:38:24.840989] simulation executed
+[2026-05-20T08:38:24.850766] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:38:43.569311] ingestion completed
+[2026-05-20T08:38:45.428493] insight extraction done
+[2026-05-20T08:38:46.468352] risk evaluated
+[2026-05-20T08:38:46.475093] decision generated
+[2026-05-20T08:38:48.046258] simulation executed
+[2026-05-20T08:38:48.050897] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:39:08.574818] ingestion completed
+[2026-05-20T08:39:09.240740] insight extraction done
+[2026-05-20T08:39:10.166443] risk evaluated
+[2026-05-20T08:39:10.172575] decision generated
+[2026-05-20T08:39:10.844769] simulation executed
+[2026-05-20T08:39:10.849790] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:39:33.541935] ingestion completed
+[2026-05-20T08:39:34.473333] insight extraction done
+[2026-05-20T08:39:35.666908] risk evaluated
+[2026-05-20T08:39:35.672742] decision generated
+[2026-05-20T08:39:36.663652] simulation executed
+[2026-05-20T08:39:36.669131] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:39:58.547079] ingestion completed
+[2026-05-20T08:40:00.026794] insight extraction done
+[2026-05-20T08:40:00.895219] risk evaluated
+[2026-05-20T08:40:00.900855] decision generated
+[2026-05-20T08:40:02.027175] simulation executed
+[2026-05-20T08:40:02.032030] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:40:23.535361] ingestion completed
+[2026-05-20T08:40:24.487498] insight extraction done
+[2026-05-20T08:40:25.599998] risk evaluated
+[2026-05-20T08:40:25.605473] decision generated
+[2026-05-20T08:40:26.913235] simulation executed
+[2026-05-20T08:40:26.919353] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:40:48.537602] ingestion completed
+[2026-05-20T08:40:49.037395] insight extraction done
+[2026-05-20T08:40:50.209911] risk evaluated
+[2026-05-20T08:40:50.214339] decision generated
+[2026-05-20T08:40:51.593689] simulation executed
+[2026-05-20T08:40:51.598843] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:41:13.535680] ingestion completed
+[2026-05-20T08:41:14.523195] insight extraction done
+[2026-05-20T08:41:15.610915] risk evaluated
+[2026-05-20T08:41:15.616934] decision generated
+[2026-05-20T08:41:16.570554] simulation executed
+[2026-05-20T08:41:16.576353] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:41:38.538956] ingestion completed
+[2026-05-20T08:41:40.288308] insight extraction done
+[2026-05-20T08:41:41.416803] risk evaluated
+[2026-05-20T08:41:41.421138] decision generated
+[2026-05-20T08:41:42.247623] simulation executed
+[2026-05-20T08:41:42.253122] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:42:03.537618] ingestion completed
+[2026-05-20T08:42:04.638210] insight extraction done
+[2026-05-20T08:42:06.505102] risk evaluated
+[2026-05-20T08:42:06.509568] decision generated
+[2026-05-20T08:42:07.300984] simulation executed
+[2026-05-20T08:42:07.306650] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:42:28.537593] ingestion completed
+[2026-05-20T08:42:29.899510] insight extraction done
+[2026-05-20T08:42:30.416512] risk evaluated
+[2026-05-20T08:42:30.422451] decision generated
+[2026-05-20T08:42:30.929170] simulation executed
+[2026-05-20T08:42:30.933760] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:42:53.540516] ingestion completed
+[2026-05-20T08:42:55.045788] insight extraction done
+[2026-05-20T08:42:55.970354] risk evaluated
+[2026-05-20T08:42:55.975334] decision generated
+[2026-05-20T08:42:56.803931] simulation executed
+[2026-05-20T08:42:56.808769] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:43:18.539337] ingestion completed
+[2026-05-20T08:43:20.546005] insight extraction done
+[2026-05-20T08:43:22.446681] risk evaluated
+[2026-05-20T08:43:22.452681] decision generated
+[2026-05-20T08:43:23.463059] simulation executed
+[2026-05-20T08:43:23.471684] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:43:43.534653] ingestion completed
+[2026-05-20T08:43:45.071036] insight extraction done
+[2026-05-20T08:43:46.954806] risk evaluated
+[2026-05-20T08:43:46.960313] decision generated
+[2026-05-20T08:43:47.632195] simulation executed
+[2026-05-20T08:43:47.638546] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:44:08.538553] ingestion completed
+[2026-05-20T08:44:09.390072] insight extraction done
+[2026-05-20T08:44:10.518794] risk evaluated
+[2026-05-20T08:44:10.525141] decision generated
+[2026-05-20T08:44:12.165226] simulation executed
+[2026-05-20T08:44:12.171094] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:44:33.532985] ingestion completed
+[2026-05-20T08:44:34.581806] insight extraction done
+[2026-05-20T08:44:35.625553] risk evaluated
+[2026-05-20T08:44:35.630768] decision generated
+[2026-05-20T08:44:36.215660] simulation executed
+[2026-05-20T08:44:36.223271] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:44:58.547954] ingestion completed
+[2026-05-20T08:44:59.430163] insight extraction done
+[2026-05-20T08:45:00.736115] risk evaluated
+[2026-05-20T08:45:00.740825] decision generated
+[2026-05-20T08:45:01.610466] simulation executed
+[2026-05-20T08:45:01.620263] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:45:23.565778] ingestion completed
+[2026-05-20T08:45:25.129400] insight extraction done
+[2026-05-20T08:45:26.501686] risk evaluated
+[2026-05-20T08:45:26.507200] decision generated
+[2026-05-20T08:45:27.583225] simulation executed
+[2026-05-20T08:45:27.588464] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:45:48.567863] ingestion completed
+[2026-05-20T08:45:49.652458] insight extraction done
+[2026-05-20T08:45:51.489947] risk evaluated
+[2026-05-20T08:45:51.497469] decision generated
+[2026-05-20T08:45:52.854371] simulation executed
+[2026-05-20T08:45:52.860336] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:46:13.537440] ingestion completed
+[2026-05-20T08:46:14.632290] insight extraction done
+[2026-05-20T08:46:16.371517] risk evaluated
+[2026-05-20T08:46:16.377197] decision generated
+[2026-05-20T08:46:17.553840] simulation executed
+[2026-05-20T08:46:17.559110] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:46:38.541227] ingestion completed
+[2026-05-20T08:46:39.684160] insight extraction done
+[2026-05-20T08:46:41.155275] risk evaluated
+[2026-05-20T08:46:41.160189] decision generated
+[2026-05-20T08:46:44.686604] simulation executed
+[2026-05-20T08:46:44.692653] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:47:03.535878] ingestion completed
+[2026-05-20T08:47:04.115825] insight extraction done
+[2026-05-20T08:47:06.242827] risk evaluated
+[2026-05-20T08:47:06.249210] decision generated
+[2026-05-20T08:47:07.338399] simulation executed
+[2026-05-20T08:47:07.343443] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:47:28.536173] ingestion completed
+[2026-05-20T08:47:29.733771] insight extraction done
+[2026-05-20T08:47:30.877996] risk evaluated
+[2026-05-20T08:47:30.883550] decision generated
+[2026-05-20T08:47:31.903096] simulation executed
+[2026-05-20T08:47:31.911085] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:47:53.580648] ingestion completed
+[2026-05-20T08:47:56.887243] insight extraction done
+[2026-05-20T08:47:57.398685] risk evaluated
+[2026-05-20T08:47:57.406974] decision generated
+[2026-05-20T08:47:57.913317] simulation executed
+[2026-05-20T08:47:57.918995] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:48:18.545943] ingestion completed
+[2026-05-20T08:48:19.784818] insight extraction done
+[2026-05-20T08:48:20.819758] risk evaluated
+[2026-05-20T08:48:20.825540] decision generated
+[2026-05-20T08:48:21.476692] simulation executed
+[2026-05-20T08:48:21.482186] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:48:43.548906] ingestion completed
+[2026-05-20T08:48:45.884329] insight extraction done
+[2026-05-20T08:48:47.830281] risk evaluated
+[2026-05-20T08:48:47.836315] decision generated
+[2026-05-20T08:48:48.638584] simulation executed
+[2026-05-20T08:48:48.645505] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:49:08.539136] ingestion completed
+[2026-05-20T08:49:10.464297] insight extraction done
+[2026-05-20T08:49:12.610786] risk evaluated
+[2026-05-20T08:49:12.615989] decision generated
+[2026-05-20T08:49:16.259310] simulation executed
+[2026-05-20T08:49:16.264891] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:49:33.541534] ingestion completed
+[2026-05-20T08:49:34.789874] insight extraction done
+[2026-05-20T08:49:35.966688] risk evaluated
+[2026-05-20T08:49:35.972667] decision generated
+[2026-05-20T08:49:37.350897] simulation executed
+[2026-05-20T08:49:37.360294] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:49:58.537073] ingestion completed
+[2026-05-20T08:49:59.411059] insight extraction done
+[2026-05-20T08:50:00.231286] risk evaluated
+[2026-05-20T08:50:00.236563] decision generated
+[2026-05-20T08:50:00.997523] simulation executed
+[2026-05-20T08:50:01.003786] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:50:23.546031] ingestion completed
+[2026-05-20T08:50:25.118439] insight extraction done
+[2026-05-20T08:50:25.783438] risk evaluated
+[2026-05-20T08:50:25.788510] decision generated
+[2026-05-20T08:50:26.295709] simulation executed
+[2026-05-20T08:50:26.302227] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:50:48.581021] ingestion completed
+[2026-05-20T08:50:49.040490] insight extraction done
+[2026-05-20T08:50:49.546903] risk evaluated
+[2026-05-20T08:50:49.551578] decision generated
+[2026-05-20T08:50:50.578064] simulation executed
+[2026-05-20T08:50:50.583694] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:51:13.542665] ingestion completed
+[2026-05-20T08:51:14.343180] insight extraction done
+[2026-05-20T08:51:14.979194] risk evaluated
+[2026-05-20T08:51:14.984099] decision generated
+[2026-05-20T08:51:16.441824] simulation executed
+[2026-05-20T08:51:16.448219] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:51:38.542662] ingestion completed
+[2026-05-20T08:51:39.417951] insight extraction done
+[2026-05-20T08:51:40.542328] risk evaluated
+[2026-05-20T08:51:40.548906] decision generated
+[2026-05-20T08:51:41.057819] simulation executed
+[2026-05-20T08:51:41.065150] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:52:03.540637] ingestion completed
+[2026-05-20T08:52:04.362983] insight extraction done
+[2026-05-20T08:52:06.022766] risk evaluated
+[2026-05-20T08:52:06.027601] decision generated
+[2026-05-20T08:52:07.392924] simulation executed
+[2026-05-20T08:52:07.398550] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:52:28.540651] ingestion completed
+[2026-05-20T08:52:29.998984] insight extraction done
+[2026-05-20T08:52:31.149477] risk evaluated
+[2026-05-20T08:52:31.154772] decision generated
+[2026-05-20T08:52:32.361827] simulation executed
+[2026-05-20T08:52:32.366688] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:52:53.536029] ingestion completed
+[2026-05-20T08:52:54.889548] insight extraction done
+[2026-05-20T08:52:55.736491] risk evaluated
+[2026-05-20T08:52:55.741562] decision generated
+[2026-05-20T08:52:56.835755] simulation executed
+[2026-05-20T08:52:56.841563] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:53:18.544510] ingestion completed
+[2026-05-20T08:53:19.510926] insight extraction done
+[2026-05-20T08:53:20.699601] risk evaluated
+[2026-05-20T08:53:20.705426] decision generated
+[2026-05-20T08:53:21.811202] simulation executed
+[2026-05-20T08:53:21.815919] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:53:43.548216] ingestion completed
+[2026-05-20T08:53:44.046373] insight extraction done
+[2026-05-20T08:53:44.499776] risk evaluated
+[2026-05-20T08:53:44.505840] decision generated
+[2026-05-20T08:53:45.589009] simulation executed
+[2026-05-20T08:53:45.594017] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:54:08.535197] ingestion completed
+[2026-05-20T08:54:10.341070] insight extraction done
+[2026-05-20T08:54:11.753157] risk evaluated
+[2026-05-20T08:54:11.759202] decision generated
+[2026-05-20T08:54:12.308565] simulation executed
+[2026-05-20T08:54:12.313917] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:54:33.539069] ingestion completed
+[2026-05-20T08:54:34.167025] insight extraction done
+[2026-05-20T08:54:35.800330] risk evaluated
+[2026-05-20T08:54:35.806576] decision generated
+[2026-05-20T08:54:36.893264] simulation executed
+[2026-05-20T08:54:36.898274] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:54:58.541809] ingestion completed
+[2026-05-20T08:54:59.061949] insight extraction done
+[2026-05-20T08:55:00.125006] risk evaluated
+[2026-05-20T08:55:00.129363] decision generated
+[2026-05-20T08:55:01.500389] simulation executed
+[2026-05-20T08:55:01.505289] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:55:23.537629] ingestion completed
+[2026-05-20T08:55:25.303475] insight extraction done
+[2026-05-20T08:55:26.670407] risk evaluated
+[2026-05-20T08:55:26.675938] decision generated
+[2026-05-20T08:55:28.013076] simulation executed
+[2026-05-20T08:55:28.018509] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:55:48.548573] ingestion completed
+[2026-05-20T08:55:50.868678] insight extraction done
+[2026-05-20T08:55:51.962107] risk evaluated
+[2026-05-20T08:55:51.967590] decision generated
+[2026-05-20T08:55:53.076314] simulation executed
+[2026-05-20T08:55:53.082086] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:56:13.545997] ingestion completed
+[2026-05-20T08:56:14.401284] insight extraction done
+[2026-05-20T08:56:14.993861] risk evaluated
+[2026-05-20T08:56:15.000322] decision generated
+[2026-05-20T08:56:15.604735] simulation executed
+[2026-05-20T08:56:15.610370] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:56:38.542375] ingestion completed
+[2026-05-20T08:56:40.018975] insight extraction done
+[2026-05-20T08:56:40.564358] risk evaluated
+[2026-05-20T08:56:40.570875] decision generated
+[2026-05-20T08:56:41.012891] simulation executed
+[2026-05-20T08:56:41.019020] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:57:03.535657] ingestion completed
+[2026-05-20T08:57:05.366397] insight extraction done
+[2026-05-20T08:57:06.332679] risk evaluated
+[2026-05-20T08:57:06.338623] decision generated
+[2026-05-20T08:57:07.425227] simulation executed
+[2026-05-20T08:57:07.430837] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:57:28.535392] ingestion completed
+[2026-05-20T08:57:30.384608] insight extraction done
+[2026-05-20T08:57:32.243374] risk evaluated
+[2026-05-20T08:57:32.248670] decision generated
+[2026-05-20T08:57:33.541552] simulation executed
+[2026-05-20T08:57:33.546750] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:57:53.537119] ingestion completed
+[2026-05-20T08:57:54.870167] insight extraction done
+[2026-05-20T08:57:55.339596] risk evaluated
+[2026-05-20T08:57:55.347523] decision generated
+[2026-05-20T08:57:55.811506] simulation executed
+[2026-05-20T08:57:55.816328] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:58:18.536724] ingestion completed
+[2026-05-20T08:58:20.626922] insight extraction done
+[2026-05-20T08:58:22.120681] risk evaluated
+[2026-05-20T08:58:22.125518] decision generated
+[2026-05-20T08:58:23.471281] simulation executed
+[2026-05-20T08:58:23.476858] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:58:43.532682] ingestion completed
+[2026-05-20T08:58:44.531010] insight extraction done
+[2026-05-20T08:58:45.634464] risk evaluated
+[2026-05-20T08:58:45.639272] decision generated
+[2026-05-20T08:58:46.682707] simulation executed
+[2026-05-20T08:58:46.690023] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:59:08.543625] ingestion completed
+[2026-05-20T08:59:10.123169] insight extraction done
+[2026-05-20T08:59:12.702611] risk evaluated
+[2026-05-20T08:59:12.708384] decision generated
+[2026-05-20T08:59:13.895411] simulation executed
+[2026-05-20T08:59:13.901149] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:59:33.542205] ingestion completed
+[2026-05-20T08:59:34.902713] insight extraction done
+[2026-05-20T08:59:36.661149] risk evaluated
+[2026-05-20T08:59:36.666758] decision generated
+[2026-05-20T08:59:37.214164] simulation executed
+[2026-05-20T08:59:37.218715] Workflow completed successfully. Action: ALERT
+[2026-05-20T08:59:58.536797] ingestion completed
+[2026-05-20T09:00:00.729373] insight extraction done
+[2026-05-20T09:00:01.891962] risk evaluated
+[2026-05-20T09:00:01.897938] decision generated
+[2026-05-20T09:00:03.003239] simulation executed
+[2026-05-20T09:00:03.007948] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:00:23.537001] ingestion completed
+[2026-05-20T09:00:24.499011] insight extraction done
+[2026-05-20T09:00:25.392207] risk evaluated
+[2026-05-20T09:00:25.398300] decision generated
+[2026-05-20T09:00:27.106905] simulation executed
+[2026-05-20T09:00:27.114034] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:00:48.539823] ingestion completed
+[2026-05-20T09:00:51.178229] insight extraction done
+[2026-05-20T09:00:52.257211] risk evaluated
+[2026-05-20T09:00:52.263111] decision generated
+[2026-05-20T09:00:53.190669] simulation executed
+[2026-05-20T09:00:53.195890] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:01:13.532111] ingestion completed
+[2026-05-20T09:01:14.583901] insight extraction done
+[2026-05-20T09:01:15.608247] risk evaluated
+[2026-05-20T09:01:15.613556] decision generated
+[2026-05-20T09:01:16.709513] simulation executed
+[2026-05-20T09:01:16.715219] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:01:38.543157] ingestion completed
+[2026-05-20T09:01:39.783077] insight extraction done
+[2026-05-20T09:01:40.795900] risk evaluated
+[2026-05-20T09:01:40.801257] decision generated
+[2026-05-20T09:01:42.285552] simulation executed
+[2026-05-20T09:01:42.291682] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:02:03.537035] ingestion completed
+[2026-05-20T09:02:05.263394] insight extraction done
+[2026-05-20T09:02:06.182884] risk evaluated
+[2026-05-20T09:02:06.188042] decision generated
+[2026-05-20T09:02:07.249521] simulation executed
+[2026-05-20T09:02:07.254676] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:02:28.541579] ingestion completed
+[2026-05-20T09:02:29.816759] insight extraction done
+[2026-05-20T09:02:31.535823] risk evaluated
+[2026-05-20T09:02:31.542283] decision generated
+[2026-05-20T09:02:32.667659] simulation executed
+[2026-05-20T09:02:32.672931] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:02:53.546812] ingestion completed
+[2026-05-20T09:02:55.335977] insight extraction done
+[2026-05-20T09:02:57.187394] risk evaluated
+[2026-05-20T09:02:57.192636] decision generated
+[2026-05-20T09:02:57.962054] simulation executed
+[2026-05-20T09:02:57.966429] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:03:18.547724] ingestion completed
+[2026-05-20T09:03:20.182037] insight extraction done
+[2026-05-20T09:03:21.230619] risk evaluated
+[2026-05-20T09:03:21.236730] decision generated
+[2026-05-20T09:03:21.714716] simulation executed
+[2026-05-20T09:03:21.719551] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:03:43.540057] ingestion completed
+[2026-05-20T09:03:44.868950] insight extraction done
+[2026-05-20T09:03:46.201120] risk evaluated
+[2026-05-20T09:03:46.206921] decision generated
+[2026-05-20T09:03:46.964315] simulation executed
+[2026-05-20T09:03:46.969718] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:04:08.535000] ingestion completed
+[2026-05-20T09:04:10.593131] insight extraction done
+[2026-05-20T09:04:12.205758] risk evaluated
+[2026-05-20T09:04:12.211806] decision generated
+[2026-05-20T09:04:12.715613] simulation executed
+[2026-05-20T09:04:12.720754] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:04:33.537471] ingestion completed
+[2026-05-20T09:04:34.662660] insight extraction done
+[2026-05-20T09:04:35.697503] risk evaluated
+[2026-05-20T09:04:35.710228] decision generated
+[2026-05-20T09:04:36.476502] simulation executed
+[2026-05-20T09:04:36.481390] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:04:58.545233] ingestion completed
+[2026-05-20T09:04:59.992023] insight extraction done
+[2026-05-20T09:05:01.087025] risk evaluated
+[2026-05-20T09:05:01.092250] decision generated
+[2026-05-20T09:05:01.667463] simulation executed
+[2026-05-20T09:05:01.673392] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:05:23.537995] ingestion completed
+[2026-05-20T09:05:24.383816] insight extraction done
+[2026-05-20T09:05:25.030852] risk evaluated
+[2026-05-20T09:05:25.036272] decision generated
+[2026-05-20T09:05:25.526558] simulation executed
+[2026-05-20T09:05:25.533638] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:05:48.536525] ingestion completed
+[2026-05-20T09:05:50.253807] insight extraction done
+[2026-05-20T09:05:51.261482] risk evaluated
+[2026-05-20T09:05:51.267400] decision generated
+[2026-05-20T09:05:52.186430] simulation executed
+[2026-05-20T09:05:52.192404] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:06:13.546841] ingestion completed
+[2026-05-20T09:06:15.634007] insight extraction done
+[2026-05-20T09:06:16.761992] risk evaluated
+[2026-05-20T09:06:16.768092] decision generated
+[2026-05-20T09:06:18.369607] simulation executed
+[2026-05-20T09:06:18.375308] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:06:38.536410] ingestion completed
+[2026-05-20T09:06:40.034686] insight extraction done
+[2026-05-20T09:06:40.717297] risk evaluated
+[2026-05-20T09:06:40.722858] decision generated
+[2026-05-20T09:06:41.204992] simulation executed
+[2026-05-20T09:06:41.209322] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:07:03.536193] ingestion completed
+[2026-05-20T09:07:05.713520] insight extraction done
+[2026-05-20T09:07:06.337472] risk evaluated
+[2026-05-20T09:07:06.343254] decision generated
+[2026-05-20T09:07:06.844181] simulation executed
+[2026-05-20T09:07:06.849117] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:07:28.546604] ingestion completed
+[2026-05-20T09:07:29.470910] insight extraction done
+[2026-05-20T09:07:30.289420] risk evaluated
+[2026-05-20T09:07:30.295069] decision generated
+[2026-05-20T09:07:31.601436] simulation executed
+[2026-05-20T09:07:31.607349] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:07:53.546818] ingestion completed
+[2026-05-20T09:07:54.120680] insight extraction done
+[2026-05-20T09:07:55.234422] risk evaluated
+[2026-05-20T09:07:55.241214] decision generated
+[2026-05-20T09:07:57.138812] simulation executed
+[2026-05-20T09:07:57.144526] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:08:18.542841] ingestion completed
+[2026-05-20T09:08:20.367055] insight extraction done
+[2026-05-20T09:08:22.322185] risk evaluated
+[2026-05-20T09:08:22.327680] decision generated
+[2026-05-20T09:08:22.936431] simulation executed
+[2026-05-20T09:08:22.941213] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:08:43.538754] ingestion completed
+[2026-05-20T09:08:44.096094] insight extraction done
+[2026-05-20T09:08:45.217968] risk evaluated
+[2026-05-20T09:08:45.223747] decision generated
+[2026-05-20T09:08:46.257352] simulation executed
+[2026-05-20T09:08:46.264511] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:09:08.543055] ingestion completed
+[2026-05-20T09:09:09.418546] insight extraction done
+[2026-05-20T09:09:10.934825] risk evaluated
+[2026-05-20T09:09:10.944318] decision generated
+[2026-05-20T09:09:11.938073] simulation executed
+[2026-05-20T09:09:11.943979] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:09:33.541953] ingestion completed
+[2026-05-20T09:09:35.297840] insight extraction done
+[2026-05-20T09:09:35.875887] risk evaluated
+[2026-05-20T09:09:35.882538] decision generated
+[2026-05-20T09:09:37.448848] simulation executed
+[2026-05-20T09:09:37.455843] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:09:58.534923] ingestion completed
+[2026-05-20T09:09:59.087590] insight extraction done
+[2026-05-20T09:10:00.690603] risk evaluated
+[2026-05-20T09:10:00.696344] decision generated
+[2026-05-20T09:10:01.822361] simulation executed
+[2026-05-20T09:10:01.829194] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:10:23.546941] ingestion completed
+[2026-05-20T09:10:24.145404] insight extraction done
+[2026-05-20T09:10:24.861702] risk evaluated
+[2026-05-20T09:10:24.867252] decision generated
+[2026-05-20T09:10:25.839950] simulation executed
+[2026-05-20T09:10:25.846627] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:10:48.542111] ingestion completed
+[2026-05-20T09:10:49.873442] insight extraction done
+[2026-05-20T09:10:51.957940] risk evaluated
+[2026-05-20T09:10:51.964601] decision generated
+[2026-05-20T09:10:53.516822] simulation executed
+[2026-05-20T09:10:53.523245] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:11:13.546701] ingestion completed
+[2026-05-20T09:11:15.783974] insight extraction done
+[2026-05-20T09:11:17.366974] risk evaluated
+[2026-05-20T09:11:17.370818] decision generated
+[2026-05-20T09:11:17.911946] simulation executed
+[2026-05-20T09:11:17.919910] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:12:51.411993] ingestion completed
+[2026-05-20T09:12:52.994884] insight extraction done
+[2026-05-20T09:12:53.855704] risk evaluated
+[2026-05-20T09:12:53.862654] decision generated
+[2026-05-20T09:12:54.328586] simulation executed
+[2026-05-20T09:12:54.334441] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:13:13.675283] ingestion completed
+[2026-05-20T09:13:14.742373] insight extraction done
+[2026-05-20T09:13:16.312011] risk evaluated
+[2026-05-20T09:13:16.319175] decision generated
+[2026-05-20T09:13:17.749023] simulation executed
+[2026-05-20T09:13:17.755135] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:13:38.698479] ingestion completed
+[2026-05-20T09:13:39.656679] insight extraction done
+[2026-05-20T09:13:40.729813] risk evaluated
+[2026-05-20T09:13:40.737411] decision generated
+[2026-05-20T09:13:41.812940] simulation executed
+[2026-05-20T09:13:41.819022] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:14:03.648425] ingestion completed
+[2026-05-20T09:14:04.750577] insight extraction done
+[2026-05-20T09:14:06.224127] risk evaluated
+[2026-05-20T09:14:06.229816] decision generated
+[2026-05-20T09:14:07.679429] simulation executed
+[2026-05-20T09:14:07.684090] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:14:28.647915] ingestion completed
+[2026-05-20T09:14:29.739509] insight extraction done
+[2026-05-20T09:14:31.246925] risk evaluated
+[2026-05-20T09:14:31.252410] decision generated
+[2026-05-20T09:14:32.787836] simulation executed
+[2026-05-20T09:14:32.793097] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:14:53.677426] ingestion completed
+[2026-05-20T09:14:55.340503] insight extraction done
+[2026-05-20T09:14:56.679824] risk evaluated
+[2026-05-20T09:14:56.687469] decision generated
+[2026-05-20T09:14:57.136843] simulation executed
+[2026-05-20T09:14:57.145365] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:15:18.640581] ingestion completed
+[2026-05-20T09:15:19.811401] insight extraction done
+[2026-05-20T09:15:21.963478] risk evaluated
+[2026-05-20T09:15:21.968274] decision generated
+[2026-05-20T09:15:23.276888] simulation executed
+[2026-05-20T09:15:23.283173] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:15:43.676003] ingestion completed
+[2026-05-20T09:15:45.113186] insight extraction done
+[2026-05-20T09:15:47.209569] risk evaluated
+[2026-05-20T09:15:47.216440] decision generated
+[2026-05-20T09:15:48.595352] simulation executed
+[2026-05-20T09:15:48.601678] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:16:08.640017] ingestion completed
+[2026-05-20T09:16:09.772937] insight extraction done
+[2026-05-20T09:16:10.878044] risk evaluated
+[2026-05-20T09:16:10.883683] decision generated
+[2026-05-20T09:16:12.326074] simulation executed
+[2026-05-20T09:16:12.332554] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:16:33.648082] ingestion completed
+[2026-05-20T09:16:35.391608] insight extraction done
+[2026-05-20T09:16:36.831350] risk evaluated
+[2026-05-20T09:16:36.837014] decision generated
+[2026-05-20T09:16:37.866973] simulation executed
+[2026-05-20T09:16:37.872389] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:16:58.637491] ingestion completed
+[2026-05-20T09:17:00.021055] insight extraction done
+[2026-05-20T09:17:01.379243] risk evaluated
+[2026-05-20T09:17:01.385627] decision generated
+[2026-05-20T09:17:01.855463] simulation executed
+[2026-05-20T09:17:01.861229] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:17:23.636150] ingestion completed
+[2026-05-20T09:17:24.648906] insight extraction done
+[2026-05-20T09:17:25.638239] risk evaluated
+[2026-05-20T09:17:25.643151] decision generated
+[2026-05-20T09:17:26.096817] simulation executed
+[2026-05-20T09:17:26.102301] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:17:48.646272] ingestion completed
+[2026-05-20T09:17:49.637022] insight extraction done
+[2026-05-20T09:17:51.129994] risk evaluated
+[2026-05-20T09:17:51.134848] decision generated
+[2026-05-20T09:17:52.354893] simulation executed
+[2026-05-20T09:17:52.360060] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:18:13.645665] ingestion completed
+[2026-05-20T09:18:15.846665] insight extraction done
+[2026-05-20T09:18:17.822022] risk evaluated
+[2026-05-20T09:18:17.827519] decision generated
+[2026-05-20T09:18:18.926578] simulation executed
+[2026-05-20T09:18:18.931990] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:18:38.637458] ingestion completed
+[2026-05-20T09:18:40.194766] insight extraction done
+[2026-05-20T09:18:41.555504] risk evaluated
+[2026-05-20T09:18:41.560320] decision generated
+[2026-05-20T09:18:42.564736] simulation executed
+[2026-05-20T09:18:42.571234] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:19:03.647398] ingestion completed
+[2026-05-20T09:19:04.756171] insight extraction done
+[2026-05-20T09:19:05.962569] risk evaluated
+[2026-05-20T09:19:05.969636] decision generated
+[2026-05-20T09:19:06.680561] simulation executed
+[2026-05-20T09:19:06.690044] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:19:28.651404] ingestion completed
+[2026-05-20T09:19:29.352255] insight extraction done
+[2026-05-20T09:19:30.119865] risk evaluated
+[2026-05-20T09:19:30.127475] decision generated
+[2026-05-20T09:19:31.455418] simulation executed
+[2026-05-20T09:19:31.460562] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:19:53.643034] ingestion completed
+[2026-05-20T09:19:54.135234] insight extraction done
+[2026-05-20T09:19:54.607982] risk evaluated
+[2026-05-20T09:19:54.612287] decision generated
+[2026-05-20T09:19:55.677542] simulation executed
+[2026-05-20T09:19:55.682945] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:20:18.635563] ingestion completed
+[2026-05-20T09:20:19.555631] insight extraction done
+[2026-05-20T09:20:21.386833] risk evaluated
+[2026-05-20T09:20:21.391991] decision generated
+[2026-05-20T09:20:22.408441] simulation executed
+[2026-05-20T09:20:22.414967] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:20:43.635174] ingestion completed
+[2026-05-20T09:20:45.240621] insight extraction done
+[2026-05-20T09:20:46.604711] risk evaluated
+[2026-05-20T09:20:46.610403] decision generated
+[2026-05-20T09:20:47.173369] simulation executed
+[2026-05-20T09:20:47.179696] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:21:08.636492] ingestion completed
+[2026-05-20T09:21:09.704452] insight extraction done
+[2026-05-20T09:21:10.796850] risk evaluated
+[2026-05-20T09:21:10.803226] decision generated
+[2026-05-20T09:21:11.584319] simulation executed
+[2026-05-20T09:21:11.590385] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:21:33.640775] ingestion completed
+[2026-05-20T09:21:34.312499] insight extraction done
+[2026-05-20T09:21:35.372248] risk evaluated
+[2026-05-20T09:21:35.378330] decision generated
+[2026-05-20T09:21:36.436566] simulation executed
+[2026-05-20T09:21:36.441351] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:21:58.643160] ingestion completed
+[2026-05-20T09:22:00.143349] insight extraction done
+[2026-05-20T09:22:01.339769] risk evaluated
+[2026-05-20T09:22:01.345893] decision generated
+[2026-05-20T09:22:02.053888] simulation executed
+[2026-05-20T09:22:02.059580] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:22:23.642944] ingestion completed
+[2026-05-20T09:22:25.412986] insight extraction done
+[2026-05-20T09:22:27.361672] risk evaluated
+[2026-05-20T09:22:27.367491] decision generated
+[2026-05-20T09:22:27.851536] simulation executed
+[2026-05-20T09:22:27.857556] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:22:48.639566] ingestion completed
+[2026-05-20T09:22:49.939654] insight extraction done
+[2026-05-20T09:22:50.434311] risk evaluated
+[2026-05-20T09:22:50.439052] decision generated
+[2026-05-20T09:22:51.520763] simulation executed
+[2026-05-20T09:22:51.526084] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:23:13.635614] ingestion completed
+[2026-05-20T09:23:15.690577] insight extraction done
+[2026-05-20T09:23:16.735829] risk evaluated
+[2026-05-20T09:23:16.741727] decision generated
+[2026-05-20T09:23:18.612393] simulation executed
+[2026-05-20T09:23:18.618142] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:23:38.638048] ingestion completed
+[2026-05-20T09:23:40.096323] insight extraction done
+[2026-05-20T09:23:41.296117] risk evaluated
+[2026-05-20T09:23:41.302826] decision generated
+[2026-05-20T09:23:42.615160] simulation executed
+[2026-05-20T09:23:42.621232] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:24:03.645345] ingestion completed
+[2026-05-20T09:24:04.690151] insight extraction done
+[2026-05-20T09:24:06.300343] risk evaluated
+[2026-05-20T09:24:06.305319] decision generated
+[2026-05-20T09:24:07.808803] simulation executed
+[2026-05-20T09:24:07.814449] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:24:28.647061] ingestion completed
+[2026-05-20T09:24:29.680133] insight extraction done
+[2026-05-20T09:24:33.365361] risk evaluated
+[2026-05-20T09:24:33.370508] decision generated
+[2026-05-20T09:24:34.439034] simulation executed
+[2026-05-20T09:24:34.444721] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:24:53.637992] ingestion completed
+[2026-05-20T09:24:54.925158] insight extraction done
+[2026-05-20T09:24:55.993883] risk evaluated
+[2026-05-20T09:24:55.999609] decision generated
+[2026-05-20T09:24:56.472987] simulation executed
+[2026-05-20T09:24:56.478907] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:25:18.649648] ingestion completed
+[2026-05-20T09:25:19.197601] insight extraction done
+[2026-05-20T09:25:19.691678] risk evaluated
+[2026-05-20T09:25:19.698667] decision generated
+[2026-05-20T09:25:21.362203] simulation executed
+[2026-05-20T09:25:21.367577] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:25:43.642790] ingestion completed
+[2026-05-20T09:25:46.120393] insight extraction done
+[2026-05-20T09:25:46.947352] risk evaluated
+[2026-05-20T09:25:46.953427] decision generated
+[2026-05-20T09:25:47.766743] simulation executed
+[2026-05-20T09:25:47.773004] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:26:08.637068] ingestion completed
+[2026-05-20T09:26:09.246479] insight extraction done
+[2026-05-20T09:26:09.764585] risk evaluated
+[2026-05-20T09:26:09.770121] decision generated
+[2026-05-20T09:26:10.847988] simulation executed
+[2026-05-20T09:26:10.853419] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:26:33.638668] ingestion completed
+[2026-05-20T09:26:34.427466] insight extraction done
+[2026-05-20T09:26:35.690458] risk evaluated
+[2026-05-20T09:26:35.696785] decision generated
+[2026-05-20T09:26:37.021879] simulation executed
+[2026-05-20T09:26:37.028366] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:26:58.637767] ingestion completed
+[2026-05-20T09:26:59.723000] insight extraction done
+[2026-05-20T09:27:00.686286] risk evaluated
+[2026-05-20T09:27:00.691795] decision generated
+[2026-05-20T09:27:01.811673] simulation executed
+[2026-05-20T09:27:01.817171] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:27:23.646646] ingestion completed
+[2026-05-20T09:27:25.035647] insight extraction done
+[2026-05-20T09:27:25.703009] risk evaluated
+[2026-05-20T09:27:25.708193] decision generated
+[2026-05-20T09:27:27.395298] simulation executed
+[2026-05-20T09:27:27.400553] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:27:48.641198] ingestion completed
+[2026-05-20T09:27:49.463397] insight extraction done
+[2026-05-20T09:27:50.543395] risk evaluated
+[2026-05-20T09:27:50.548774] decision generated
+[2026-05-20T09:27:51.630692] simulation executed
+[2026-05-20T09:27:51.636798] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:28:13.633834] ingestion completed
+[2026-05-20T09:28:14.909700] insight extraction done
+[2026-05-20T09:28:16.144703] risk evaluated
+[2026-05-20T09:28:16.150360] decision generated
+[2026-05-20T09:28:17.528528] simulation executed
+[2026-05-20T09:28:17.534218] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:28:38.637139] ingestion completed
+[2026-05-20T09:28:39.369143] insight extraction done
+[2026-05-20T09:28:40.521724] risk evaluated
+[2026-05-20T09:28:40.526435] decision generated
+[2026-05-20T09:28:41.852935] simulation executed
+[2026-05-20T09:28:41.859264] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:29:03.644320] ingestion completed
+[2026-05-20T09:29:05.248562] insight extraction done
+[2026-05-20T09:29:06.323783] risk evaluated
+[2026-05-20T09:29:06.330002] decision generated
+[2026-05-20T09:29:07.335492] simulation executed
+[2026-05-20T09:29:07.341350] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:29:28.643595] ingestion completed
+[2026-05-20T09:29:30.691610] insight extraction done
+[2026-05-20T09:29:32.490869] risk evaluated
+[2026-05-20T09:29:32.501173] decision generated
+[2026-05-20T09:29:33.863783] simulation executed
+[2026-05-20T09:29:33.869906] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:29:53.637589] ingestion completed
+[2026-05-20T09:29:55.041709] insight extraction done
+[2026-05-20T09:29:55.570814] risk evaluated
+[2026-05-20T09:29:55.576665] decision generated
+[2026-05-20T09:29:56.802295] simulation executed
+[2026-05-20T09:29:56.807213] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:30:18.637817] ingestion completed
+[2026-05-20T09:30:20.292353] insight extraction done
+[2026-05-20T09:30:21.794829] risk evaluated
+[2026-05-20T09:30:21.802784] decision generated
+[2026-05-20T09:30:22.920403] simulation executed
+[2026-05-20T09:30:22.926862] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:30:43.648420] ingestion completed
+[2026-05-20T09:30:45.146645] insight extraction done
+[2026-05-20T09:30:46.265122] risk evaluated
+[2026-05-20T09:30:46.272051] decision generated
+[2026-05-20T09:30:47.618932] simulation executed
+[2026-05-20T09:30:47.623787] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:31:08.636858] ingestion completed
+[2026-05-20T09:31:09.203097] insight extraction done
+[2026-05-20T09:31:10.783333] risk evaluated
+[2026-05-20T09:31:10.789228] decision generated
+[2026-05-20T09:31:12.101049] simulation executed
+[2026-05-20T09:31:12.107399] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:31:33.634383] ingestion completed
+[2026-05-20T09:31:35.541235] insight extraction done
+[2026-05-20T09:31:37.169026] risk evaluated
+[2026-05-20T09:31:37.176237] decision generated
+[2026-05-20T09:31:37.781042] simulation executed
+[2026-05-20T09:31:37.787727] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:31:58.643704] ingestion completed
+[2026-05-20T09:31:59.183269] insight extraction done
+[2026-05-20T09:32:00.865521] risk evaluated
+[2026-05-20T09:32:00.870228] decision generated
+[2026-05-20T09:32:02.204286] simulation executed
+[2026-05-20T09:32:02.208475] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:32:23.649557] ingestion completed
+[2026-05-20T09:32:24.417944] insight extraction done
+[2026-05-20T09:32:26.101602] risk evaluated
+[2026-05-20T09:32:26.108646] decision generated
+[2026-05-20T09:32:27.161147] simulation executed
+[2026-05-20T09:32:27.165640] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:32:48.651271] ingestion completed
+[2026-05-20T09:32:49.702117] insight extraction done
+[2026-05-20T09:32:50.286838] risk evaluated
+[2026-05-20T09:32:50.292904] decision generated
+[2026-05-20T09:32:51.312935] simulation executed
+[2026-05-20T09:32:51.318071] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:33:13.647724] ingestion completed
+[2026-05-20T09:33:14.507432] insight extraction done
+[2026-05-20T09:33:16.128102] risk evaluated
+[2026-05-20T09:33:16.133882] decision generated
+[2026-05-20T09:33:17.197557] simulation executed
+[2026-05-20T09:33:17.203681] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:33:38.643168] ingestion completed
+[2026-05-20T09:33:39.328657] insight extraction done
+[2026-05-20T09:33:40.501746] risk evaluated
+[2026-05-20T09:33:40.507964] decision generated
+[2026-05-20T09:33:41.577844] simulation executed
+[2026-05-20T09:33:41.585740] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:34:03.649813] ingestion completed
+[2026-05-20T09:34:05.441733] insight extraction done
+[2026-05-20T09:34:07.187227] risk evaluated
+[2026-05-20T09:34:07.193194] decision generated
+[2026-05-20T09:34:08.719015] simulation executed
+[2026-05-20T09:34:08.723776] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:34:28.651969] ingestion completed
+[2026-05-20T09:34:29.675906] insight extraction done
+[2026-05-20T09:34:31.562340] risk evaluated
+[2026-05-20T09:34:31.567522] decision generated
+[2026-05-20T09:34:32.289873] simulation executed
+[2026-05-20T09:34:32.295715] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:34:53.643531] ingestion completed
+[2026-05-20T09:34:54.102360] insight extraction done
+[2026-05-20T09:34:55.172289] risk evaluated
+[2026-05-20T09:34:55.178270] decision generated
+[2026-05-20T09:34:55.678810] simulation executed
+[2026-05-20T09:34:55.684568] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:35:18.644350] ingestion completed
+[2026-05-20T09:35:20.279409] insight extraction done
+[2026-05-20T09:35:21.745411] risk evaluated
+[2026-05-20T09:35:21.750931] decision generated
+[2026-05-20T09:35:22.354422] simulation executed
+[2026-05-20T09:35:22.360148] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:35:43.645150] ingestion completed
+[2026-05-20T09:35:44.483541] insight extraction done
+[2026-05-20T09:35:45.999703] risk evaluated
+[2026-05-20T09:35:46.005224] decision generated
+[2026-05-20T09:35:46.725747] simulation executed
+[2026-05-20T09:35:46.731202] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:36:08.639913] ingestion completed
+[2026-05-20T09:36:10.792543] insight extraction done
+[2026-05-20T09:36:11.701878] risk evaluated
+[2026-05-20T09:36:11.708297] decision generated
+[2026-05-20T09:36:12.547753] simulation executed
+[2026-05-20T09:36:12.552658] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:36:33.642340] ingestion completed
+[2026-05-20T09:36:34.242770] insight extraction done
+[2026-05-20T09:36:35.384101] risk evaluated
+[2026-05-20T09:36:35.388936] decision generated
+[2026-05-20T09:36:36.789475] simulation executed
+[2026-05-20T09:36:36.796189] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:36:58.641140] ingestion completed
+[2026-05-20T09:37:00.475325] insight extraction done
+[2026-05-20T09:37:01.076261] risk evaluated
+[2026-05-20T09:37:01.082550] decision generated
+[2026-05-20T09:37:01.604569] simulation executed
+[2026-05-20T09:37:01.609256] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:37:23.635305] ingestion completed
+[2026-05-20T09:37:24.980186] insight extraction done
+[2026-05-20T09:37:25.857079] risk evaluated
+[2026-05-20T09:37:25.863078] decision generated
+[2026-05-20T09:37:26.644186] simulation executed
+[2026-05-20T09:37:26.650007] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:37:48.645351] ingestion completed
+[2026-05-20T09:37:50.653477] insight extraction done
+[2026-05-20T09:37:52.457549] risk evaluated
+[2026-05-20T09:37:52.463606] decision generated
+[2026-05-20T09:37:53.193786] simulation executed
+[2026-05-20T09:37:53.198555] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:38:13.635093] ingestion completed
+[2026-05-20T09:38:14.563514] insight extraction done
+[2026-05-20T09:38:16.755341] risk evaluated
+[2026-05-20T09:38:16.762106] decision generated
+[2026-05-20T09:38:17.808280] simulation executed
+[2026-05-20T09:38:17.814751] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:38:38.640699] ingestion completed
+[2026-05-20T09:38:39.220854] insight extraction done
+[2026-05-20T09:38:39.889280] risk evaluated
+[2026-05-20T09:38:39.894782] decision generated
+[2026-05-20T09:38:40.467643] simulation executed
+[2026-05-20T09:38:40.472073] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:39:03.637482] ingestion completed
+[2026-05-20T09:39:05.376042] insight extraction done
+[2026-05-20T09:39:06.114402] risk evaluated
+[2026-05-20T09:39:06.120982] decision generated
+[2026-05-20T09:39:06.960724] simulation executed
+[2026-05-20T09:39:06.967228] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:39:28.642478] ingestion completed
+[2026-05-20T09:39:30.285201] insight extraction done
+[2026-05-20T09:39:31.369196] risk evaluated
+[2026-05-20T09:39:31.374440] decision generated
+[2026-05-20T09:39:32.832117] simulation executed
+[2026-05-20T09:39:32.837125] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:39:53.642872] ingestion completed
+[2026-05-20T09:39:54.242715] insight extraction done
+[2026-05-20T09:39:55.079715] risk evaluated
+[2026-05-20T09:39:55.089829] decision generated
+[2026-05-20T09:39:55.575286] simulation executed
+[2026-05-20T09:39:55.580673] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:40:18.645428] ingestion completed
+[2026-05-20T09:40:20.311142] insight extraction done
+[2026-05-20T09:40:21.187115] risk evaluated
+[2026-05-20T09:40:21.192160] decision generated
+[2026-05-20T09:40:22.132955] simulation executed
+[2026-05-20T09:40:22.137536] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:40:43.639076] ingestion completed
+[2026-05-20T09:40:44.378127] insight extraction done
+[2026-05-20T09:40:44.896770] risk evaluated
+[2026-05-20T09:40:44.902177] decision generated
+[2026-05-20T09:40:45.458216] simulation executed
+[2026-05-20T09:40:45.463503] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:41:08.639473] ingestion completed
+[2026-05-20T09:41:09.504669] insight extraction done
+[2026-05-20T09:41:10.655287] risk evaluated
+[2026-05-20T09:41:10.661173] decision generated
+[2026-05-20T09:41:12.159716] simulation executed
+[2026-05-20T09:41:12.166215] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:41:33.646962] ingestion completed
+[2026-05-20T09:41:35.417527] insight extraction done
+[2026-05-20T09:41:36.596679] risk evaluated
+[2026-05-20T09:41:36.602351] decision generated
+[2026-05-20T09:41:37.181664] simulation executed
+[2026-05-20T09:41:37.186508] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:41:58.639095] ingestion completed
+[2026-05-20T09:41:59.235350] insight extraction done
+[2026-05-20T09:41:59.691167] risk evaluated
+[2026-05-20T09:41:59.696559] decision generated
+[2026-05-20T09:42:00.506984] simulation executed
+[2026-05-20T09:42:00.511801] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:42:23.640910] ingestion completed
+[2026-05-20T09:42:24.490451] insight extraction done
+[2026-05-20T09:42:26.051404] risk evaluated
+[2026-05-20T09:42:26.057249] decision generated
+[2026-05-20T09:42:27.572145] simulation executed
+[2026-05-20T09:42:27.577695] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:42:48.642111] ingestion completed
+[2026-05-20T09:42:49.357509] insight extraction done
+[2026-05-20T09:42:50.020257] risk evaluated
+[2026-05-20T09:42:50.025569] decision generated
+[2026-05-20T09:42:50.705411] simulation executed
+[2026-05-20T09:42:50.713607] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:43:13.643015] ingestion completed
+[2026-05-20T09:43:14.524573] insight extraction done
+[2026-05-20T09:43:15.770005] risk evaluated
+[2026-05-20T09:43:15.775315] decision generated
+[2026-05-20T09:43:16.297095] simulation executed
+[2026-05-20T09:43:16.303868] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:43:38.642695] ingestion completed
+[2026-05-20T09:43:39.460003] insight extraction done
+[2026-05-20T09:43:40.384425] risk evaluated
+[2026-05-20T09:43:40.391804] decision generated
+[2026-05-20T09:43:41.870082] simulation executed
+[2026-05-20T09:43:41.876966] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:44:03.635224] ingestion completed
+[2026-05-20T09:44:05.445922] insight extraction done
+[2026-05-20T09:44:06.819990] risk evaluated
+[2026-05-20T09:44:06.827239] decision generated
+[2026-05-20T09:44:08.204578] simulation executed
+[2026-05-20T09:44:08.210640] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:44:28.648509] ingestion completed
+[2026-05-20T09:44:29.134450] insight extraction done
+[2026-05-20T09:44:29.621161] risk evaluated
+[2026-05-20T09:44:29.627502] decision generated
+[2026-05-20T09:44:30.105983] simulation executed
+[2026-05-20T09:44:30.111768] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:44:53.645583] ingestion completed
+[2026-05-20T09:44:54.806744] insight extraction done
+[2026-05-20T09:44:56.150937] risk evaluated
+[2026-05-20T09:44:56.160286] decision generated
+[2026-05-20T09:44:56.647760] simulation executed
+[2026-05-20T09:44:56.654940] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:45:18.645553] ingestion completed
+[2026-05-20T09:45:19.682049] insight extraction done
+[2026-05-20T09:45:20.708653] risk evaluated
+[2026-05-20T09:45:20.713121] decision generated
+[2026-05-20T09:45:22.258038] simulation executed
+[2026-05-20T09:45:22.262258] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:45:43.635517] ingestion completed
+[2026-05-20T09:45:44.871815] insight extraction done
+[2026-05-20T09:45:45.696675] risk evaluated
+[2026-05-20T09:45:45.701574] decision generated
+[2026-05-20T09:45:47.189805] simulation executed
+[2026-05-20T09:45:47.195240] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:46:08.638126] ingestion completed
+[2026-05-20T09:46:09.399815] insight extraction done
+[2026-05-20T09:46:11.909231] risk evaluated
+[2026-05-20T09:46:11.918012] decision generated
+[2026-05-20T09:46:12.689868] simulation executed
+[2026-05-20T09:46:12.694655] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:46:33.645126] ingestion completed
+[2026-05-20T09:46:34.244110] insight extraction done
+[2026-05-20T09:46:34.777228] risk evaluated
+[2026-05-20T09:46:34.782858] decision generated
+[2026-05-20T09:46:35.821067] simulation executed
+[2026-05-20T09:46:35.826838] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:46:58.638356] ingestion completed
+[2026-05-20T09:46:59.580845] insight extraction done
+[2026-05-20T09:47:01.055001] risk evaluated
+[2026-05-20T09:47:01.060634] decision generated
+[2026-05-20T09:47:01.878720] simulation executed
+[2026-05-20T09:47:01.884134] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:47:23.647305] ingestion completed
+[2026-05-20T09:47:25.227292] insight extraction done
+[2026-05-20T09:47:26.877418] risk evaluated
+[2026-05-20T09:47:26.883035] decision generated
+[2026-05-20T09:47:27.355958] simulation executed
+[2026-05-20T09:47:27.364113] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:47:48.651516] ingestion completed
+[2026-05-20T09:47:49.910214] insight extraction done
+[2026-05-20T09:47:50.941339] risk evaluated
+[2026-05-20T09:47:50.946012] decision generated
+[2026-05-20T09:47:51.955728] simulation executed
+[2026-05-20T09:47:51.961276] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:48:13.665823] ingestion completed
+[2026-05-20T09:48:15.449075] insight extraction done
+[2026-05-20T09:48:16.462580] risk evaluated
+[2026-05-20T09:48:16.472754] decision generated
+[2026-05-20T09:48:17.191643] simulation executed
+[2026-05-20T09:48:17.196288] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:48:38.643765] ingestion completed
+[2026-05-20T09:48:39.371371] insight extraction done
+[2026-05-20T09:48:41.005827] risk evaluated
+[2026-05-20T09:48:41.011681] decision generated
+[2026-05-20T09:48:41.507330] simulation executed
+[2026-05-20T09:48:41.515116] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:49:03.645474] ingestion completed
+[2026-05-20T09:49:04.770021] insight extraction done
+[2026-05-20T09:49:06.096998] risk evaluated
+[2026-05-20T09:49:06.102290] decision generated
+[2026-05-20T09:49:07.976045] simulation executed
+[2026-05-20T09:49:07.981782] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:49:28.643134] ingestion completed
+[2026-05-20T09:49:30.069158] insight extraction done
+[2026-05-20T09:49:30.539874] risk evaluated
+[2026-05-20T09:49:30.547768] decision generated
+[2026-05-20T09:49:31.575811] simulation executed
+[2026-05-20T09:49:31.580966] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:49:53.638555] ingestion completed
+[2026-05-20T09:49:54.480056] insight extraction done
+[2026-05-20T09:49:55.198851] risk evaluated
+[2026-05-20T09:49:55.204491] decision generated
+[2026-05-20T09:49:55.880074] simulation executed
+[2026-05-20T09:49:55.885771] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:50:18.651500] ingestion completed
+[2026-05-20T09:50:19.343486] insight extraction done
+[2026-05-20T09:50:20.409521] risk evaluated
+[2026-05-20T09:50:20.417336] decision generated
+[2026-05-20T09:50:21.074745] simulation executed
+[2026-05-20T09:50:21.079832] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:50:43.644280] ingestion completed
+[2026-05-20T09:50:45.415496] insight extraction done
+[2026-05-20T09:50:46.048081] risk evaluated
+[2026-05-20T09:50:46.053206] decision generated
+[2026-05-20T09:50:47.403105] simulation executed
+[2026-05-20T09:50:47.411429] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:51:08.644701] ingestion completed
+[2026-05-20T09:51:10.582997] insight extraction done
+[2026-05-20T09:51:11.694511] risk evaluated
+[2026-05-20T09:51:11.700009] decision generated
+[2026-05-20T09:51:13.027285] simulation executed
+[2026-05-20T09:51:13.035178] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:51:33.633897] ingestion completed
+[2026-05-20T09:51:35.186361] insight extraction done
+[2026-05-20T09:51:35.851271] risk evaluated
+[2026-05-20T09:51:35.856943] decision generated
+[2026-05-20T09:51:36.917144] simulation executed
+[2026-05-20T09:51:36.922904] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:51:58.646528] ingestion completed
+[2026-05-20T09:52:00.121619] insight extraction done
+[2026-05-20T09:52:01.214681] risk evaluated
+[2026-05-20T09:52:01.220608] decision generated
+[2026-05-20T09:52:01.939159] simulation executed
+[2026-05-20T09:52:01.944297] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:52:23.641918] ingestion completed
+[2026-05-20T09:52:24.735269] insight extraction done
+[2026-05-20T09:52:26.107141] risk evaluated
+[2026-05-20T09:52:26.111770] decision generated
+[2026-05-20T09:52:26.568041] simulation executed
+[2026-05-20T09:52:26.573908] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:52:48.638103] ingestion completed
+[2026-05-20T09:52:50.274596] insight extraction done
+[2026-05-20T09:52:51.083746] risk evaluated
+[2026-05-20T09:52:51.090028] decision generated
+[2026-05-20T09:52:52.061731] simulation executed
+[2026-05-20T09:52:52.068078] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:53:13.649472] ingestion completed
+[2026-05-20T09:53:15.327186] insight extraction done
+[2026-05-20T09:53:16.424359] risk evaluated
+[2026-05-20T09:53:16.434442] decision generated
+[2026-05-20T09:53:18.016204] simulation executed
+[2026-05-20T09:53:18.021047] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:53:38.635701] ingestion completed
+[2026-05-20T09:53:40.562402] insight extraction done
+[2026-05-20T09:53:41.373455] risk evaluated
+[2026-05-20T09:53:41.378948] decision generated
+[2026-05-20T09:53:42.244662] simulation executed
+[2026-05-20T09:53:42.249048] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:54:03.643849] ingestion completed
+[2026-05-20T09:54:06.217979] insight extraction done
+[2026-05-20T09:54:07.403065] risk evaluated
+[2026-05-20T09:54:07.408205] decision generated
+[2026-05-20T09:54:08.971750] simulation executed
+[2026-05-20T09:54:08.977718] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:54:28.648149] ingestion completed
+[2026-05-20T09:54:31.329547] insight extraction done
+[2026-05-20T09:54:32.928367] risk evaluated
+[2026-05-20T09:54:32.935877] decision generated
+[2026-05-20T09:54:33.976310] simulation executed
+[2026-05-20T09:54:33.982568] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:54:53.639136] ingestion completed
+[2026-05-20T09:54:54.520034] insight extraction done
+[2026-05-20T09:54:57.371383] risk evaluated
+[2026-05-20T09:54:57.376514] decision generated
+[2026-05-20T09:54:58.485178] simulation executed
+[2026-05-20T09:54:58.490836] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:55:18.640458] ingestion completed
+[2026-05-20T09:55:19.611808] insight extraction done
+[2026-05-20T09:55:20.063643] risk evaluated
+[2026-05-20T09:55:20.069857] decision generated
+[2026-05-20T09:55:20.613080] simulation executed
+[2026-05-20T09:55:20.618835] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:55:43.635604] ingestion completed
+[2026-05-20T09:55:44.508646] insight extraction done
+[2026-05-20T09:55:44.963086] risk evaluated
+[2026-05-20T09:55:44.969118] decision generated
+[2026-05-20T09:55:45.978000] simulation executed
+[2026-05-20T09:55:45.982812] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:56:08.640323] ingestion completed
+[2026-05-20T09:56:09.887480] insight extraction done
+[2026-05-20T09:56:11.440631] risk evaluated
+[2026-05-20T09:56:11.446163] decision generated
+[2026-05-20T09:56:11.896202] simulation executed
+[2026-05-20T09:56:11.901969] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:56:33.649224] ingestion completed
+[2026-05-20T09:56:34.499233] insight extraction done
+[2026-05-20T09:56:35.044532] risk evaluated
+[2026-05-20T09:56:35.049586] decision generated
+[2026-05-20T09:56:35.525352] simulation executed
+[2026-05-20T09:56:35.531348] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:56:58.647278] ingestion completed
+[2026-05-20T09:56:59.507482] insight extraction done
+[2026-05-20T09:57:00.557161] risk evaluated
+[2026-05-20T09:57:00.563238] decision generated
+[2026-05-20T09:57:01.063847] simulation executed
+[2026-05-20T09:57:01.068335] Workflow completed successfully. Action: ALERT
+[2026-05-20T09:57:23.646463] ingestion completed
+[2026-05-20T09:57:24.742107] insight extraction done
+[2026-05-20T09:57:32.443404] risk evaluated
+[2026-05-20T09:57:32.448740] decision generated

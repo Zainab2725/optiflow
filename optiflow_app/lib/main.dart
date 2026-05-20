@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'theme.dart';
 import 'screens/splash_screen.dart';
-import 'services/agent_state_provider.dart';
+import 'providers/agent_state_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

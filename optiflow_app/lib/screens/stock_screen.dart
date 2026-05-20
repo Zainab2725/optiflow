@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme.dart';
+import '../providers/agent_state_provider.dart';
 import '../services/api_service.dart';
 
 class StockScreen extends StatefulWidget {
@@ -96,43 +98,101 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  // Derived from live records (with standard fallbacks for newly registered tenants)
+  List<Map<String, dynamic>> _criticalInventoryAlertsFromResult(Map<String, dynamic>? latestResult) {
+    if (latestResult == null) return [];
+
+    dynamic raw = latestResult['insights']?['stock_shortages']
+        ?? latestResult['decision']?['stock_shortages']
+        ?? latestResult['decision']?['low_stock_items']
+        ?? latestResult['critical_stock_alerts']
+        ?? latestResult['alerts'];
+
+    if (raw is Map) raw = [raw];
+    if (raw is List) {
+      return raw
+          .whereType<Map>()
+          .map((item) => Map<String, dynamic>.from(item))
+          .toList();
+    }
+
+    return [];
+  }
+
+  List<Map<String, dynamic>> _availableSourceInventoryFromResult(Map<String, dynamic>? latestResult) {
+    if (latestResult != null) {
+      dynamic raw = latestResult['simulation']?['source_inventory']
+          ?? latestResult['decision']?['available_sources']
+          ?? latestResult['source_warehouses'];
+      if (raw is Map) raw = [raw];
+      if (raw is List) {
+        return raw
+            .whereType<Map>()
+            .map((item) => Map<String, dynamic>.from(item))
+            .toList();
+      }
+    }
+
+    final sources = <String, Map<String, dynamic>>{};
+    for (final record in _records) {
+      final qty = (record['quantity'] as num?)?.toInt() ?? 0;
+      final thresh = (record['min_threshold'] as num?)?.toInt() ?? 0;
+      if (qty >= thresh && record['zone'] != null) {
+        final key = '${record['zone']}_${record['sku']}';
+        sources.putIfAbsent(key, () => {
+          'warehouse': record['zone'],
+          'depot_name': record['depot_name'] ?? '${record['zone']} Depot',
+          'sku': record['sku'],
+          'quantity': qty,
+        });
+      }
+    }
+    return sources.values.toList();
+  }
+
+  List<Map<String, dynamic>> _redistributionActionsFromResult(Map<String, dynamic>? latestResult) {
+    if (latestResult == null) return [];
+
+    final actions = <Map<String, dynamic>>[];
+    final action = latestResult['decision']?['selected_action'];
+    if (action is Map && action.isNotEmpty) {
+      actions.add(Map<String, dynamic>.from(action));
+    }
+
+    dynamic alt = latestResult['decision']?['recommendations']
+        ?? latestResult['actions']
+        ?? latestResult['redistribution_actions'];
+
+    if (alt is Map) alt = [alt];
+    if (alt is List) {
+      for (final item in alt.whereType<Map>()) {
+        actions.add(Map<String, dynamic>.from(item));
+      }
+    }
+
+    return actions;
+  }
+
+  Map<String, dynamic> _simulationFromResult(Map<String, dynamic>? latestResult) {
+    return Map<String, dynamic>.from(latestResult?['simulation'] ?? {});
+  }
+
   List<String> get _availableZones {
     final list = _records.map((r) => r['zone']?.toString() ?? '').where((z) => z.isNotEmpty).toSet().toList();
-    if (list.isEmpty) {
-      return [
-        "Saddar", "Clifton", "SITE", "Korangi", 
-        "Malir", "Faisal", "Gulshan", "PECHS",
-        "North Nazimabad", "Orangi", "Lyari", "Defence"
-      ];
-    }
     list.sort();
     return list;
   }
 
   List<Map<String, String>> get _availableSkus {
-    final list = _records.map((r) => {'sku': r['sku']?.toString() ?? '', 'name': r['item_name']?.toString() ?? r['sku']?.toString() ?? ''})
+    return _records
+        .map((r) => {
+              'sku': r['sku']?.toString() ?? '',
+              'name': r['item_name']?.toString() ?? r['sku']?.toString() ?? ''
+            })
         .where((s) => s['sku']!.isNotEmpty)
         .fold<List<Map<String, String>>>([], (acc, s) {
           if (!acc.any((a) => a['sku'] == s['sku'])) acc.add(s);
           return acc;
         });
-    if (list.isEmpty) {
-      return [
-        {'sku': 'MED-001', 'name': 'Panadol 500mg'},
-        {'sku': 'MED-002', 'name': 'Insulin Vial'},
-        {'sku': 'MED-003', 'name': 'Amoxicillin'},
-        {'sku': 'MED-004', 'name': 'ORS Sachets'},
-        {'sku': 'MED-005', 'name': 'Vaccine Vial'},
-        {'sku': 'MED-006', 'name': 'Disprin Tablet'},
-        {'sku': 'MED-007', 'name': 'Saline Infusion'},
-        {'sku': 'LOG-001', 'name': 'Transport Fuel'},
-        {'sku': 'LOG-002', 'name': 'Cargo Pallets'},
-        {'sku': 'WTR-001', 'name': 'Purified Water 19L'},
-        {'sku': 'FOOD-001', 'name': 'High-Energy Biscuits'},
-      ];
-    }
-    return list;
   }
 
   @override
@@ -151,8 +211,14 @@ class _StockScreenState extends State<StockScreen> {
   Future<void> _loadData() async {
     setState(() { _loading = true; _error = null; });
     try {
-      // Phase 1: Load core stock ledger instantly from host
-      final stockRes = await _api.getStock();
+      Map<String, dynamic> stockRes;
+      if (ApiService.cachedStock != null) {
+        stockRes = ApiService.cachedStock!;
+        ApiService.cachedStock = null; // Clear after use
+      } else {
+        stockRes = await _api.getStock();
+      }
+
       if (mounted) {
         setState(() {
           _records = (stockRes['records'] as List?)
@@ -359,6 +425,8 @@ class _StockScreenState extends State<StockScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<AgentStateProvider>();
+    final latestResult = state.latestResult;
     final criticalCount = _summary['critical_count'] ?? 0;
     final isCritical = criticalCount > 0;
 
@@ -368,7 +436,7 @@ class _StockScreenState extends State<StockScreen> {
           padding: EdgeInsets.all(8),
           child: Icon(Icons.hub_outlined, color: AppTheme.primary, size: 24),
         ),
-        title: const Text('Warehouse Stock'),
+        title: const Text('Inventory'),
         actions: [
           IconButton(icon: const Icon(Icons.refresh_outlined), onPressed: _loadData),
         ],
@@ -380,7 +448,7 @@ class _StockScreenState extends State<StockScreen> {
               : RefreshIndicator(
                   onRefresh: _loadData,
                   color: AppTheme.primary,
-                  child: _buildBody(criticalCount, isCritical),
+                  child: _buildBody(criticalCount, isCritical, latestResult),
                 ),
     );
   }
@@ -394,7 +462,7 @@ class _StockScreenState extends State<StockScreen> {
           children: [
             const Icon(Icons.cloud_off_outlined, color: AppTheme.criticalRed, size: 48),
             const SizedBox(height: 16),
-            Text('Backend Unreachable', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Could not connect to server', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
             Text(_error!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.onSurfaceVar), textAlign: TextAlign.center),
             const SizedBox(height: 24),
@@ -405,7 +473,7 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
-  Widget _buildBody(int criticalCount, bool isCritical) {
+  Widget _buildBody(int criticalCount, bool isCritical, Map<String, dynamic>? latestResult) {
     final merged = _getMergedAssets();
 
     // Compute status variables for the donut chart
@@ -432,6 +500,7 @@ class _StockScreenState extends State<StockScreen> {
       final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
       return qty < thresh;
     }).toList();
+
     // Sort critical alerts so that lower stock level ratios are shown first
     criticalAlerts.sort((a, b) {
       final double qtyA = ((a['quantity'] ?? 0) as num).toDouble();
@@ -678,6 +747,17 @@ class _StockScreenState extends State<StockScreen> {
         ),
         const SizedBox(height: 24),
 
+        if (latestResult != null) ...[
+          _buildCriticalInventoryAlertsSection(latestResult, criticalAlerts),
+          const SizedBox(height: 16),
+          _buildAvailableSourceInventorySection(latestResult),
+          const SizedBox(height: 16),
+          _buildAiRedistributionRecommendationsSection(latestResult),
+          const SizedBox(height: 16),
+          _buildTransferSimulationPanel(latestResult),
+          const SizedBox(height: 24),
+        ],
+
         // ── Unified Asset Performance ──
         Text(
           'Low Stock Action Board',
@@ -687,120 +767,156 @@ class _StockScreenState extends State<StockScreen> {
         ),
         const SizedBox(height: 10),
         Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppTheme.outlineVar, width: 0.5),
-          ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
-              dataRowHeight: 52,
-              horizontalMargin: 12,
-              columnSpacing: 28,
-              columns: const [
-                DataColumn(label: Text('Category', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 11))),
-                DataColumn(label: Text('Item Name', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 11))),
-                DataColumn(label: Text('Status', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 11))),
-                DataColumn(label: Text('Stock Level', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 11))),
-                DataColumn(label: Text('Days Left', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 11))),
-                DataColumn(label: Text('Action', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 11))),
-              ],
-              rows: merged.where((a) {
-                final qty = (a['quantity'] as num?)?.toInt() ?? 0;
-                final thresh = (a['min_threshold'] as num?)?.toInt() ?? 500;
-                return qty < thresh; // Only show Warning and Critical products!
-              }).map((a) {
-                final sector = getSector(a['sku'] ?? '');
-                final qty = ((a['quantity'] ?? 0) as num).toInt();
-                final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: merged.where((a) {
+              final qty = (a['quantity'] as num?)?.toInt() ?? 0;
+              final thresh = (a['min_threshold'] as num?)?.toInt() ?? 500;
+              return qty < thresh; // Only show Warning and Critical products!
+            }).map((a) {
+              final sector = getSector(a['sku'] ?? '');
+              final qty = ((a['quantity'] ?? 0) as num).toInt();
+              final thresh = ((a['min_threshold'] ?? 500) as num).toInt();
 
-                // Status calculation
-                String statusLabel = 'Nominal';
-                Color statusColor = AppTheme.success;
-                Color statusBg = AppTheme.success.withOpacity(0.12);
-                if (qty < thresh * 0.5) {
-                  statusLabel = 'Critical';
-                  statusColor = AppTheme.criticalRed;
-                  statusBg = AppTheme.criticalRedBg;
-                } else if (qty < thresh) {
-                  statusLabel = 'Warning';
-                  statusColor = AppTheme.warning;
-                  statusBg = AppTheme.warningBg;
-                }
-                
-                final estHours = qty > 0 ? (qty / 10).ceil() : 0;
-                final estDays = (estHours / 24).floor();
-                String estDepletion = estDays >= 14 ? '14+ Days' : (estDays >= 1 ? '$estDays Days' : '< 1 Day');
+              // Status calculation
+              String statusLabel = 'Nominal';
+              Color statusColor = AppTheme.success;
+              Color statusBg = AppTheme.success.withOpacity(0.12);
+              if (qty < thresh * 0.5) {
+                statusLabel = 'Critical';
+                statusColor = AppTheme.criticalRed;
+                statusBg = AppTheme.criticalRedBg;
+              } else if (qty < thresh) {
+                statusLabel = 'Warning';
+                statusColor = AppTheme.warning;
+                statusBg = AppTheme.warningBg;
+              }
+              
+              final estHours = qty > 0 ? (qty / 10).ceil() : 0;
+              final estDays = (estHours / 24).floor();
+              String estDepletion = estDays >= 14 ? '14+ Days' : (estDays >= 1 ? '$estDays Days' : '< 1 Day');
 
-                final double pct = thresh > 0 ? (qty / (thresh * 2) * 100).clamp(0.0, 100.0) : 0.0;
-                final String stockLevelStr = '${pct.toInt()}%';
+              final double pct = thresh > 0 ? (qty / (thresh * 2) * 100).clamp(0.0, 100.0) : 0.0;
+              final String stockLevelStr = '${pct.toInt()}%';
 
-                return DataRow(
-                  cells: [
-                    DataCell(Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(getSectorIcon(sector), size: 14, color: Colors.grey[700]),
-                        const SizedBox(width: 6),
-                        Text(sector, style: const TextStyle(fontSize: 12, color: Colors.black87)),
-                      ],
-                    )),
-                    DataCell(Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          a['item_name'] ?? a['sku'] ?? 'Unknown Item',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.black87),
-                        ),
-                        Text(
-                          a['sku'] ?? '',
-                          style: TextStyle(fontSize: 10, color: Colors.grey[500]),
-                        ),
-                      ],
-                    )),
-                    DataCell(Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              return Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppTheme.outlineVar, width: 1.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Icon + Sector
+                    Container(
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: statusBg,
-                        borderRadius: BorderRadius.circular(12),
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                      child: Icon(getSectorIcon(sector), size: 24, color: const Color(0xFF475569)),
+                    ),
+                    const SizedBox(width: 16),
+                    // Item Name & SKU
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(shape: BoxShape.circle, color: statusColor),
+                          Text(
+                            a['item_name'] ?? a['sku'] ?? 'Unknown Item',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1E293B)),
                           ),
-                          const SizedBox(width: 6),
-                          Text(statusLabel, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: statusColor)),
+                          const SizedBox(height: 4),
+                          Text(
+                            'SKU: ${a['sku'] ?? ''}',
+                            style: const TextStyle(fontSize: 12, color: Color(0xFF64748B)),
+                          ),
                         ],
                       ),
-                    )),
-                    DataCell(Text(stockLevelStr, style: const TextStyle(fontSize: 12))),
-                    DataCell(Text(estDepletion, style: const TextStyle(fontSize: 12))),
-                    DataCell(
-                      InkWell(
-                        onTap: () {
-                          _selectedSku = a['sku'];
-                          _selectedZone = a['zone'] ?? _availableZones.first;
-                          _qtyCtrl.text = '';
-                          _depotCtrl.text = a['depot_name'] ?? '${_selectedZone} Depot';
-                          _showUpdateDialog(qty < thresh); // open dispatch dialog if normal, replenishment if warning/critical
-                        },
-                        child: Text(
-                          qty < thresh ? '[Restock]' : '[View]',
-                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 11),
+                    ),
+                    // Status Badge
+                    Expanded(
+                      flex: 2,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: statusBg,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: statusColor.withOpacity(0.3), width: 0.5),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: statusColor),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(statusLabel, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: statusColor)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
+                    // Stats
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Level: $stockLevelStr',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF334155)),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Est. Depletion: $estDepletion',
+                            style: const TextStyle(fontSize: 12, color: Color(0xFF64748B)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Action Button
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        _selectedSku = a['sku'];
+                        _selectedZone = a['zone'] ?? _availableZones.first;
+                        _qtyCtrl.text = '';
+                        _depotCtrl.text = a['depot_name'] ?? '${_selectedZone} Depot';
+                        _showUpdateDialog(qty < thresh);
+                      },
+                      icon: const Icon(Icons.refresh, size: 16),
+                      label: Text(
+                        qty < thresh ? 'Restock' : 'View',
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1D4ED8),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      ),
+                    ),
                   ],
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           ),
         ),
         const SizedBox(height: 24),
@@ -1022,14 +1138,339 @@ class _StockScreenState extends State<StockScreen> {
     );
   }
 
+  Widget _buildCriticalInventoryAlertsSection(Map<String, dynamic> latestResult, List<Map<String, dynamic>> fallbackAlerts) {
+    final alerts = _criticalInventoryAlertsFromResult(latestResult);
+    final displayAlerts = alerts.isNotEmpty ? alerts : fallbackAlerts;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFEF2F2),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFFFCA5A5), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.warning_amber_rounded, color: AppTheme.criticalRed, size: 20),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Critical Inventory Alerts',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.criticalRed),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (displayAlerts.isEmpty)
+            const Text(
+              'No active shortage alerts found in the AI redistribution feed.',
+              style: TextStyle(fontSize: 12, color: Colors.black54),
+            )
+          else
+            ...displayAlerts.take(5).map((alert) {
+              final item = alert['item_name'] ?? alert['sku'] ?? alert['item'] ?? 'Inventory Item';
+              final location = alert['zone'] ?? alert['warehouse'] ?? alert['location'] ?? 'Unknown location';
+              final severity = alert['severity']?.toString().toLowerCase() ?? '';
+              final quantity = alert['quantity']?.toString() ?? alert['current_quantity']?.toString() ?? '—';
+              final threshold = alert['min_threshold']?.toString() ?? alert['threshold']?.toString() ?? '—';
+              final badgeColor = severity.contains('critical') ? AppTheme.criticalRed : severity.contains('low') ? AppTheme.warning : AppTheme.primary;
+              final badgeLabel = severity.isNotEmpty ? severity.toUpperCase() : (double.tryParse(quantity) != null && double.tryParse(threshold) != null && (double.parse(quantity) < double.parse(threshold) * 0.5) ? 'CRITICAL' : 'WARNING');
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$item critically low at $location',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1E293B)),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Current: $quantity | Safety: $threshold',
+                            style: const TextStyle(fontSize: 12, color: Color(0xFF475569)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: badgeColor.withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: badgeColor.withOpacity(0.32)),
+                      ),
+                      child: Text(
+                        badgeLabel,
+                        style: TextStyle(color: badgeColor, fontSize: 10, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAvailableSourceInventorySection(Map<String, dynamic> latestResult) {
+    final sources = _availableSourceInventoryFromResult(latestResult);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEEF2FF),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF93C5FD), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.storefront_outlined, color: Color(0xFF2563EB), size: 20),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Available Source Inventory',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1D4ED8)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (sources.isEmpty)
+            const Text(
+              'AI has not identified any source warehouses with surplus stock yet.',
+              style: TextStyle(fontSize: 12, color: Color(0xFF475569)),
+            )
+          else
+            ...sources.take(5).map((source) {
+              final warehouse = source['warehouse'] ?? source['depot_name'] ?? 'Source Warehouse';
+              final sku = source['sku'] ?? 'SKU';
+              final quantity = source['quantity']?.toString() ?? '—';
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '$warehouse → $sku',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF0F172A)),
+                      ),
+                    ),
+                    Text(
+                      '$quantity units',
+                      style: const TextStyle(fontSize: 12, color: Color(0xFF475569)),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAiRedistributionRecommendationsSection(Map<String, dynamic> latestResult) {
+    final actions = _redistributionActionsFromResult(latestResult);
+    final decision = latestResult['decision'] as Map<String, dynamic>? ?? {};
+    final reason = decision['primary_insight']?.toString() ?? decision['summary']?.toString() ?? 'AI has identified redistribution needs based on current stock imbalances.';
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7FEE7),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF86EFAC), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.auto_awesome_mosaic_outlined, color: Color(0xFF15803D), size: 20),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'AI Redistribution Recommendations',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF166534)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            reason,
+            style: const TextStyle(fontSize: 12, color: Color(0xFF166534)),
+          ),
+          const SizedBox(height: 14),
+          if (actions.isEmpty)
+            const Text(
+              'No explicit transfer recommendation is available yet. The AI is still analyzing warehouse balance and shortage risk.',
+              style: TextStyle(fontSize: 12, color: Color(0xFF4B5563)),
+            )
+          else
+            ...actions.take(3).map((action) {
+              final type = action['type']?.toString().toUpperCase() ?? 'REDISTRIBUTE';
+              final from = action['from'] ?? action['source'] ?? 'Unknown source';
+              final to = action['to'] ?? action['destination'] ?? 'Unknown destination';
+              final sku = action['sku'] ?? action['item_name'] ?? 'SKU';
+              final quantity = action['quantity']?.toString() ?? action['units']?.toString() ?? '—';
+              final reasonDetail = action['reason'] ?? action['explanation'] ?? 'Critical shortage detected';
+
+              return Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFBBF7D0), width: 0.8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$type: $quantity units of $sku',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF134E4A)),
+                    ),
+                    const SizedBox(height: 6),
+                    Text('FROM: $from', style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
+                    const SizedBox(height: 2),
+                    Text('TO: $to', style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
+                    const SizedBox(height: 8),
+                    Text('Reason: $reasonDetail', style: const TextStyle(fontSize: 12, color: Color(0xFF475569))),
+                  ],
+                ),
+              );
+            }).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransferSimulationPanel(Map<String, dynamic> latestResult) {
+    final simulation = _simulationFromResult(latestResult);
+    final before = Map<String, dynamic>.from(simulation['before_state'] ?? {});
+    final after = Map<String, dynamic>.from(simulation['after_state'] ?? {});
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFF6FF),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF93C5FD), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.compare_arrows_outlined, color: Color(0xFF1D4ED8), size: 20),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Transfer Simulation',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1D4ED8)),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(child: _buildSimulationStateCard('BEFORE', before, const Color(0xFFEF4444))),
+              const SizedBox(width: 12),
+              Expanded(child: _buildSimulationStateCard('AFTER', after, const Color(0xFF10B981))),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSimulationStateCard(String label, Map<String, dynamic> state, Color color) {
+    final route = state['route']?.toString() ?? 'Pending AI route analysis';
+    final status = state['status']?.toString() ?? 'Pending status update';
+    final stockProfile = state['stock_profile']?.toString() ?? state['stock_level']?.toString() ?? 'Awaiting stock profile';
+    final impact = state['impact']?.toString() ?? state['risk_mitigation']?.toString() ?? 'Awaiting impact summary';
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withOpacity(0.25), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(label == 'BEFORE' ? Icons.report_problem : Icons.check_circle_outline, color: color, size: 14),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          _buildStateItemCard('ROUTE', route, color),
+          const SizedBox(height: 8),
+          _buildStateItemCard('STATUS', status, color),
+          const SizedBox(height: 8),
+          _buildStateItemCard('STOCK PROFILE', stockProfile, color),
+          const SizedBox(height: 8),
+          _buildStateItemCard('IMPACT', impact, color),
+        ],
+      ),
+    );
+  }
+
   Widget _label(String text) {
     return Text(
       text,
       style: const TextStyle(
+        fontSize: 12,
         fontWeight: FontWeight.bold,
-        fontSize: 11,
-        color: AppTheme.onSurfaceVar,
-        letterSpacing: 0.5,
+        color: Color(0xFF475569),
+        letterSpacing: 0.3,
+      ),
+    );
+  }
+
+  Widget _buildStateItemCard(String label, String value, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withOpacity(0.18), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color.withOpacity(0.9)),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 12, color: Color(0xFF0F172A)),
+          ),
+        ],
       ),
     );
   }

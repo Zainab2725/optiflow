@@ -80,6 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } catch (_) { /* graceful fallback */ }
 
+      // Preload data
+      setState(() { _error = 'Setting up your workspace...'; });
+      await ApiService().preloadAll();
+      setState(() { _error = ''; });
+
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -141,12 +146,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Secure Access',
+                                    'Welcome Back',
                                     style: Theme.of(context).textTheme.headlineLarge,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Command Center Authorization Required',
+                                    'Log in to your account',
                                     style: Theme.of(context).textTheme.bodyMedium
                                         ?.copyWith(color: AppTheme.onSurfaceVar),
                                     textAlign: TextAlign.center,
@@ -161,18 +166,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  _label('OPERATOR_ID'),
+                                  _label('Email'),
                                   const SizedBox(height: 6),
                                   TextField(
                                     controller: _emailCtrl,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: const InputDecoration(
-                                      hintText: 'Enter ID',
+                                      hintText: 'Enter Email',
                                       prefixIcon: Icon(Icons.person_outline, size: 18),
                                     ),
                                   ),
                                   const SizedBox(height: 16),
-                                  _label('ACCESS_KEY'),
+                                  _label('Password'),
                                   const SizedBox(height: 6),
                                   TextField(
                                     controller: _passCtrl,
@@ -213,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               child: CircularProgressIndicator(
                                                 color: Colors.white, strokeWidth: 2))
                                           : const Icon(Icons.arrow_forward, size: 18),
-                                      label: const Text('Authenticate'),
+                                      label: const Text('Log In'),
                                     ),
                                   ),
                                   const SizedBox(height: 16),
@@ -234,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       );
                                     },
                                     icon: const Icon(Icons.person_add_outlined, size: 18),
-                                    label: const Text('Request Org Credentials'),
+                                    label: const Text('Create Account'),
                                   ),
                                 ],
                               ),

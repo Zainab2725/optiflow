@@ -8,9 +8,51 @@
     "quantity": 150,
     "min_threshold": 500,
     "org_id": "org-demo",
-    "id": "55e15b3d",
-    "timestamp": "2026-05-19T19:37:13.538096",
+    "id": "61e9b8ea",
+    "timestamp": "2026-05-19T20:40:10.728893",
     "threshold_breached": true,
     "status": "CRITICAL"
+  },
+  {
+    "depot_id": "depot-saddar",
+    "depot_name": "Saddar Depot",
+    "zone": "Saddar",
+    "sku": "MED-003",
+    "item_name": "Disprin 300mg",
+    "quantity": 790,
+    "min_threshold": 1000,
+    "org_id": "org-17c0f171",
+    "id": "76494491",
+    "timestamp": "2026-05-19T20:52:17.562400",
+    "threshold_breached": true,
+    "status": "CRITICAL"
+  },
+  {
+    "depot_id": "depot-saddar",
+    "depot_name": "Saddar Depot",
+    "zone": "Saddar",
+    "sku": "MED-100",
+    "item_name": "Albumin 20% 100ml",
+    "quantity": 525,
+    "min_threshold": 200,
+    "org_id": "org-17c0f171",
+    "id": "82e36d7b",
+    "timestamp": "2026-05-19T21:49:26.571445",
+    "threshold_breached": false,
+    "status": "NORMAL"
+  },
+  {
+    "depot_id": "depot-saddar",
+    "depot_name": "Saddar Depot",
+    "zone": "Saddar",
+    "sku": "MED-035",
+    "item_name": "Insulin Glargine",
+    "quantity": 445,
+    "min_threshold": 200,
+    "org_id": "org-17c0f171",
+    "id": "bf4ca1cb",
+    "timestamp": "2026-05-19T21:49:44.257322",
+    "threshold_breached": false,
+    "status": "NORMAL"
   }
 ]

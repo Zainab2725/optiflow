@@ -21,6 +21,12 @@ class ApiService {
   static Map<String, dynamic>? currentUser;
   static Map<String, dynamic>? organization;
 
+  // Cached data for initial load
+  static Map<String, dynamic>? cachedDashboard;
+  static Map<String, dynamic>? cachedStock;
+  static Map<String, dynamic>? cachedIncidents;
+  static Map<String, dynamic>? cachedZoneRisk;
+
   // No static config — all zones, SKUs, and fleet data are loaded live from the backend.
 
   // Helper to generate authorized headers
@@ -366,6 +372,26 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Failed to load dashboard: $e');
+    }
+  }
+
+  // Preload critical data after login
+  Future<void> preloadAll() async {
+    try {
+      final results = await Future.wait([
+        getDashboardData().catchError((e) => <String, dynamic>{'error': e.toString()}),
+        getStock().catchError((e) => <String, dynamic>{'error': e.toString()}),
+        getIncidents().catchError((e) => <String, dynamic>{'error': e.toString()}),
+        getZoneRiskMap().catchError((e) => <String, dynamic>{'error': e.toString()}),
+      ]);
+
+      cachedDashboard = results[0];
+      cachedStock = results[1];
+      cachedIncidents = results[2];
+      cachedZoneRisk = results[3];
+    } catch (e) {
+      // If preloading fails, screens will just fetch individually and handle errors
+      print('Preloading failed: $e');
     }
   }
 

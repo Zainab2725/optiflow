@@ -7,8 +7,8 @@
     "message": "Zero stock at Korangi supply point, urgent shortage",
     "severity": "critical",
     "org_id": "org-demo",
-    "id": "95b3a65b",
-    "timestamp": "2026-05-19T19:37:13.549217",
+    "id": "78d9f526",
+    "timestamp": "2026-05-19T20:40:10.737774",
     "resolved": false,
     "risk_tag": "RED"
   },
@@ -20,8 +20,8 @@
     "message": "Confirmed zero physical stock, patients waiting",
     "severity": "critical",
     "org_id": "org-demo",
-    "id": "d284043d",
-    "timestamp": "2026-05-19T19:37:13.562776",
+    "id": "d82b22ec",
+    "timestamp": "2026-05-19T20:40:10.750291",
     "resolved": false,
     "risk_tag": "RED"
   },
@@ -33,8 +33,34 @@
     "message": "Third report - shelves empty despite system showing stock",
     "severity": "critical",
     "org_id": "org-demo",
-    "id": "a9007d10",
-    "timestamp": "2026-05-19T19:37:13.576115",
+    "id": "34bacac7",
+    "timestamp": "2026-05-19T20:40:10.762260",
+    "resolved": false,
+    "risk_tag": "RED"
+  },
+  {
+    "reporter_name": "Zainab",
+    "reporter_role": "admin",
+    "location_zone": "Clifton",
+    "sku": "MED-001",
+    "message": "there is shortage here",
+    "severity": "high",
+    "org_id": "org-17c0f171",
+    "id": "9013ad17",
+    "timestamp": "2026-05-19T21:26:52.527180",
+    "resolved": false,
+    "risk_tag": "YELLOW"
+  },
+  {
+    "reporter_name": "Zainab",
+    "reporter_role": "admin",
+    "location_zone": "Orangi",
+    "sku": "MED-001",
+    "message": "there is shortage of medicine here",
+    "severity": "critical",
+    "org_id": "org-17c0f171",
+    "id": "23db1c93",
+    "timestamp": "2026-05-19T21:43:12.110512",
     "resolved": false,
     "risk_tag": "RED"
   }
