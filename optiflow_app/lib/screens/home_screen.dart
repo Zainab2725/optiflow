@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../ai_command_center/ai_console_home.dart';
-import '../live_route/live_route_tracker.dart';
 import 'dashboard_screen.dart';
-import 'dispatch_screen.dart';
-import 'analytics_screen.dart';
-import 'technical_debug_screen.dart';
+import 'stock_screen.dart';
+import 'fleet_screen.dart';
+import 'settings_screen.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,11 +18,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _screens = const [
     AIConsoleHome(),
-    LiveRouteTracker(),
     DashboardScreen(),
-    DispatchScreen(),
-    AnalyticsScreen(),
-    TechnicalDebugScreen(),
+    StockScreen(),
+    FleetScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -40,12 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.rocket_launch_outlined),
               activeIcon: Icon(Icons.rocket_launch),
-              label: 'Command Hub',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined),
-              activeIcon: Icon(Icons.explore),
-              label: 'Live Detour',
+              label: 'Agent Console',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.space_dashboard_outlined),
@@ -53,19 +47,19 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Dashboard',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.store_outlined),
+              activeIcon: Icon(Icons.store),
+              label: 'Stock',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.local_shipping_outlined),
               activeIcon: Icon(Icons.local_shipping),
               label: 'Fleet',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.analytics_outlined),
-              activeIcon: Icon(Icons.analytics),
-              label: 'Analytics',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.terminal_outlined),
-              activeIcon: Icon(Icons.terminal),
-              label: 'System Debug',
+              icon: Icon(Icons.settings_outlined),
+              activeIcon: Icon(Icons.settings),
+              label: 'Settings',
             ),
           ],
         ),
