@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
-import '../ai_command_center/ai_console_home.dart';
+import 'agent_console_screen.dart';
 import 'dashboard_screen.dart';
 import 'stock_screen.dart';
 import 'incidents_screen.dart';
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
 
   final _screens = const [
-    AIConsoleHome(),
+    AgentConsoleScreen(),
     DashboardScreen(),
     StockScreen(),
     IncidentsScreen(),
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.rocket_launch_outlined),
               activeIcon: Icon(Icons.rocket_launch),
-              label: 'Agent Console',
+              label: 'AI Decision Center',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.space_dashboard_outlined),

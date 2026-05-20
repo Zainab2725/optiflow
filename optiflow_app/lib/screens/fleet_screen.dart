@@ -715,7 +715,6 @@ class _FleetScreenState extends State<FleetScreen> {
             const SizedBox(height: 12),
             _buildZoneDetailPanel(zoneRisk),
           ],
-          const SizedBox(height: 20),
         ],
 
         // ── AI Route Optimizer ──
