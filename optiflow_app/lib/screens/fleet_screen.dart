@@ -583,22 +583,6 @@ class _FleetScreenState extends State<FleetScreen> {
 
         // ── Zone Risk Map from Backend ──
         if (zoneRisk.isNotEmpty) ...[
-          Row(children: [
-            const Icon(Icons.map_outlined, color: AppTheme.primary, size: 16),
-            const SizedBox(width: 6),
-            Text('Sites', style: Theme.of(context).textTheme.headlineMedium),
-          ]),
-          const SizedBox(height: 8),
-          TacticalZoneMap(
-            zoneRisk: zoneRisk,
-            selectedZone: _selectedZoneRiskDetail,
-            onZoneSelected: (zone) {
-              setState(() {
-                _selectedZoneRiskDetail = zone;
-              });
-            },
-          ),
-          const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Container(
